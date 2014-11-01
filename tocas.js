@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. BETA 0.1.2
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. BETA 0.1.3
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -561,26 +561,36 @@ var Tocas = (function ()
     
         append: function(HTML)
         {
-           if(HTML != null) return this.each(function(){ this.innerHTML += HTML; })
+           if(HTML != null) return this.each(function(){ this.innerHTML += HTML })
         },
         
         after: function(HTML)
         {
-            if(HTML != null) return this.each(function(){ this.insertAdjacentHTML('afterend', HTML); })
+            if(HTML != null) return this.each(function(){ this.insertAdjacentHTML('afterend', HTML) })
         },
         
         before: function(HTML)
         {
-            if(HTML != null) return this.each(function(){ this.insertAdjacentHTML('beforeBegin', HTML); })
+            if(HTML != null) return this.each(function(){ this.insertAdjacentHTML('beforeBegin', HTML) })
         },
         
         prepend: function(HTML)
         {
-            if(HTML != null) return this.each(function(){ this.parentNode.insertBefore(HTML, this.nextSibling); })
+            if(HTML != null) return this.each(function(){ this.parentNode.insertBefore(HTML, this.nextSibling) })
         },
     
         
+        
+        
+        /**
+         * Remove
+         */
 
+        remove: function()
+        {
+            return this.each(function(){ this.parentNode.removeChild(el) })
+        },
+        
 
         /**
          * Attr
