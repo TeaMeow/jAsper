@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. BETA 0.1.3
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.0.0
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -48,11 +48,10 @@ var Tocas = (function ()
     isArray = Array.isArray || function(Obj){ return Obj instanceof Array }
     isObject = function(Obj){ return Obj instanceof Object }
     isEmptyOrWhiteSpace = function(Str){ return str === null || str.match(/^\s*$/) !== null }
-    
+
     /** Filter those thing which is we don't need it */
     function Compact(Array){ return Filter.call(Array, function(Item){ return Item != null }) }
-    
-    
+
     tocas.Init = function(Selector)
     {
         var Dom
@@ -107,7 +106,7 @@ var Tocas = (function ()
     {
         return tocas.Init(Selector)
     };
- 
+    
     
     
     
@@ -133,17 +132,22 @@ var Tocas = (function ()
         
         
         
+        
+        /**
+         * Slice
+         */
+        
         slice: function()
         {
             /** Regenerate a new object */
             return $(Slice.apply(this, arguments))
         },
-        
+
         
         
         
         /**
-         * eq
+         * Eq
          *
          * Jump to target element.
          */
@@ -152,14 +156,12 @@ var Tocas = (function ()
         {
             return this.slice(Index, + Index + 1)
         },
-        
+     
         
         
         
         /**
          * Hide
-         *
-         * @returns {*}
          */
         
         hide: function()
@@ -172,8 +174,6 @@ var Tocas = (function ()
         
         /**
          * Show
-         *
-         * @returns {*}
          */
         
         show: function(Display)
@@ -205,10 +205,9 @@ var Tocas = (function ()
         
         
         
+        
         /**
          * Get CSS
-         *
-         *
          */
     
         getCSS: function(Property)
@@ -223,11 +222,10 @@ var Tocas = (function ()
                 return null
             }
         },
-    
         
         
-    
-    
+        
+        
         /**
          * Text
          *
@@ -249,7 +247,7 @@ var Tocas = (function ()
         /**
          * HTML
          *
-         * Set HTML when variable is not empty, otherwise we get the HTML content.
+         * Set HTML if variable is not empty, otherwise we get the HTML content.
          */
     
         html: function(HTML)
@@ -266,6 +264,8 @@ var Tocas = (function ()
         
         /**
          * Empty
+         *
+         * Clean value or innerHTML.
          */
         
         empty: function()
@@ -276,15 +276,14 @@ var Tocas = (function ()
                 if(this.value != 'undefined')     this.value = ''
             })
         },
-        
-        
+
         
         
         
         /**
          * Val
          *
-         * set the value of element or get a value if Value is null.
+         * Set the value of element or get a value if Value is null.
          */
         
         val: function(Value)
@@ -483,12 +482,12 @@ var Tocas = (function ()
                 }
             })
         },
-             
+   
         
                              
         
         /**
-         * Add Class
+         * Remove Class
          */
         
         removeClass: function(Class)
@@ -552,7 +551,6 @@ var Tocas = (function ()
         
         
         
-        
         /**
          * Append
          * 
@@ -592,6 +590,8 @@ var Tocas = (function ()
         },
         
 
+        
+        
         /**
          * Attr
          *
@@ -845,7 +845,7 @@ var Tocas = (function ()
         XHR.ontimeout = function(){ Obj.error(XHR) }
         XHR.onerror   = function(){ Obj.error(XHR, XHR.responseText) }
         
-        if(Obj.contentType != false)          XHR.setRequestHeader('Content-Type', Obj.contentType)
+        if(Obj.contentType != false) XHR.setRequestHeader('Content-Type', Obj.contentType)
 
         /** Set headers */
         if(typeof Obj.headers != 'undefined') for(var i in Obj.headers) XHR.setRequestHeader(i, Obj.headers[i])
@@ -918,7 +918,6 @@ var Tocas = (function ()
         }
             return null
     }
-    
     if(!window.$) window.$ = $
 })(Tocas);
 
