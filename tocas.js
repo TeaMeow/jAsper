@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.0.0
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.0.5
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -13,11 +13,16 @@
                 茶葉貓   / 開闊 /  多彩多姿 / 藍.白.澄 / 簡潔
               
               
-                              基本配色:
+                            Basic colors
                                 
-                   A oi    -    藍色    -    #00ADEA
-                   S hiroi -    白色    -    #FFFFFF
-                   O renji -    橙色    -    #FFA500                           
+                   A oi    -    Blue     -    #00ADEA
+                   S hiroi -    White    -    #FFFFFF
+                   O renji -    Orange   -    #FFA500        
+                   
+                         Object of elements
+                         
+             ts_eventHandler      -      store event handlers.
+             ts_longPressTimer    -      store the timer of longpress detection.
 */
 
 /**
@@ -351,7 +356,7 @@ var Tocas = (function ()
                     /** Bind if haven't bind yet */
                     if(this.ts_eventHandler[Event].registered === false)
                     {
-                        this.addEventListener(Event, function()
+                        this.addEventListener(Event, function(evt)
                         {
                             /** Just make sure this event still existed */
                             if(typeof this.ts_eventHandler[Event] != 'undefined')
@@ -360,7 +365,7 @@ var Tocas = (function ()
                                 for(var e in this.ts_eventHandler[Event].list)
                                 {
                                     /** Execute */
-                                    this.ts_eventHandler[Event].list[e].func.call(this)
+                                    this.ts_eventHandler[Event].list[e].func.call(this, evt)
                                     
                                     /** If "once" is true, we remove it after call it */
                                     if(this.ts_eventHandler[Event].list[e].once)
@@ -440,6 +445,43 @@ var Tocas = (function ()
             if(0 in this)
                 //if($.inArray(this['Selector'], ['document', 'body'])
                 this[0].addEventListener('DOMContentLoaded', Callback)
+        },
+        
+        
+        
+        
+       /**
+         * Events
+         */
+        
+        mousedown: function(Callback)
+        {
+            return this.each(function(){ if(!Callback) return false; this.onmousedown = Callback })
+        },
+        mouseup: function(Callback)
+        {
+            return this.each(function(){ if(!Callback) return false; this.onmouseup = Callback })
+        },
+        longpress: function(Callback, Timer)
+        {
+            Timer = Timer || 500
+            
+            return this.each(function()
+            {
+                $(this).mousedown(function()
+                {
+                    this.ts_longPressTimer = setTimeout(Callback, Timer)
+                })
+                .mouseup(function()
+                {
+                    clearTimeout(this.ts_longPressTimer)
+                    return false
+                })
+            })
+        },
+        click: function(Callback)
+        {
+            return this.each(function(){ if(!Callback) return false; this.onclick = Callback })
         },
         
         
