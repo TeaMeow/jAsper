@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.0.5
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.0
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -456,24 +456,56 @@ var Tocas = (function ()
         
         mousedown: function(Callback)
         {
-            return this.each(function(){ if(!Callback) return false; this.onmousedown = Callback })
+            return this.each(function(){ if(!Callback) return false; this.onmousedown = Callback; })
         },
         mouseup: function(Callback)
         {
-            return this.each(function(){ if(!Callback) return false; this.onmouseup = Callback })
+            return this.each(function(){ if(!Callback) return false; this.onmouseup = Callback; })
         },
-        longpress: function(Callback, Timer)
+        mousemove: function(Callback)
         {
-            Timer = Timer || 500
+            return this.each(function(){ if(!Callback) return false; this.onmousemove = Callback; })
+        },
+        click: function(Callback)
+        {
+            return this.each(function(){ if(!Callback) return false; this.onclick = Callback; })
+        },
+        dragstart: function(Callback)
+        {
+            return this.each(function(){ if(!Callback) return false; this.ondragstart = Callback; })
+        },
+        longpress: function(Callback, ClickCallback, Timer)
+        {
+            if(!isNaN(ClickCallback)) Timer = ClickCallback
+                                      Timer = Timer || 500
             
             return this.each(function()
             {
-                $(this).mousedown(function()
+                $(this).mousedown(function(event)
                 {
-                    this.ts_longPressTimer = setTimeout(Callback, Timer)
+                    var that = this
+                    /** Haven't trigger long press yet, so we set this to false */
+                    that.ts_longPressed = false
+                    this.ts_longPressTimer = setTimeout(function()
+                    {
+                        /** Call long press callback */
+                        Callback.call(that)
+                        /** Long press has been triggered */
+                        that.ts_longPressed = true
+                        
+                    }, Timer)
+                    return false
                 })
-                .mouseup(function()
+                .mouseup(function(event)
                 {
+                    /** If it's not long press, we call the 'click' callback */
+                    if(!this.ts_longPressed) if(typeof ClickCallback !== 'undefined') ClickCallback.call(this)
+                    
+                    clearTimeout(this.ts_longPressTimer)
+                    return false
+                })
+                .mousemove(function(event)
+                { 
                     clearTimeout(this.ts_longPressTimer)
                     return false
                 })
@@ -679,7 +711,6 @@ var Tocas = (function ()
             {
                 /** For passing $(this) to inside function */
                 var that = this
-                
                 $(this).addClass(Animate + ' animated')
                        /** Once the animation end, we remove the animate class and callback **/
                        .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
@@ -687,9 +718,9 @@ var Tocas = (function ()
                            setTimeout(function()
                            {
                                $(that).removeClass(Animate + ' animated')
-                               Callback.call(that)
+                               if(typeof Callback !== 'undefined') Callback.call(that) 
                            }, Time)
-                       })
+                        })
             })
         },
         
