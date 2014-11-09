@@ -178,6 +178,9 @@ The following is the options that you can use:
   
   url: 'http://www.teameow.com/test.php',
   timeout: 10000,
+  statusCode: {401: alert('God, We got 401'),
+               500: alert('Server is now something wrong.')}
+               
   contentType: false,  //BEWARE: FALSE IS NOT SAME AS THE DEFAULT.
                        //(default: application/x-www-form-urlencoded; charset=UTF-8)
                        
