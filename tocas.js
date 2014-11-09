@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.0
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.1
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -888,16 +888,26 @@ var Tocas = (function ()
     {
         if(Obj == null) return false
         
+        var ErrorCallback = (typeof Obj.error != 'undefined') ? true : false
+        
         /** Default */
-        if(typeof Obj.async == 'undefined') Obj.async = true
-        if(typeof Obj.contentType == 'undefined' || Obj.contentType == null) Obj.contentType = 'application/x-www-form-urlencoded; charset=UTF-8'
+        if(typeof Obj.async == 'undefined')
+            Obj.async = true
+        if(typeof Obj.contentType == 'undefined' || Obj.contentType == null) 
+            Obj.contentType = 'application/x-www-form-urlencoded; charset=UTF-8'
 
         XHR = new XMLHttpRequest()
+        /** Open a new connect */
         XHR.open(Obj.type, Obj.url, Obj.async)
-        XHR.timeout = Obj.timeout
+        /** Set timeout */
+        XHR.timeout = Obj.timeout || 10000
 
         XHR.onload = function()
         {
+            /** Call to statusCode if existed */
+            if(typeof Obj.statusCode != 'undefined' && typeof Obj.statusCode[XHR.status] != 'undefined')
+                Obj.statusCode[XHR.status](XHR, XHR.responseText)
+            
             if(XHR.status >= 200 && XHR.status < 400)
                 switch(Obj.dataType)
                 {
@@ -912,12 +922,14 @@ var Tocas = (function ()
                         XHR.close()
                 }
             else
-                Obj.error(XHR, XHR.responseText)
-        };
+                if(ErrorCallback) Obj.error(XHR, XHR.responseText)
+        }
         
-        XHR.ontimeout = function(){ Obj.error(XHR) }
-        XHR.onerror   = function(){ Obj.error(XHR, XHR.responseText) }
+        /** When XHR timeout or error, we callback */
+        XHR.ontimeout = function(){ if(ErrorCallback) Obj.error(XHR) }
+        XHR.onerror   = function(){ if(ErrorCallback) Obj.error(XHR, XHR.responseText) }
         
+        /** If contentType is not FALSE, we set the request header */
         if(Obj.contentType != false) XHR.setRequestHeader('Content-Type', Obj.contentType)
 
         /** Set headers */
