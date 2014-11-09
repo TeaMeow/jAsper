@@ -185,7 +185,12 @@ The following is the options that you can use:
                        //(default: application/x-www-form-urlencoded; charset=UTF-8)
                        
   success: function(XHR.responseText, XHR)
-  error:   function(XHR, XHR.responseText)
+  error:   function(XHR, ErrorStatus)       //ErrorStatus: timeout, error, parsererror, success
+                                            //timeout:     When timeout.
+                                            //error:       When XHR error.
+                                            //parsererror: When parser error, such as JSON.parser error.
+                                            //success:     When XHR.status is not >= 200 and < 400.
+                                            
   headers: {'Connection': 'keep-alive'}
 }
 ```
