@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.1
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.2
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -369,7 +369,7 @@ var Tocas = (function ()
                                     
                                     /** If "once" is true, we remove it after call it */
                                     if(this.ts_eventHandler[Event].list[e].once)
-                                        this.ts_eventHandler[Event].list.splice(e, 1)
+                                        delete this.ts_eventHandler[Event].list[e]
                                 }
                             }
                         })
@@ -424,10 +424,7 @@ var Tocas = (function ()
                 
                 /** Otherwise we search for the index of function, then remove it */
                 for(var e in this.ts_eventHandler[EventName].list)
-                {
-                    var Index = $.inArray(Handler, this.ts_eventHandler[EventName].list[e].func)
-                    if(Index > -1) this.ts_eventHandler[EventName].list[e].splice(Index, 1)
-                }
+                    if(Handler === this.ts_eventHandler[EventName].list[e].func) delete this.ts_eventHandler[EventName].list[e]
             })
         },
         
@@ -912,7 +909,10 @@ var Tocas = (function ()
                 switch(Obj.dataType)
                 {
                     case 'json':
-                        Obj.success(JSON.parse(XHR.responseText), XHR)
+                        if($.isJSON(XHR.responseText))
+                            Obj.success(JSON.parse(XHR.responseText), XHR)
+                        else
+                            Obj.error(XHR, 'parsererror')
                         break
                     case 'html':
                     case 'text':
@@ -922,13 +922,13 @@ var Tocas = (function ()
                         XHR.close()
                 }
             else
-                if(ErrorCallback) Obj.error(XHR, XHR.responseText)
+                if(ErrorCallback) Obj.error(XHR, 'success')
         }
         
         /** When XHR timeout or error, we callback */
-        XHR.ontimeout = function(){ if(ErrorCallback) Obj.error(XHR) }
-        XHR.onerror   = function(){ if(ErrorCallback) Obj.error(XHR, XHR.responseText) }
-        
+        XHR.ontimeout = function(){ if(ErrorCallback) Obj.error(XHR, 'timeout') }
+        XHR.onerror   = function(){ if(ErrorCallback) Obj.error(XHR, 'error') }
+
         /** If contentType is not FALSE, we set the request header */
         if(Obj.contentType != false) XHR.setRequestHeader('Content-Type', Obj.contentType)
 
@@ -955,6 +955,17 @@ var Tocas = (function ()
     };
     
     
+    
+    $.isJSON = function(String)
+    {
+        /** Detect the type of the respone is json or not */
+        var IsJSON = true
+        
+        try     { JSON.parse(String) }
+        catch(e){ var IsJSON = false }
+        
+        return IsJSON
+    }
     
     
     /**
