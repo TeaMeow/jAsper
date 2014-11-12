@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.2
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.3
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -885,6 +885,7 @@ var Tocas = (function ()
     {
         if(Obj == null) return false
         
+        /** Is error handler existed or not */
         var ErrorCallback = (typeof Obj.error != 'undefined') ? true : false
         
         /** Default */
@@ -934,12 +935,26 @@ var Tocas = (function ()
 
         /** Set headers */
         if(typeof Obj.headers != 'undefined') for(var i in Obj.headers) XHR.setRequestHeader(i, Obj.headers[i])
-
+        
+        /** If data is an object, we convert it to params */
+        if(typeof Obj.data == 'object') 
+        {   
+            /** explode the object into a string */
+            var Params = null
+            for(var i in Obj.data) Params += i + '=' + Obj.data[i] + '&' 
+            
+            /** Remove the unnecessary symbol at the end */
+            Params = Params.slice(0, -1)
+        }
+            
         /** SENDDDD! */
-        XHR.send(Obj.data)
+        if(typeof Obj.data == 'object') 
+            XHR.send(Params)
+        else
+            XHR.send(Obj.data)
         
         return XHR
-    };
+    }
     
     
     
@@ -952,7 +967,7 @@ var Tocas = (function ()
             dataType: 'json',
             success: Return, 
         })
-    };
+    }
     
     
     
