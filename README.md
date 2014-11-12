@@ -172,8 +172,17 @@ The following is the options that you can use:
 ```
 {
   async: true, 
-  type: 'POST',       //Type of form. (GET, POST)
-  data: Data,         //Data that you want to send.
+  type: 'POST',                //Type of form. (GET, POST)
+  data: Data,                  //Data that you want to send.
+       {'Name': 'TeaMeow',     //Such as object,
+        'PW': 'Yami'}
+        
+        'Name=TeaMeow&PW=Yami' //or params,
+        
+        $('Form').serialize()  //or even a serialize form by tocas function.
+  
+  
+  
   dataType: 'json',   //Type of result. (json, html, text, string)
   
   url: 'http://www.teameow.com/test.php',
