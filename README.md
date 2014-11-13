@@ -79,7 +79,7 @@ Remove a class or many class, if class name is empty, we clean all of the classe
 ```
 
 ###ToggleClass
-Remove a class if it's already existed, otherwise add it.(multiple classes is not supported yet.)
+Remove a class if it's already existed, otherwise add it.
 ```
 .toggleClass(Class)
 ```
