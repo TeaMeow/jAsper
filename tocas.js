@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.4
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.5
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -597,24 +597,28 @@ var Tocas = (function ()
             {
                 var List, Index
                 
-                if(this.classList)
+                List = Class.split(' ')
+                for(var i in List)
                 {
-                    this.classList.toggle(Class)
-                }
-                else
-                {
-                    /** Split the class */
-                    List = this.className.split(' ')
-                    /** Is the class in class list already? */
-                    Index = List.indexOf(Class)
-
-                    /** If already existed, we remove it, otherwise we add it */
-                    if(Index >= 0)
-                        List.splice(Index, 1)
+                    if(this.classList)
+                    {
+                        this.classList.toggle(List[i])
+                    }
                     else
-                        List.push(Class)
+                    {
+                        /** Split the class */
+                        ObjClassList = this.className.split(' ')
+                        /** Is the class in class list already? */
+                        Index = List.indexOf(List[i])
 
-                    this.className = Class.join(' ')
+                        /** If already existed, we remove it, otherwise we add it */
+                        if(Index >= 0)
+                            ObjClassList.splice(Index, 1)
+                        else
+                            ObjClassList.push(List[i])
+
+                        this.className = List[i].join(' ')
+                    }
                 }
             })
         },
