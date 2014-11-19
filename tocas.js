@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.5
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.6
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -87,7 +87,14 @@ var Tocas = (function ()
     
     tocas.Select = function(Element, Selector)
     {
-        return Slice.call(Element.querySelectorAll(Selector))
+        try
+        {
+            return Slice.call(Element.querySelectorAll(Selector))
+        }
+        catch(e)
+        {
+            console.log('TOCAS ERROR: Something wrong while selecting ' + Selector + ' element.')
+        }
     }
                   
     tocas.Tocas = function(Dom, Selector)
@@ -634,7 +641,8 @@ var Tocas = (function ()
     
         append: function(HTML)
         {
-           if(HTML != null) return this.each(function(){ this.innerHTML += HTML })
+            if(HTML != null)
+                return this.each(function(){ this.innerHTML += HTML })
         },
         
         after: function(HTML)
@@ -651,7 +659,49 @@ var Tocas = (function ()
         {
             if(HTML != null) return this.each(function(){ this.parentNode.insertBefore(HTML, this.nextSibling) })
         },
+        
+        prependTo: function(Selector)
+        {
+            //console.log(this)
+
+            return this.each(function()
+            {
+                var that = this
+                $(Selector).each(function()
+                {
+                    console.log(this)
+                    this.appendChild(that, this.nextSibling);
+                    
+                })
+            })
+        },
     
+        
+        
+        
+        /**
+         * Clone
+         *
+         * Copy an element or an node.
+         */
+        
+        clone: function(Deep)
+        {
+            /** Copy child too? */
+            Deep = (typeof Deep == 'undefined') ? true : Deep;
+
+            var CloneList = []
+            
+            /** Clone the elements */
+            this.each(function()
+            {
+                CloneList.push(this.cloneNode(Deep))
+            })
+
+            /** Using the elements which we cloned */
+            return $(CloneList)
+        },
+        
         
         
         
@@ -661,7 +711,19 @@ var Tocas = (function ()
 
         remove: function()
         {
-            return this.each(function(){ this.parentNode.removeChild(el) })
+            return this.each(function(){ this.parentNode.removeChild(this) })
+        },
+        
+        
+        
+        
+        /**
+         * Parent
+         */
+
+        parent: function()
+        {
+            return $(this.parentNode)
         },
         
 
@@ -942,6 +1004,7 @@ var Tocas = (function ()
         if(typeof Obj.headers != 'undefined') for(var i in Obj.headers) XHR.setRequestHeader(i, Obj.headers[i])
         
         /** If data is an object, we convert it to params */
+        
         if(IsObjectData) 
         {   
             /** explode the object into a string */
@@ -1130,7 +1193,7 @@ function ValidateForm(Array, Type, Val, Val2, Required, StringType, Display, Cal
         /** display the message element if has */
         if (Display != '') document.getElementById(Display).style.display = 'block';
         
-        /** Remove sucess style and add the failed style on it */
+        /** Remove success style and add the failed style on it */
         FieldElement.classList.remove('vf-passed');  //Remove
         FieldElement.classList.add('vf-failed');     //Add
 
