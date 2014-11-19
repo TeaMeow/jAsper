@@ -11,7 +11,8 @@ and it's supported more functions .. such as $.cookie(), and more ..
 
 #Usage
 ```
-$(Element)
+$(Element)    //This one for TocasJS
+$_(Element)   //This one for DOM, we called it secondary selector.
 ```
 
 #Browser Support
