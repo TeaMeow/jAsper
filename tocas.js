@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.6
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.7
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -796,12 +796,62 @@ var Tocas = (function ()
         
         parent: function()
         {
-            return 0 in this ? this[0].parentNode : null
+            return 0 in this ? $(this[0].parentNode) : null
         },
         
         
         
         
+        /**
+         * Closest
+         *
+         * Keep going UP, so we can get the closest element.
+         */
+        
+        closest: function(Name)
+        {
+            var that = this
+            
+            /** Get type */
+                 if(Name.indexOf('#') !== -1) var Type = 'ID'
+            else if(Name.indexOf('.') !== -1) var Type = 'Class'
+            else if(typeof Name !== 'object') var Type = 'NodeName'
+            else                              var Type = 'Object'
+            
+            var More = true
+            
+            /** Keep searching if */
+            while(More)
+            {
+                /** Not this one, we go upper */
+                that = $(that).parent()
+                
+                /** No parent? */
+                if(!that) return null;
+                
+                /** If this same as the element which we looking for, then we stop this loop */
+                switch(Type)
+                {
+                    case 'ID':
+                        if(that.id == Name) More = false
+                        break
+                    
+                    case 'Class':
+                        if($(that).hasClass(Name.slice(1))) More = false
+                        break
+                            
+                    case 'NodeName':
+                        if(that.nodeName == Name.toUpperCase()) More = false
+                        break
+                }
+            }
+            
+            return $(that)
+        },
+         
+        
+        
+
         /**
          * CSS
          *
