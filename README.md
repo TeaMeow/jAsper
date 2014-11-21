@@ -205,6 +205,12 @@ The following is the options that you can use:
 }
 ```
 
+###Rand
+Generate a random number with a specific range.
+```
+$.rand(Min, Max)
+```
+
 ##License
 
 [MIT license]
