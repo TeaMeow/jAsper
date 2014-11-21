@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.7
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.8
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -453,6 +453,21 @@ var Tocas = (function ()
         
         
         
+        /**
+         * Load
+         *
+         * When element loaded.
+         */
+        
+        load: function(Callback)
+        {
+            return this.each(function()
+            {
+                this.onload = Callback
+            })
+        },
+        
+        
         
        /**
          * Events
@@ -662,16 +677,12 @@ var Tocas = (function ()
         
         prependTo: function(Selector)
         {
-            //console.log(this)
-
             return this.each(function()
             {
                 var that = this
                 $(Selector).each(function()
                 {
-                    console.log(this)
-                    this.appendChild(that, this.nextSibling);
-                    
+                    this.appendChild(that, this.nextSibling);  
                 })
             })
         },
@@ -723,10 +734,25 @@ var Tocas = (function ()
 
         parent: function()
         {
-            return $(this.parentNode)
+            return 0 in this ? $(this.parentNode) : null
         },
         
 
+        
+        
+        /**
+         * Children
+         */
+        
+        children: function()
+        {
+            if(0 in this)
+                return $(this.children)
+            else
+                return null
+        },
+        
+        
         
         
         /**
@@ -774,6 +800,12 @@ var Tocas = (function ()
             {
                 /** For passing $(this) to inside function */
                 var that = this
+                
+                /** If last animation not end .. */
+                if($(this).hasClass(Animate))
+                    $(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(Animate + ' animated')
+                
+                /** Add animation */
                 $(this).addClass(Animate + ' animated')
                        /** Once the animation end, we remove the animate class and callback **/
                        .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
@@ -1142,8 +1174,23 @@ var Tocas = (function ()
                 if(Cookie.indexOf(CookieName) != -1) return Cookie.substring(CookieName.length, Cookie.length)
             }
         }
-            return null
+        
+        return 'undefined'
     }
+    
+    
+    
+    /**
+     * Random
+     *
+     * Generate a random number.
+     */
+    
+    $.rand = function(Min, Max)
+    {
+        return Math.floor(Math.random() * (Max - Min + 1) + Min)
+    }
+    
     if(!window.$) window.$ = $
 })(Tocas);
 
