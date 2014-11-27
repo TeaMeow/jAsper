@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.8
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -495,6 +495,7 @@ var Tocas = (function ()
         },
         longpress: function(Callback, ClickCallback, Timer)
         {
+            /** If callback is not an number, which means it must be a function */
             if(!isNaN(ClickCallback)) Timer = ClickCallback
                                       Timer = Timer || 500
             
@@ -533,6 +534,27 @@ var Tocas = (function ()
         click: function(Callback)
         {
             return this.each(function(){ if(!Callback) return false; this.onclick = Callback })
+        },
+        
+        
+        
+        
+        /**
+         * From Bottom
+         *
+         * How long did we away from the bottom? 
+         */
+        
+        scrollBottom: function(Scroll, ReachBottom)
+        {
+            $(this).on('scroll', function()
+            {
+                var Distance = this.scrollHeight - this.scrollTop - this.clientHeight
+                Scroll.call(this, Distance) //Pass distance from the bottom to the function.
+                
+                /** Call ReachBottom if user scroll to the bottom */
+                if(Distance == 0 && typeof ReachBottom !== 'undefined') ReachBottom.call(this, Distance)
+            })
         },
         
         
