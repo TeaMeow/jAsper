@@ -69,13 +69,13 @@ Add a class or many classes.
 
 ###RemoveClass
 Remove a class or many class, if class name is empty, we clean all of the classes.
-```
+```javascript
 .removeClass(Class)
 ```
-```
+```javascript
 .removeClass('tb tb-none')
 ```
-```
+```javascript
 .removeClass()    //Clean all of the classes.
 ```
 
@@ -172,7 +172,7 @@ for example:
 
 ###Ready
 Once it ready(DOMContentLoaded), we trigger the handler.
-```
+```javascript
 .ready(Callback)
 ```
 
