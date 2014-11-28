@@ -21,11 +21,11 @@ $_(Element)   // This one for DOM, we called it secondary selector.
 IE 10+ | Chrome 4.0+ | Firefox 16.0+ | Opera 15.0+ | Safari 4.0+ |
 
 #Supported Functions
-**[Core - 核心](#core)**  
-**[Content - 內容](#content)**  
-**[Style - 樣式](#style)**  
-**[Events - 事件](#events)**  
-**[Others - 其他](#others)**  
+**[Core](#core)**  
+**[Content](#content)**  
+**[Style](#style)**  
+**[Events]#events)**  
+**[Others](#others)**  
 
 ##Core
 **[.each()](#each)** **[.eq()](#eq)** 
@@ -79,7 +79,7 @@ Clean the value or a html content of the element.
 .empty()
 ```
 
-##Styles
+##Style
 **[.show()](#show)**
 **[.hide()](#hide)**
 **[.toggle()](#toggle)**
