@@ -137,6 +137,39 @@ for example:
 .off('paste', Test)
 ```
 
+###LongPress
+Detect a longpress event, if it's not reach the press time, then we call the click callback.
+```
+.longpress(Longpress, Click(OrPressTime), PressTime[Optional])
+```
+for example:
+```
+.longpress(function(){alert('Long Press!')}, 1000)
+//Hold 1 second to trigger the longpress event.
+```
+```
+.longpress(Longpress, ClickMe, 500)
+//Hold 500 milliseconds to trigger Longpress(), otherwise call ClickMe() function. 
+```
+
+###ScrollBottom
+Call Scrolling(Distance) callback with a parameter which tells you how far are you away from the bottom,
+
+If user reach the bottom of the page, ReachBottom will be call.
+```
+.scrollBottom(Scrolling(Distance), ReachBottom)
+```
+for example:
+```
+.scrollBottom(function(D){ console.log('How close to the bottom you are:' + D)})
+//Print the info every time the user scrolling.
+```
+```
+.scrollBottom(null, function(){ alert("STOP SCROLLING!! IT'S THE END OF THE WORLD!!") })
+//Trigger a message when user scroll down to the bottom of the page.
+```
+
+
 ###Ready
 Once it ready(DOMContentLoaded), we trigger the handler.
 ```
