@@ -34,6 +34,42 @@ Jump to target element.
 ```javascript
 .eq(Index)
 ```
+##Content
+###Text
+Get the text or set a text of a element.
+```javascript
+.text() //Get the text.
+```
+for example:
+```javascript
+.text('Hello') // Set the text.
+```
+
+###Text
+Get the value or set a value of a element.
+```javascript
+.val() //Get the value.
+```
+for example:
+```javascript
+.val('Hello') // Set the value.
+```
+
+###HTML
+Get the innerHTML or set the innerHTML of a element.
+```javascript
+.html() //Get the HTML content.
+```
+for example:
+```javascript
+.html('Hello') // Set the HTML content.
+```
+
+###EMPTY
+Clean the value or a html content of the element.
+```javascript
+.empty()
+```
 
 ##Style
 ###Show
@@ -169,11 +205,16 @@ for example:
 // Trigger a message when user scroll down to the bottom of the page.
 ```
 
-
 ###Ready
 Once it ready(DOMContentLoaded), we trigger the handler.
 ```javascript
 .ready(Callback)
+```
+
+###Load
+same as onLoad.
+```javascript
+.load(Callback)
 ```
 
 ##Others
