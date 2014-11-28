@@ -10,9 +10,9 @@ if you know JQuery, then you already know how to use TocasJS,
 and it's supported more functions .. such as $.cookie(), and more ..
 
 #Usage
-```
-$(Element)    //This one for TocasJS
-$_(Element)   //This one for DOM, we called it secondary selector.
+```javascript
+$(Element)    // This one for TocasJS
+$_(Element)   // This one for DOM, we called it secondary selector.
 ```
 
 #Browser Support
@@ -25,45 +25,45 @@ IE 10+ | Chrome 4.0+ | Firefox 16.0+ | Opera 15.0+ | Safari 4.0+ |
 
 ###Each
 Call function for each elements.
-```
+```javascript
 .each(Callback(Element, Index, Element))
 ```
 
 ###Eq
 Jump to target element.
-```
+```javascript
 .eq(Index)
 ```
 
 ##Style
 ###Show
 Turn css display to "X".
-```
+```javascript
 .show(Display[Optional])
 ```
 for example:
-```
+```javascript
 .show('table-cell')
 ```
 
 ###Hide
 Turn css to "display: none".
-```
+```javascript
 .hide()
 ```
 
 ###Toggle
 Display or hide a element.
-```
+```javascript
 .toggle(Display[Optional])
 ```
 
 ###AddClass
 Add a class or many classes.
-```
+```javascript
 .addClass(Class)
 ```
-```
+```javascript
 .addClass('test class-1 class-2 class-3')
 ```
 
@@ -81,7 +81,7 @@ Remove a class or many class, if class name is empty, we clean all of the classe
 
 ###ToggleClass
 Remove a class if it's already existed, otherwise add it.
-```
+```javascript
 .toggleClass(Class)
 ```
 
@@ -89,13 +89,13 @@ Remove a class if it's already existed, otherwise add it.
 Is this class existed in the element?
 
 It will return a true or false.(multiple classes is not supported yet.)
-```
+```javascript
 .hasClass(Class)
 ```
 
 ###CSSAnimation
 **this function with [Animate.css](http://github.com/daneden/animate.css) is required.**
-```
+```javascript
 .cssAnimation(Animate, Time, Callback)
 ```
 **BEWARE:** The "Time" doesn't mean the speed of the animation,
@@ -103,70 +103,70 @@ It will return a true or false.(multiple classes is not supported yet.)
 it means the milliseconds to callback when the animation ends.
 
 for example:
-```
+```javascript
 .cssAnimate('fadeInDown', 3000, function(){ alert('Animation End!') })
 ```
 
 ##Events
 ###On
 Trigger a handler when an event was happened.
-```
+```javascript
 .on(EventName, Handler)
 ```
 for example:
-```
+```javascript
 .on('click keyup input', function(){alert('Here comes another world.')})
 ```
 
 ###One
 Same as above, but only triggered once.
-```
+```javascript
 .one(EventName, Handler)
 ```
 
 ###Off
 Remove a handler which has name or remove the whole event handlers
-```
+```javascript
 .off(EventName, Handler[Optional])
 ```
 for example:
-```
+```javascript
 .off('click keyup input')
 ```
-```
+```javascript
 .off('paste', Test)
 ```
 
 ###LongPress
 Detect a longpress event, if it's not reach the press time, then we call the click callback.
-```
+```javascript
 .longpress(Longpress, Click(OrPressTime), PressTime[Optional])
 ```
 for example:
-```
+```javascript
 .longpress(function(){alert('Long Press!')}, 1000)
-//Hold 1 second to trigger the longpress event.
+// Hold 1 second to trigger the longpress event.
 ```
-```
+```javascript
 .longpress(Longpress, ClickMe, 500)
-//Hold 500 milliseconds to trigger Longpress(), otherwise call ClickMe() function. 
+// Hold 500 milliseconds to trigger Longpress(), otherwise call ClickMe() function. 
 ```
 
 ###ScrollBottom
 Call Scrolling(Distance) callback with a parameter which tells you how far are you away from the bottom,
 
 If user reach the bottom of the page, ReachBottom will be call.
-```
+```javascript
 .scrollBottom(Scrolling(Distance), ReachBottom)
 ```
 for example:
-```
+```javascript
 .scrollBottom(function(D){ console.log('How close to the bottom you are:' + D)})
-//Print the info every time the user scrolling.
+// Print the info every time the user scrolling.
 ```
-```
+```javascript
 .scrollBottom(null, function(){ alert("STOP SCROLLING!! IT'S THE END OF THE WORLD!!") })
-//Trigger a message when user scroll down to the bottom of the page.
+// Trigger a message when user scroll down to the bottom of the page.
 ```
 
 
@@ -179,60 +179,60 @@ Once it ready(DOMContentLoaded), we trigger the handler.
 ##Others
 ###Cookie (jQuery does not support this function.)
 Read or write, delete a cookie.
-```
+```javascript
 $.cookie(Name, Value, Options[Optional])
 ```
 The following is the options that you can use:
-```
+```javascript
 {
-  expires : 10,             //Days for expiration.      (default: 365 days)
-  path    : '/',            //The path of cookie.       (default: '/')
-  domain  : 'TeaMeow.com'   //The domain of the cookie. (default: none)
+  expires : 10,             // Days for expiration.      (default: 365 days)
+  path    : '/',            // The path of cookie.       (default: '/')
+  domain  : 'TeaMeow.com'   // The domain of the cookie. (default: none)
 }
 ```
 So you can set, read, and unset it like this:
-```
-$.cookie('Foo', 'bar', {expires: 30})  //Name a cookie with 30 days expiration.
-$.cookie('Foo')                        //Get a cookie which is called 'Foo'
-$.cookie('Foo', '', -1)                //Expires a cookie(another words: unset).
+```javascript
+$.cookie('Foo', 'bar', {expires: 30})  // Name a cookie with 30 days expiration.
+$.cookie('Foo')                        // Get a cookie which is called 'Foo'
+$.cookie('Foo', '', -1)                // Expires a cookie(another words: unset).
 ```
 
 ###Ajax
 Get data without refresh page, **same usage as jQuery**.
-```
+```javascript
 $.ajax(Options)
 ```
 The following is the options that you can use:
-```
+```javascript
 {
   async: true, 
-  type: 'POST',                //Type of form. (GET, POST)
-  data: Data,                  //Data that you want to send.
-       {'Name': 'TeaMeow',     //Such as object,
+  type: 'POST',                // Type of form. (GET, POST)
+  data: Data,                  // Data that you want to send.
+       {'Name': 'TeaMeow',     // Such as object,
         'PW': 'Yami'}
         
-        'Name=TeaMeow&PW=Yami' //or params,
+        'Name=TeaMeow&PW=Yami' // or params,
         
-        $('Form').serialize()  //or even a serialize form by tocas function.
+        $('Form').serialize()  // or even a serialize form by tocas function.
   
   
   
-  dataType: 'json',   //Type of result. (json, html, text, string)
+  dataType: 'json',   // Type of result. (json, html, text, string)
   
   url: 'http://www.teameow.com/test.php',
   timeout: 10000,
   statusCode: {401: alert('God, We got 401'),
                500: alert('Server is now something wrong.')}
                
-  contentType: false,  //BEWARE: FALSE IS NOT SAME AS THE DEFAULT.
-                       //(default: application/x-www-form-urlencoded; charset=UTF-8)
+  contentType: false,  // BEWARE: FALSE IS NOT SAME AS THE DEFAULT.
+                       // (default: application/x-www-form-urlencoded; charset=UTF-8)
                        
   success: function(XHR.responseText, XHR)
-  error:   function(XHR, ErrorStatus)       //ErrorStatus: timeout, error, parsererror, success
-                                            //timeout:     When timeout.
-                                            //error:       When XHR error.
-                                            //parsererror: When parser error, such as JSON.parser error.
-                                            //success:     When XHR.status is not >= 200 and < 400.
+  error:   function(XHR, ErrorStatus)       // ErrorStatus: timeout, error, parsererror, success
+                                            // timeout:     When timeout.
+                                            // error:       When XHR error.
+                                            // parsererror: When parser error, such as JSON.parser error.
+                                            // success:     When XHR.status is not >= 200 and < 400.
                                             
   headers: {'Connection': 'keep-alive'}
 }
@@ -240,7 +240,7 @@ The following is the options that you can use:
 
 ###Rand
 Generate a random number with a specific range.
-```
+```javascript
 $.rand(Min, Max)
 ```
 
