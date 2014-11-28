@@ -24,7 +24,7 @@ IE 10+ | Chrome 4.0+ | Firefox 16.0+ | Opera 15.0+ | Safari 4.0+ |
 **[Core](#core)**  
 **[Content](#content)**  
 **[Style](#style)**  
-**[Events]#events)**  
+**[Events](#events)**  
 **[Others](#others)**  
 
 ##Core
