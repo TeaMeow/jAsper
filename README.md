@@ -21,8 +21,14 @@ $_(Element)   // This one for DOM, we called it secondary selector.
 IE 10+ | Chrome 4.0+ | Firefox 16.0+ | Opera 15.0+ | Safari 4.0+ |
 
 #Supported Functions
-##Core
+**[Core - 核心](#core)**  
+**[Content - 內容](#content)**  
+**[Style - 樣式](#style)**  
+**[Events - 事件](#events)**  
+**[Others - 其他](#others)**  
 
+##Core
+**[.each()](#each)** **[.eq()](#eq)** 
 ###Each
 Call function for each elements.
 ```javascript
@@ -36,6 +42,7 @@ Jump to target element.
 ```
 
 ##Content
+**[.text()](#text)** **[.val()](#value)** **[.html()](#html)** **[.empty()](#empty)** 
 ###Text
 Get the text or set a text of a element.
 ```javascript
@@ -46,7 +53,7 @@ for example:
 .text('Hello') // Set the text.
 ```
 
-###Text
+###Value
 Get the value or set a value of a element.
 ```javascript
 .val() //Get the value.
@@ -72,7 +79,15 @@ Clean the value or a html content of the element.
 .empty()
 ```
 
-##Style
+##Styles
+**[.show()](#show)**
+**[.hide()](#hide)**
+**[.toggle()](#toggle)**
+**[.addClass()](#addclass)** 
+**[.removeClass()](#removeclass)**
+**[.toggleClass()](#toggleclass)**
+**[.hasClass()](#hasclass)**
+**[.cssAnimation()](#cssanimation)**
 ###Show
 Turn css display to "X".
 ```javascript
@@ -145,6 +160,13 @@ for example:
 ```
 
 ##Events
+**[.on()](#on)**
+**[.one()](#one)**
+**[.off()](#off)**
+**[.longpress()](#longpress)**
+**[.scrollBottom()](#scrollbottom)**
+**[.ready()](#ready)**
+**[.load()](#load)**
 ###On
 Trigger a handler when an event was happened.
 ```javascript
@@ -219,6 +241,10 @@ same as onLoad.
 ```
 
 ##Others
+**[.cookie()](#cookie)**
+**[.ajax()](#ajax)**
+**[.rand()](#rand)**
+**[.urlParam()](#urlparam)** 
 ###Cookie (jQuery does not support this function.)
 Read or write, delete a cookie.
 ```javascript
@@ -285,6 +311,28 @@ Generate a random number with a specific range.
 ```javascript
 $.rand(Min, Max)
 ```
+
+###URL Parameters
+Get the all parameters or just a special one.
+```javascript
+$.urlParam(ParamName[Optinal])
+```
+for example:
+```javascript
+$.urlParam()      // Get all paramemters, return an object.
+$.urlParam('ID')  // Return the value of 'ID'
+```
+**BEWARE: anything you get will be a string even if it's an number.**
+
+return:
+```javascript
+"?ID=123 & Type=Remove"  //$.urlParam():     {ID: "123", Type: "Remove"}
+"?ID="                   //$.urlParam():     {ID: ""}
+""                       //$.urlParam():     undefined
+""                       //$.urlParam('ID'): undefined
+```
+
+
 
 ##License
 
