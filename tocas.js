@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.1
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -550,8 +550,10 @@ var Tocas = (function ()
             $(this).on('scroll', function()
             {
                 var Distance = this.scrollHeight - this.scrollTop - this.clientHeight
-                Scroll.call(this, Distance) //Pass distance from the bottom to the function.
                 
+                /** Call ReachBottom if user scroll to the bottom */
+                if(typeof Scroll !== 'undefined' || Scroll != null) Scroll.call(this, Distance) //Pass distance from the bottom to the function.
+                    
                 /** Call ReachBottom if user scroll to the bottom */
                 if(Distance == 0 && typeof ReachBottom !== 'undefined') ReachBottom.call(this, Distance)
             })
@@ -1199,6 +1201,48 @@ var Tocas = (function ()
         
         return 'undefined'
     }
+    
+    
+    
+    
+    /**
+     * Get Parameters From URL
+     *
+     * Just like $_GET in PHP.
+     */
+
+    $.urlParam = function(ParamName)
+    {
+        /** Are we getting all parameters or just a special one? */
+        var GetAll = (typeof ParamName === 'undefined')
+        
+        /** Get the parameters which are behind the question mark, and split it with & symbol, so we'll get an array */
+        var Params = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&')
+        var ParamList = {}
+        
+        if(Params.length == 0) return null
+        
+        for(var i in Params)
+        {
+            /** Split single parameter, so [0] is the name, [1] is the value */
+            var Param = Params[i].split('=')
+                Name  = Param[0],
+                Value = (typeof Param[1] !== 'undefined' && Param[1] != '') ? Param[1] : '' //Return the value or just a empty string
+            
+            /** This is the param which we are looking for, so we return the value! */
+            if(Name == ParamName) return Value
+            
+            /** We don't store the param which we are NOT looking for if we are NOT getting the all params */
+            if(!GetAll && Name != ParamName) continue
+            
+            /** Otherwise we push it into an object */
+            ParamList[Name] = Value
+        }
+        
+        /** Return undefined if no param is found */
+        return (Object.keys(ParamList).length) ? ParamList : undefined
+    }
+    
     
     
     
