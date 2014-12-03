@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.1
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.2
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -540,6 +540,19 @@ var Tocas = (function ()
         
         
         /**
+         * Trigger
+         *
+         * trigger an element by specific event.
+         */
+        
+        trigger: function(Event)
+        {
+            return this.each(function(){ this[Event]() })
+        },
+        
+        
+        
+        /**
          * From Bottom
          *
          * How long did we away from the bottom? 
@@ -1068,8 +1081,7 @@ var Tocas = (function ()
             Obj.contentType = 'application/x-www-form-urlencoded; charset=UTF-8'
 
         XHR = new XMLHttpRequest()
-        /** Open a new connect */
-        XHR.open(Obj.type, Obj.url, Obj.async)
+
         /** Set timeout */
         XHR.timeout = Obj.timeout || 10000
 
@@ -1102,7 +1114,23 @@ var Tocas = (function ()
         /** When XHR timeout or error, we callback */
         XHR.ontimeout = function(){ if(ErrorCallback) Obj.error(XHR, 'timeout') }
         XHR.onerror   = function(){ if(ErrorCallback) Obj.error(XHR, 'error') }
-
+        
+        /** If there's uploading process callback, we callback :D */
+        if(typeof Obj.uploading != 'undefined')
+        {
+            XHR.upload.addEventListener("progress", function(e)
+            {
+                if(e.lengthComputable)
+                {
+                    percent = Math.round((e.loaded / e.total) * 100)
+                    Obj.uploading(percent, e)
+                }
+            }, false);
+        }
+        
+        /** Open a new connect */
+        XHR.open(Obj.type, Obj.url, Obj.async)
+        
         /** If contentType is not FALSE, we set the request header */
         if(Obj.contentType != false) XHR.setRequestHeader('Content-Type', Obj.contentType)
 
@@ -1259,8 +1287,6 @@ var Tocas = (function ()
     
     if(!window.$) window.$ = $
 })(Tocas);
-
-
 
 
 /**
