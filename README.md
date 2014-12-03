@@ -42,7 +42,7 @@ Jump to target element.
 ```
 
 ##Content
-**[.text()](#text)** **[.val()](#value)** **[.html()](#html)** **[.empty()](#empty)** 
+**[.text()](#text)** **[.val()](#value)** **[.html()](#html)** **[.empty()](#empty)** **[.clone()](#clone)** 
 ###Text
 Get the text or set a text of a element.
 ```javascript
@@ -73,11 +73,23 @@ for example:
 .html('Hello') // Set the HTML content.
 ```
 
-###EMPTY
+###Empty
 Clean the value or a html content of the element.
 ```javascript
 .empty()
 ```
+
+###Clone
+Clone this element, so we can edit the .attr() or .append() to somewhere.
+```javascript
+.clone()
+```
+for example:
+```javascript
+.clone().attr('test-id', 12345).prependTo('#i-am-div')
+// Set the attr value to 12345 with this new clone element, then move to the div.
+```
+
 
 ##Style
 **[.show()](#show)**
@@ -163,6 +175,7 @@ for example:
 **[.on()](#on)**
 **[.one()](#one)**
 **[.off()](#off)**
+**[.trigger()](#trigger)**
 **[.longpress()](#longpress)**
 **[.scrollBottom()](#scrollbottom)**
 **[.ready()](#ready)**
@@ -194,6 +207,16 @@ for example:
 ```
 ```javascript
 .off('paste', Test)
+```
+
+###Trigger
+Trigger an element by special event.
+```javascript
+.trigger(EventName)
+```
+for example:
+```javascript
+.trigger('click')
 ```
 
 ###LongPress
@@ -301,7 +324,9 @@ The following is the options that you can use:
                                             // error:       When XHR error.
                                             // parsererror: When parser error, such as JSON.parser error.
                                             // success:     When XHR.status is not >= 200 and < 400.
-                                            
+  
+  uploading: function(Percent, Event)       // Percent: percent of uploading process
+                                            // Event: Event of XHR.upload.addEventListener('progress')
   headers: {'Connection': 'keep-alive'}
 }
 ```
