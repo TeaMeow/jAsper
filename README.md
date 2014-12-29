@@ -160,15 +160,17 @@ It will return a true or false.(multiple classes is not supported yet.)
 ###CSSAnimation
 **this function with [Animate.css](http://github.com/daneden/animate.css) is required.**
 ```javascript
-.cssAnimation(Animate, Time, Callback)
+.cssAnimation(Animate, Callback, AnimationSpeed)
 ```
-**BEWARE:** The "Time" doesn't mean the speed of the animation,
+**BEWARE:** AnimationSpeed is just about add another duration class on the same object,
 
-it means the milliseconds to callback when the animation ends.
+such as 800 millionseconds, we'll add a ".animated08s" class on it. 
+
+**SUPPORTED: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000 **
 
 for example:
 ```javascript
-.cssAnimate('fadeInDown', 3000, function(){ alert('Animation End!') })
+.cssAnimate('fadeInDown', function(){ alert('Animation End!') }, 500)
 ```
 
 ##Events
