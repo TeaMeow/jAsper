@@ -166,7 +166,7 @@ It will return a true or false.(multiple classes is not supported yet.)
 
 such as 800 millionseconds, we'll add a ".animated08s" class on it. 
 
-**SUPPORTED: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000 **
+**SUPPORTED: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 2000**
 
 for example:
 ```javascript
