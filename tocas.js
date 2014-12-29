@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.2
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.3
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -35,6 +35,7 @@
  * We used a little part of, yes, A LITTLE PART OF :
  * ZeptoJS     - zeptojs.com
  * Serialize   - code.google.com/p/form-serialize/downloads/list
+ * AvgColor    - http://tech.mozilla.com.tw/posts/5355/%E5%9C%A8-firefox-os-%E5%8F%96%E5%9C%96%E7%89%87%E8%89%B2%E5%BD%A9%E5%B9%B3%E5%9D%87%E5%80%BC%E4%B9%8B%E4%BA%8C%E4%B8%89%E4%BA%8B
  * Library     - youmightnotneedjquery.com/
  */
 
@@ -487,7 +488,7 @@ var Tocas = (function ()
         },
         click: function(Callback)
         {
-            return this.each(function(){ if(!Callback) return false; this.onclick = Callback; })
+            return this.each(function(){ if(!Callback) return false; this.onclick = Callback(); })
         },
         dragstart: function(Callback)
         {
@@ -581,10 +582,11 @@ var Tocas = (function ()
         
         hasClass: function(Class)
         {
-            if(this[0].classList)
-                return this[0].classList.contains(Class)
-            else
-                return new RegExp('(^| )' + Class + '( |$)', 'gi').test(this[0].className)
+            if(0 in this)
+                if(this[0].classList)
+                    return this[0].classList.contains(Class)
+                else
+                    return new RegExp('(^| )' + Class + '( |$)', 'gi').test(this[0].className)
         },
         
         
@@ -827,12 +829,17 @@ var Tocas = (function ()
          * CSS Animate
          */
 
-        cssAnimate: function(Animate, Time, Callback)
-        {
-            /** If Time is not number, maybe it's a callback */
-            if(isNaN(Time))       Callback = Time
-            else if(Time == null) Time = 0          //Default time
-
+        cssAnimate: function(Animate, Callback, Time)
+        {            
+            /** If someone using callback field as time.. */
+            if(typeof Callback == 'number') Time = Callback
+            
+            /** Turn millionsecond to float (ex: 300 -> 0.3), then turn float to string and remove the dot (0.3 -> 03)*/
+            var Timer = (Time / 1000).toString().replace('.', '')
+            
+            /** Select animation duration by Time */      
+            Time = (typeof Time !== 'undefined') ? ' animated' + Timer + 's' : ''
+            
             return this.each(function()
             {
                 /** For passing $(this) to inside function */
@@ -840,18 +847,15 @@ var Tocas = (function ()
                 
                 /** If last animation not end .. */
                 if($(this).hasClass(Animate))
-                    $(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(Animate + ' animated')
+                    $(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(Animate + ' animated' + Time)
                 
                 /** Add animation */
-                $(this).addClass(Animate + ' animated')
+                $(this).addClass(Animate + ' animated' + Time)
                        /** Once the animation end, we remove the animate class and callback **/
                        .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
                        {
-                           setTimeout(function()
-                           {
-                               $(that).removeClass(Animate + ' animated')
-                               if(typeof Callback !== 'undefined') Callback.call(that) 
-                           }, Time)
+                           $(that).removeClass(Animate + ' animated' + Time)
+                           if(typeof Callback !== 'undefined' && typeof Callback !== 'number') Callback.call(that) 
                         })
             })
         },
@@ -1044,6 +1048,80 @@ var Tocas = (function ()
 
             /** Prevent sending a object or array via XHR cause an error */
             return Array.join('&').toString()
+        },
+        
+        
+        
+        
+        /**
+         * Get Average Color
+         *
+         * Get average color with a image by canvas, the magic of HTML5.
+         *
+         * @supported Firefox Chinese Team
+         */
+        
+        avgColor: function(Type)
+        {
+            Type = Type || null
+            
+            if(0 in this)
+            {
+                var Img = this[0]
+                    
+                /** Create a canvas for getting avg color */
+                var Canvas = document.createElement('canvas')
+                Canvas.width = Img.width
+                Canvas.height = Img.height
+                
+                /** Draw this picture to the canvas */
+                var Context = Canvas.getContext('2d')
+                Context.drawImage(Img, 0, 0, Img.width, Img.height)
+
+                if(Img.width <= 0 || Img.height <= 0)
+                    console.log('TOCAS ERROR: The width or the height of the image which you trying to get the avg. color is lower or equal zero.')
+                
+                /** Get the result of the pixels */
+                var Data = Context.getImageData(0, 0, Img.width, Img.height).data
+                var r = 0, g = 0, b = 0
+
+                /** Get the all average of the pixels */
+                for (var Row = 0; Row < Img.height; Row++)
+                {
+                  for (var Col = 0; Col < Img.width; Col++)
+                  {
+                    r += Data[((Img.width * Row) + Col) * 4]
+                    g += Data[((Img.width * Row) + Col) * 4 + 1]
+                    b += Data[((Img.width * Row) + Col) * 4 + 2]
+                  }
+                }
+
+                r /= (Img.width * Img.height)
+                g /= (Img.width * Img.height)
+                b /= (Img.width * Img.height)
+
+                r = Math.round(r)
+                g = Math.round(g)
+                b = Math.round(b)
+
+                if(Type !== null)
+                {
+                    switch(Type.toUpperCase())
+                    {
+                        case 'R'   : return r; break
+                        case 'G'   : return g; break
+                        case 'B'   : return b; break
+                        case 'RGB' : return [r, g, b]; break;
+                    }
+                }
+                
+                /** Return the color with 16 bits */
+                return '#' + ((r << 16) | (g << 8) | b).toString(16);
+            }
+            else
+            {
+                return null
+            }
         }
     };
 
@@ -1065,7 +1143,7 @@ var Tocas = (function ()
     /**
      * AJAX
      */
-    
+
     $.ajax = function(Obj, Type)
     {
         if(Obj == null) return false
@@ -1118,12 +1196,12 @@ var Tocas = (function ()
         /** If there's uploading process callback, we callback :D */
         if(typeof Obj.uploading != 'undefined')
         {
-            XHR.upload.addEventListener("progress", function(e)
+            XHR.upload.addEventListener('progress', function(e)
             {
                 if(e.lengthComputable)
                 {
-                    percent = Math.round((e.loaded / e.total) * 100)
-                    Obj.uploading(percent, e)
+                    Percent = Math.round((e.loaded / e.total) * 100)
+                    Obj.uploading(Percent, e)
                 }
             }, false);
         }
