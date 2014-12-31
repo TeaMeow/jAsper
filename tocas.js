@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.3
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.4
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -283,7 +283,7 @@ var Tocas = (function ()
         
         empty: function()
         {
-            this.each(function()
+            return this.each(function()
             {
                 if(this.innerHTML != 'undefined') this.innerHTML = ''
                 if(this.value != 'undefined')     this.value = ''
@@ -348,6 +348,12 @@ var Tocas = (function ()
             
             return this.each(function()
             {
+                if(typeof this.addEventListener == 'undefined')
+                {
+                    console.log('TOCAS ERROR: Event listener is not worked with this element.')
+                    return false
+                }
+                
                 /** If the main event list of the element is not existed, we create one */
                 if(typeof this.ts_eventHandler == 'undefined') this.ts_eventHandler = {}
                 /** Split the event by space */
@@ -638,7 +644,7 @@ var Tocas = (function ()
                         /** If there's classList, the just remove it from classList, otherwise we replace the string which is in the (class="")*/
                         if(this.classList)
                             this.classList.remove(List[i]) 
-                        else
+                        else if(typeof this.className !== 'undefined')
                             this.className = this.className.replace(new RegExp('(^|\\b)' + Class.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
                     }
                 }
@@ -773,7 +779,7 @@ var Tocas = (function ()
 
         parent: function()
         {
-            return 0 in this ? $(this.parentNode) : null
+            return 0 in this ? $(this[0].parentNode) : null
         },
         
 
@@ -786,9 +792,19 @@ var Tocas = (function ()
         children: function()
         {
             if(0 in this)
-                return $(this.children)
-            else
-                return null
+            {
+                var List = [],
+                    Children = this[0].children
+                
+                /** children might be a HTMLCollection, so we push the elements to an array then return */
+                for(var i in Children)
+                    if(typeof Children[i] === 'object')
+                        List.push(Children[i])
+
+                return $(List)   
+            }
+            
+            return null
         },
         
         
@@ -802,6 +818,8 @@ var Tocas = (function ()
     
         attr: function(Attr, Value)
         {
+            //if(typeof this.setAttribute !== 'function') return null
+            
             Value = Value || null
             
             /** Set multiple Attr if Attr is object */
