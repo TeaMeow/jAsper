@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.4
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.5
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -724,9 +724,11 @@ var Tocas = (function ()
         {
             return this.each(function()
             {
+               
                 var that = this
                 $(Selector).each(function()
                 {
+                    
                     this.appendChild(that, this.nextSibling);  
                 })
             })
@@ -1253,7 +1255,6 @@ var Tocas = (function ()
     
     
     
-    
     $.getJSON = function(URL, Return)
     {
         return $.ajax({
@@ -1324,6 +1325,21 @@ var Tocas = (function ()
         }
         
         return 'undefined'
+    }
+    
+    
+    
+    
+    /**
+     * Event Source
+     *
+     * We called it SSE here, get newest update, blah blah..
+     */
+    
+    $.sse = function(Obj)
+    {
+        var SSE = new EventSource(Obj.url)
+        if(typeof Obj.message !== 'undefined') SSE.onmessage = Obj.message
     }
     
     
