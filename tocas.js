@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.5
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.6
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -463,14 +463,35 @@ var Tocas = (function ()
         /**
          * Load
          *
-         * When element loaded.
+         * Load a html by XHR, then push the content to this element.
          */
         
-        load: function(Callback)
+        load: function(URL, Data, Callback)
         {
+            if(!this.length) return this
+            
             return this.each(function()
             {
-                this.onload = Callback
+                var that = this,
+                    Options = {type: 'POST',
+                               url: URL,
+                               dataType: 'html',
+                               data: Data},
+                    /** Split URL to two parts, first one is URL, second one is selector */
+                    Split = URL.split(/\s/), Selector
+                
+                /** If selector is existed, then we get them */
+                if(Split.length > 1) Options.url = Split[0], Selector = Split[1] 
+                
+                Options.success = function(Result)
+                {
+                    var ScriptTag = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi
+
+                    /** Replace the html, use selector if existed */
+                    $(that).html(Selector ? $(document.createElement('div')).html(Result.replace(ScriptTag, ' ')).find(Selector).html() : Result)
+                }
+                
+                $.ajax(Options)
             })
         },
         
@@ -701,7 +722,9 @@ var Tocas = (function ()
     
         append: function(HTML)
         {
-            if(HTML != null)
+            if(HTML != null && typeof HTML == 'object')
+                return this.each(function(){ this.appendChild(HTML) })
+            else if(HTML != null)
                 return this.each(function(){ this.innerHTML += HTML })
         },
         
@@ -807,6 +830,68 @@ var Tocas = (function ()
             }
             
             return null
+        },
+        
+        
+        
+        
+        /**
+         * Find
+         */
+        
+        find: function(Name)
+        {
+            var that = this
+            
+            /** Get type */
+                 if(Name.indexOf('#') !== -1) var Type = 'ID'
+            else if(Name.indexOf('.') !== -1) var Type = 'Class'
+            else if(typeof Name !== 'object') var Type = 'NodeName'
+            else                              var Type = 'Object'
+            
+            
+            var ChildrenList = $(this).children().Selector, SameList = []
+            
+            
+            /** Keep searching if children is not empty */
+            while(ChildrenList.length != 0)
+            {
+                /** Validate the children and the element which we are looking for */
+                for(i=0; i<ChildrenList.length; i++)
+                {
+                    
+                    var MoreChildren = $(ChildrenList[i]).children(),
+                        that = $(ChildrenList[i])[0]
+                    
+                    /** If there's more children, then we push to the children list */
+                    if(MoreChildren !== null && MoreChildren.length != 0)
+                        ChildrenList.push.apply(ChildrenList, MoreChildren.Selector)
+                    
+                    /** Then validate this element */
+                    /** If this same as the element which we looking for, then we push it to another list */
+                    switch(Type)
+                    {
+                        case 'ID':
+                            if(that.id == Name.slice(1)) SameList.push(that)
+                            break
+
+                        case 'Class':
+                            if($(that).hasClass(Name.slice(1))) SameList.push(that)
+                            break
+
+                        case 'NodeName':
+                            if(that.nodeName == Name.toUpperCase()) SameList.push(that)
+                            break
+                    }
+                    
+                    /** Then delete this in the list */
+                    ChildrenList.splice(i, 1)
+                }
+            }
+            
+            
+            /** Return the elements we found */
+            return $(SameList)
         },
         
         
@@ -926,7 +1011,7 @@ var Tocas = (function ()
                 switch(Type)
                 {
                     case 'ID':
-                        if(that.id == Name) More = false
+                        if(that.id == Name.slice(1)) More = false
                         break
                     
                     case 'Class':
@@ -1197,13 +1282,13 @@ var Tocas = (function ()
                             Obj.success(JSON.parse(XHR.responseText), XHR)
                         else
                             Obj.error(XHR, 'parsererror')
-                        break
+                        break                     
                     case 'html':
                     case 'text':
                     case 'string':
                     default:
                         Obj.success(XHR.responseText, XHR)
-                        XHR.close()
+                        if(typeof XHR.close() == 'function') XHR.close()
                 }
             else
                 if(ErrorCallback) Obj.error(XHR, 'success')
@@ -1342,6 +1427,30 @@ var Tocas = (function ()
         if(typeof Obj.message !== 'undefined') SSE.onmessage = Obj.message
     }
     
+    
+    
+    
+    /**
+     * Get Script
+     *
+     * Something like require() in PHP.
+     */
+    
+    $.getScript = function(URL, Callback)
+    {
+        /** Create a script so we can append it to the head */
+        var script = document.createElement('script')
+
+        /** Set the url of the script */
+        script.src = URL
+        
+        /** Events */
+        script.onload = Callback
+        script.onreadystatechange = Callback
+        script.onerror = Callback
+
+        $('head').append(script)
+    }
     
     
     
