@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.6
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.7
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -53,6 +53,7 @@ var Tocas = (function ()
     tocas = {}
     isArray = Array.isArray || function(Obj){ return Obj instanceof Array }
     isObject = function(Obj){ return Obj instanceof Object }
+    
     isEmptyOrWhiteSpace = function(Str){ return str === null || str.match(/^\s*$/) !== null }
 
     /** Filter those thing which is we don't need it */
@@ -135,9 +136,9 @@ var Tocas = (function ()
         
         each: function(Callback)
         {
-            EmptyArray.every.call(this, function(Element, Index)
+            EmptyArray.every.call(this, function(Index, Element)
             {
-                return Callback.call(Element, Index, Element) !== false
+                return Callback.call(Index, Element, Index) !== false
             })
             
             return this
@@ -477,10 +478,10 @@ var Tocas = (function ()
                                url: URL,
                                dataType: 'html',
                                data: Data},
-                    /** Split URL to two parts, first one is URL, second one is selector */
+                    /** Split URL to two parts, first one is the URL, second one is the selector */
                     Split = URL.split(/\s/), Selector
                 
-                /** If selector is existed, then we get them */
+                /** If selector is existed, then we get it */
                 if(Split.length > 1) Options.url = Split[0], Selector = Split[1] 
                 
                 Options.success = function(Result)
@@ -816,20 +817,18 @@ var Tocas = (function ()
         
         children: function()
         {
-            if(0 in this)
-            {
-                var List = [],
-                    Children = this[0].children
+            var List = []
                 
-                /** children might be a HTMLCollection, so we push the elements to an array then return */
-                for(var i in Children)
-                    if(typeof Children[i] === 'object')
-                        List.push(Children[i])
-
-                return $(List)   
-            }
+            this.each(function(i, el)
+            { 
+                /** Get child nodes */
+                var ChildNodes = el.childNodes
+                /** Push the child nodes to the list*/
+                List.push.apply(List, ChildNodes)
+            })
             
-            return null
+            /** Return the list with $ */
+            return $(List)
         },
         
         
@@ -841,57 +840,16 @@ var Tocas = (function ()
         
         find: function(Name)
         {
-            var that = this
+            var List = []
             
-            /** Get type */
-                 if(Name.indexOf('#') !== -1) var Type = 'ID'
-            else if(Name.indexOf('.') !== -1) var Type = 'Class'
-            else if(typeof Name !== 'object') var Type = 'NodeName'
-            else                              var Type = 'Object'
-            
-            
-            var ChildrenList = $(this).children().Selector, SameList = []
-            
-            
-            /** Keep searching if children is not empty */
-            while(ChildrenList.length != 0)
-            {
-                /** Validate the children and the element which we are looking for */
-                for(i=0; i<ChildrenList.length; i++)
-                {
-                    
-                    var MoreChildren = $(ChildrenList[i]).children(),
-                        that = $(ChildrenList[i])[0]
-                    
-                    /** If there's more children, then we push to the children list */
-                    if(MoreChildren !== null && MoreChildren.length != 0)
-                        ChildrenList.push.apply(ChildrenList, MoreChildren.Selector)
-                    
-                    /** Then validate this element */
-                    /** If this same as the element which we looking for, then we push it to another list */
-                    switch(Type)
-                    {
-                        case 'ID':
-                            if(that.id == Name.slice(1)) SameList.push(that)
-                            break
-
-                        case 'Class':
-                            if($(that).hasClass(Name.slice(1))) SameList.push(that)
-                            break
-
-                        case 'NodeName':
-                            if(that.nodeName == Name.toUpperCase()) SameList.push(that)
-                            break
-                    }
-                    
-                    /** Then delete this in the list */
-                    ChildrenList.splice(i, 1)
-                }
-            }
-            
-            
-            /** Return the elements we found */
-            return $(SameList)
+            this.each(function(i, el)
+            { 
+                /** Push the child nodes to the list*/
+                List.push.apply(List, el.querySelectorAll(Name))
+            })
+        
+            /** Return the list with $ */
+            return $(List)
         },
         
         
@@ -1288,7 +1246,7 @@ var Tocas = (function ()
                     case 'string':
                     default:
                         Obj.success(XHR.responseText, XHR)
-                        if(typeof XHR.close() == 'function') XHR.close()
+                        if(typeof XHR.close == 'function') XHR.close()
                 }
             else
                 if(ErrorCallback) Obj.error(XHR, 'success')
@@ -1490,6 +1448,132 @@ var Tocas = (function ()
         
         /** Return undefined if no param is found */
         return (Object.keys(ParamList).length) ? ParamList : undefined
+    }
+    
+    
+    
+    
+    /**
+     * PJAX
+     *
+     * AJAX with HTML5 pushState.
+     */
+    
+    $.pjax = function(Option)
+    {
+        /**
+         * Option
+         * {
+         *     container: '#content',
+         *     url: $(this).attr('href'),
+         *     title: $(this).attr('data-title')
+         *     dataType: 'json',
+         *     contentNode: 'html',
+         *     titleNode: 'title',
+         *     cache: true,
+         *     expire: 86400
+         *     state: {blah: 'Im blah'}
+         * }
+         */
+        
+        /** Check url hostname */
+        var FakeLink = document.createElement('a')
+            FakeLink.href = Option.url
+            
+        if(FakeLink.host == '') FakeLink.href = FakeLink.href
+    
+        /** PJAX only works in same origin, so exit when cross-origin */
+        if(FakeLink.hostname !== window.location.hostname) return false
+    
+        
+        /**
+         * PJAX
+         */
+        
+        function PJAX(Obj)
+        {
+            console.log(Obj)
+             /** Change the content */
+            $(Obj.Container).html(Obj.Content)
+
+            /** Change the url */
+            window.history.pushState(Obj.State, Obj.Title, Obj.URL);
+
+            /** Change the title */
+            document.title = Obj.Title
+        }
+        
+        
+        /** Set variables */
+        var Title      = (Option.dataType == 'json') ? Result['titleNode'] : Option.title,
+            DataType   = Option.dataType || 'html',
+            URL        = Option.url,
+            Expire     = Option.expire || 3600,
+            Cache      = Option.cache || false,
+            CachedName = 'cached_' + URL
+        
+        /** Create a state with url and title */
+        var State = {url: URL, title: Title}
+        
+        /** Merge state if needed */
+        if(typeof Option.state !== 'undefined') for(var i in Option.state) State[i] = Option.state[i]
+        
+        
+        /**
+         * Cache
+         */
+
+        /** If there's a cache in the storage */
+        if(CachedName in localStorage && Cache)
+        {
+            
+            /** We stored JSON format in localStorage before, now we need to convert it to object */
+            var Obj = JSON.parse(localStorage.getItem(CachedName))
+            
+            /** If the state still same, then we just need to load cache */
+            if(JSON.stringify(Obj.State) === JSON.stringify(State))
+            {
+                var Time = Math.floor(Date.now() / 1000) - Obj.Time
+                
+                /** Just be sure if not expired */
+                if(Expire && !(Time > Expire))
+                {
+                    console.log('Load from cache')
+                    PJAX(Obj)
+                    return
+                }
+            }
+        }
+        
+        
+        /**
+         * Request 
+         */
+        
+        $.ajax({
+            url: URL,
+            type: 'GET',
+            dataType: DataType,
+            /** Send a PJAX header, so we can deal with it on the server side */
+            headers: {'HTTP_X_PJAX': 'true'},
+            success: function(Result)
+            {
+                var Content   = ((Option.dataType == 'json') ? Result['contentNode'] : Result).replace(ScriptTag, ' '),
+                    ScriptTag = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi
+                
+                var Data = {Container: Option.container, 
+                            Content: Content,
+                                URL: URL,
+                              Title: Title,
+                              State: State,
+                               Time: Math.floor(Date.now() / 1000)}
+                
+                /** Store this PJAX to web storage as cache, localStorage don't eat object, so we conver it to json format */
+                localStorage.setItem(CachedName, JSON.stringify(Data))
+                
+                PJAX(Data)
+            }
+            })
     }
     
     
