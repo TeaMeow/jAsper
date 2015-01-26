@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.7
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.8
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -1492,7 +1492,6 @@ var Tocas = (function ()
         
         function PJAX(Obj)
         {
-            console.log(Obj)
              /** Change the content */
             $(Obj.Container).html(Obj.Content)
 
@@ -1505,19 +1504,19 @@ var Tocas = (function ()
         
         
         /** Set variables */
-        var Title      = (Option.dataType == 'json') ? Result['titleNode'] : Option.title,
+        var Title      = Option.title    || '', 
             DataType   = Option.dataType || 'html',
             URL        = Option.url,
-            Expire     = Option.expire || 3600,
-            Cache      = Option.cache || false,
+            Expire     = Option.expire   || 3600,
+            Cache      = Option.cache    || false,
             CachedName = 'cached_' + URL
         
         /** Create a state with url and title */
         var State = {url: URL, title: Title}
-        
+                
         /** Merge state if needed */
         if(typeof Option.state !== 'undefined') for(var i in Option.state) State[i] = Option.state[i]
-        
+               
         
         /**
          * Cache
@@ -1526,19 +1525,18 @@ var Tocas = (function ()
         /** If there's a cache in the storage */
         if(CachedName in localStorage && Cache)
         {
-            
             /** We stored JSON format in localStorage before, now we need to convert it to object */
             var Obj = JSON.parse(localStorage.getItem(CachedName))
             
-            /** If the state still same, then we just need to load cache */
-            if(JSON.stringify(Obj.State) === JSON.stringify(State))
+            /** If the state still same, we load the cache */
+            /** But if we are using dynamic title(which is returned title as title), no matter what, just load the cache */
+            if(JSON.stringify(Obj.State) === JSON.stringify(State) || Title === '')
             {
                 var Time = Math.floor(Date.now() / 1000) - Obj.Time
                 
-                /** Just be sure if not expired */
+                /** Just be sure if it's not expired yet */
                 if(Expire && !(Time > Expire))
                 {
-                    console.log('Load from cache')
                     PJAX(Obj)
                     return
                 }
@@ -1555,12 +1553,28 @@ var Tocas = (function ()
             type: 'GET',
             dataType: DataType,
             /** Send a PJAX header, so we can deal with it on the server side */
-            headers: {'HTTP_X_PJAX': 'true'},
+            headers: {'X_PJAX': 'true'},
             success: function(Result)
             {
-                var Content   = ((Option.dataType == 'json') ? Result['contentNode'] : Result).replace(ScriptTag, ' '),
+                var Title     = (Option.dataType == 'json') ? Result[Option.titleNode]  : Option.title,
+                    Content   = (Option.dataType == 'json') ? Result[Option.contentNode] : Result,
                     ScriptTag = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi
+
+                if(Option.dataType == 'json' && typeof Result[Option.titleNode] == 'undefined')
+                    if(typeof Option.title != 'undefined')
+                        Title = Option.title
+                    else
+                        Title = ''
                 
+                if(Option.dataType == 'json' && typeof Result[Option.contentNode] == 'undefined')
+                    Content = Result
+                    
+                /** Remove the script in the content */
+                Content = Content.replace(ScriptTag, ' ')
+                
+                /** Replace the title in the state */
+                State['title'] = Title
+        
                 var Data = {Container: Option.container, 
                             Content: Content,
                                 URL: URL,
@@ -1573,7 +1587,7 @@ var Tocas = (function ()
                 
                 PJAX(Data)
             }
-            })
+        })
     }
     
     
