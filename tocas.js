@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.9
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.9.1
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -32,7 +32,7 @@
  * 給那些誰認為我是抄襲他人原始碼的，
  * 這裡是一份我用了它們「少部分」原始碼的來源清單。
  *
- * We used a little part of, yes, A LITTLE PART OF :
+ * We used a little part of it, yes, A LITTLE PART OF :
  * ZeptoJS     - zeptojs.com
  * Serialize   - code.google.com/p/form-serialize/downloads/list
  * AvgColor    - http://tech.mozilla.com.tw/posts/5355/%E5%9C%A8-firefox-os-%E5%8F%96%E5%9C%96%E7%89%87%E8%89%B2%E5%BD%A9%E5%B9%B3%E5%9D%87%E5%80%BC%E4%B9%8B%E4%BA%8C%E4%B8%89%E4%BA%8B
@@ -844,20 +844,8 @@ var Tocas = (function ()
         {
             return this.each(function(){ this.parentNode.removeChild(this) })
         },
-        
-        
-        
-        
-        /**
-         * Parent
-         */
 
-        parent: function()
-        {
-            return 0 in this ? $(this[0].parentNode) : null
-        },
         
-
         
         
         /**
@@ -889,8 +877,12 @@ var Tocas = (function ()
         
         find: function(Selector)
         {
-            var List = []
+            /** The selector must be string */
+            if(typeof Selector !== 'string')
+                return null
             
+            var List = []
+
             this.each(function(i, el)
             { 
                 /** Push the child nodes to the list*/
@@ -898,7 +890,7 @@ var Tocas = (function ()
             })
         
             /** Return the list with $ */
-            return $(List)
+            return List.length ? $(List) : null
         },
         
         
@@ -995,35 +987,51 @@ var Tocas = (function ()
         
         closest: function(Selector)
         {
-            var Selector = $(Selector),
-                List     = []
-            
-            /** Loop for each element which is in the closest selector */
-            for(var si = 0; si < Selector.length; si++)
-            {
-                /** Loop for the Tocas selector(not closest selector), */
-                /** so we can collect all the closest containers if we select many of the main elements */
-                this.each(function(i, el)
-                {
-                    /** Get the single element from the closest selector */
-                    var Con = Selector[si]
-                    
-                    /** Now, we need to make sure this container contains the element */
-                    if(Con.contains(el))
-                        /** And it's the parent of the element */
-                        /** Just make sure it's the parent of the element, not the parent's parent of the element or more further.. */
-                        if(el.parentNode === Con)
-                            /** And the element has been pushed in the List before */
-                            if(List.indexOf(Con) == -1)
-                                /** Then we push it to the list */
-                                List.push(Con)
-                })
+            var that     = this,
+                Selector = $(Selector)
+
+            /** Non stop loop, until there's no parent of the element */
+            while(true)
+            {     
+                /** Not this one, we go upper */
+                that = $(that).parent()[0]
+
+                /** No parent? */
+                if(!that) return null;
+                
+                /** Is the parent in the closest selector? If it do, then the parent is the closest element which we want */
+                if(Array.prototype.indexOf.call(Selector, that) !== -1)
+                    return $(that)
             }
-            
-            return List.length ? $(List) : null
         },
          
         
+        
+        
+        /**
+         * Contains
+         *
+         * Is the node contains something we want?
+         */
+        
+        contains: function(Wants)
+        {
+            var Selector = $(Wants),
+                IsTrue   = false
+
+            this.each(function(i, el)
+            {
+                var ChildNodes = el.childNodes
+                
+                for(var si = 0; si < Selector.length; si++)
+                {
+                    if(Array.prototype.indexOf.call(ChildNodes, Selector[si]) != -1)
+                        IsTrue = true
+                }
+            })
+
+            return IsTrue
+        },
         
 
         /**
