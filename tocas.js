@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.8
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.9
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -332,9 +332,19 @@ var Tocas = (function ()
          * Add an event into the handler list.
          */
         
-        on: function(EventName, Handler, Once)
+        on: function(EventName, Selector, Handler, Once)
         {
             Once = Once || false
+            var HasSelector = true
+            
+            if(typeof Selector !== 'string')
+            {
+                HasSelector = false
+                Handler     = Selector
+            }
+            
+            if(typeof Handler !== 'function') Once = Handler
+            
             /**
              * [ts_eventHandler]
              *
@@ -354,7 +364,6 @@ var Tocas = (function ()
                     console.log('TOCAS ERROR: Event listener is not worked with this element.')
                     return false
                 }
-                
                 /** If the main event list of the element is not existed, we create one */
                 if(typeof this.ts_eventHandler == 'undefined') this.ts_eventHandler = {}
                 /** Split the event by space */
@@ -379,6 +388,21 @@ var Tocas = (function ()
                                 /** Execute all of the functions */
                                 for(var e in this.ts_eventHandler[Event].list)
                                 {
+                                    /** If there's a selector */
+                                    if(typeof this.ts_eventHandler[Event].list[e].selector !== 'undefined')
+                                    {
+                                        var InSelector = false
+                                        
+                                        /** If this element is in the selector, then we set InSelector as true */
+                                        $(this.ts_eventHandler[Event].list[e].selector).each(function(i, el)
+                                        {
+                                            if(evt.target === el) InSelector = true
+                                        })
+                                        
+                                        /** We won't call this function if this elements which is triggered is not in the selector */
+                                        if(!InSelector) return
+                                    }
+                                
                                     /** Execute */
                                     this.ts_eventHandler[Event].list[e].func.call(this, evt)
                                     
@@ -392,8 +416,13 @@ var Tocas = (function ()
                     }
                     
                     /** Push handler or anonymous function into that event list */
-                    var eventHandler = this.ts_eventHandler[Event].list
-                    eventHandler.push({func: Handler, once: Once})
+                    var eventHandler = this.ts_eventHandler[Event].list,
+                        Data = {func: Handler, once: Once}
+                    /** Store the selector if there's selector */     
+                    if(HasSelector) Data.selector = Selector
+                        
+                    /** Store the function info*/
+                    eventHandler.push(Data)
                     this.ts_eventHandler[Event].list = eventHandler
                 }
             })
@@ -408,12 +437,12 @@ var Tocas = (function ()
          * Something that only happens once, for example: your life.
          */
         
-        one: function(EventName, Handler)
+        one: function(EventName, Selector, Handler)
         {   
             return this.each(function()
             {
                 /** Set "once" true, it will auto remove once we call it */
-                $(this).on(EventName, Handler, true)
+                $(this).on(EventName, Selector, Handler, true)
             })
         },
         
@@ -617,6 +646,26 @@ var Tocas = (function ()
                     return new RegExp('(^| )' + Class + '( |$)', 'gi').test(this[0].className)
         },
         
+        
+        
+        /**
+         * Class List
+         */
+        
+        classList: function()
+        {
+            var Classes = []
+            
+            if(0 in this)
+                if(this[0].classList)
+                    for(var i=0; i<this[0].classList.length; i++)
+                        Classes.push(this[0].classList[i])
+                else
+                    for(var i in this[0].className.split(' '))
+                        Classes.push(this[0].className.split(' ')[i])
+                        
+            return Classes
+        },
         
         
         
@@ -838,14 +887,14 @@ var Tocas = (function ()
          * Find
          */
         
-        find: function(Name)
+        find: function(Selector)
         {
             var List = []
             
             this.each(function(i, el)
             { 
                 /** Push the child nodes to the list*/
-                List.push.apply(List, el.querySelectorAll(Name))
+                List.push.apply(List, el.querySelectorAll(Selector))
             })
         
             /** Return the list with $ */
@@ -941,48 +990,37 @@ var Tocas = (function ()
         /**
          * Closest
          *
-         * Keep going UP, so we can get the closest element.
+         * Get all the element with the selector, then check the element which we want to search for the closest thing is in the selector or not
          */
         
-        closest: function(Name)
+        closest: function(Selector)
         {
-            var that = this
+            var Selector = $(Selector),
+                List     = []
             
-            /** Get type */
-                 if(Name.indexOf('#') !== -1) var Type = 'ID'
-            else if(Name.indexOf('.') !== -1) var Type = 'Class'
-            else if(typeof Name !== 'object') var Type = 'NodeName'
-            else                              var Type = 'Object'
-            
-            var More = true
-            
-            /** Keep searching if */
-            while(More)
+            /** Loop for each element which is in the closest selector */
+            for(var si = 0; si < Selector.length; si++)
             {
-                /** Not this one, we go upper */
-                that = $(that).parent()
-                
-                /** No parent? */
-                if(!that) return null;
-                
-                /** If this same as the element which we looking for, then we stop this loop */
-                switch(Type)
+                /** Loop for the Tocas selector(not closest selector), */
+                /** so we can collect all the closest containers if we select many of the main elements */
+                this.each(function(i, el)
                 {
-                    case 'ID':
-                        if(that.id == Name.slice(1)) More = false
-                        break
+                    /** Get the single element from the closest selector */
+                    var Con = Selector[si]
                     
-                    case 'Class':
-                        if($(that).hasClass(Name.slice(1))) More = false
-                        break
-                            
-                    case 'NodeName':
-                        if(that.nodeName == Name.toUpperCase()) More = false
-                        break
-                }
+                    /** Now, we need to make sure this container contains the element */
+                    if(Con.contains(el))
+                        /** And it's the parent of the element */
+                        /** Just make sure it's the parent of the element, not the parent's parent of the element or more further.. */
+                        if(el.parentNode === Con)
+                            /** And the element has been pushed in the List before */
+                            if(List.indexOf(Con) == -1)
+                                /** Then we push it to the list */
+                                List.push(Con)
+                })
             }
             
-            return $(that)
+            return List.length ? $(List) : null
         },
          
         
@@ -1239,14 +1277,14 @@ var Tocas = (function ()
                         if($.isJSON(XHR.responseText))
                             Obj.success(JSON.parse(XHR.responseText), XHR)
                         else
-                            Obj.error(XHR, 'parsererror')
+                            if(ErrorCallback) Obj.error(XHR, 'parsererror')
                         break                     
                     case 'html':
                     case 'text':
                     case 'string':
                     default:
-                        Obj.success(XHR.responseText, XHR)
-                        if(typeof XHR.close == 'function') XHR.close()
+                        if(typeof Obj.success == 'function') Obj.success(XHR.responseText, XHR)
+                        if(typeof XHR.close == 'function')   XHR.close()
                 }
             else
                 if(ErrorCallback) Obj.error(XHR, 'success')
@@ -1471,10 +1509,13 @@ var Tocas = (function ()
          *     contentNode: 'html',
          *     titleNode: 'title',
          *     cache: true,
-         *     expire: 86400
-         *     state: {blah: 'Im blah'}
+         *     expire: 86400,
+         *     state: {blah: 'Im blah'},
+         *     success: function
          * }
          */
+        
+        if(typeof history.pushState !== 'function') return false
         
         /** Check url hostname */
         var FakeLink = document.createElement('a')
@@ -1485,7 +1526,14 @@ var Tocas = (function ()
         /** PJAX only works in same origin, so exit when cross-origin */
         if(FakeLink.hostname !== window.location.hostname) return false
     
+        var PJAXFullURL = FakeLink.protocol + '//' + FakeLink.hostname + FakeLink.pathname,
+            FullURL     = window.location.protocol + '//' + window.location.hostname + window.location.pathname
         
+        /** Exit if the pjax url is just about add a hash or a anchor or even same */
+        if(PJAXFullURL === FullURL) return false
+        
+    
+
         /**
          * PJAX
          */
@@ -1500,6 +1548,10 @@ var Tocas = (function ()
 
             /** Change the title */
             document.title = Obj.Title
+            
+            /** Callback */
+            if(typeof Option.success != 'undefined') Option.success(Obj)
+            
         }
         
         
@@ -1527,7 +1579,7 @@ var Tocas = (function ()
         {
             /** We stored JSON format in localStorage before, now we need to convert it to object */
             var Obj = JSON.parse(localStorage.getItem(CachedName))
-            
+
             /** If the state still same, we load the cache */
             /** But if we are using dynamic title(which is returned title as title), no matter what, just load the cache */
             if(JSON.stringify(Obj.State) === JSON.stringify(State) || Title === '')
@@ -1554,7 +1606,7 @@ var Tocas = (function ()
             dataType: DataType,
             /** Send a PJAX header, so we can deal with it on the server side */
             headers: {'X_PJAX': 'true'},
-            success: function(Result)
+            success: function(Result, XHR)
             {
                 var Title     = (Option.dataType == 'json') ? Result[Option.titleNode]  : Option.title,
                     Content   = (Option.dataType == 'json') ? Result[Option.contentNode] : Result,
