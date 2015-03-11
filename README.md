@@ -1,4 +1,4 @@
-# TocasJS
+# Tocas(JavaScript Part)
 **如果你在尋找中文文件，請參閱另一份「讀我.md」**
 
 **NOTE: There's a lot of function are not writen in this document**
