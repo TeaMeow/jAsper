@@ -333,6 +333,20 @@ The following is the options that you can use:
 }
 ```
 
+###Geo
+Get the location with the HTML5 geolocation function.
+```javascript
+$.geo(Options)
+```
+The following is the options that you can use:
+```javascript
+{
+  success:       function(Position)
+  error:         function(Error)
+  notSupported:  function()
+}
+```
+
 ###Rand
 Generate a random number with a specific range.
 ```javascript
