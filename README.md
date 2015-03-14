@@ -341,6 +341,9 @@ $.geo(Options)
 The following is the options that you can use:
 ```javascript
 {
+  highAccurary: true
+  timeout:       3600
+  maxAge:        10000
   success:       function(Position)
   error:         function(Error)
   notSupported:  function()
