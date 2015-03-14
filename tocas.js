@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.9.1
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.9.2
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -959,7 +959,7 @@ var Tocas = (function ()
                        .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
                        {
                            $(that).removeClass(Animate + ' animated' + Time)
-                           if(typeof Callback !== 'undefined' && typeof Callback !== 'number') Callback.call(that) 
+                           if((typeof Callback !== 'undefined' && Callback != null) && typeof Callback !== 'number') Callback.call(that) 
                         })
             })
         },
@@ -997,7 +997,8 @@ var Tocas = (function ()
                 that = $(that).parent()[0]
 
                 /** No parent? */
-                if(!that) return null;
+                if(!that)
+                    return null;
                 
                 /** Is the parent in the closest selector? If it do, then the parent is the closest element which we want */
                 if(Array.prototype.indexOf.call(Selector, that) !== -1)
@@ -1032,8 +1033,10 @@ var Tocas = (function ()
 
             return IsTrue
         },
-        
 
+        
+        
+        
         /**
          * CSS
          *
@@ -1458,6 +1461,7 @@ var Tocas = (function ()
     
     
     
+    
     /**
      * Get Parameters From URL
      *
@@ -1496,6 +1500,69 @@ var Tocas = (function ()
         return (Object.keys(ParamList).length) ? ParamList : undefined
     }
     
+    
+    
+    
+    /**
+     * Geo
+     *
+     * Get the location with HTML5.
+     */
+    
+    $.geo = function(Option)
+    {
+        if(typeof Option == 'undefined') return false;
+        
+        /** Check some options is set or null, and gives some options a default value */
+        var NotSupported = (typeof Option.notSupported == 'function'),
+            Error        = (typeof Option.error        == 'function'),
+            Deny         = (typeof Option.deny         == 'function'),
+            HighAccurary = (typeof Option.highAccurary != 'undefined') ? Option.highAccurary : false,
+            Timeout      = (typeof Option.timeout      == 'number')    ? Option.timeout      : 8000,
+            MaxAge       = (typeof Option.maxAge       == 'number'),
+            IsFirefox    = (navigator.userAgent.toLowerCase().indexOf('firefox') > -1),
+            Opt          = {
+                            enableHighAccuracy: HighAccurary, 
+                            timeout: Timeout
+                           }
+        /** Set the maximumAge if needed */
+        if(MaxAge) Opt.maximumAge = MaxAge
+        
+        /** Set the timer for the firefox */
+        /** Firefox won't give us "Denied" status, so the only thing we can do is waiting for it timeout to call deny callback*/
+        if(IsFirefox)
+            if(Error)
+                var FirefoxTimer = setTimeout(function(){ Option.error(3) }, Timeout)
+            else if(Deny)
+                var FirefoxTimer = setTimeout(Option.deny, Timeout)
+        
+        /** Use the geolocation function if the borwser was supported the HTML5 geolocation */
+        if(navigator.geolocation)
+            navigator.geolocation.getCurrentPosition(function(Position)
+            {
+                /** Clean the firefox "denied" timer */
+                if(IsFirefox) clearTimeout(FirefoxTimer)
+                
+                /** Call to the success callback */
+                Option.success(Position)
+            },
+            function(ErrorCode)
+            {
+                var Denied    = (ErrorCode.code == ErrorCode.PERMISSION_DENIED)
+
+                /** Clean the firefox "denied" timer */
+                if(IsFirefox) clearTimeout(FirefoxTimer)
+                
+                /** Call error if error callback exists or deny callback when the callback exists and user denied it */
+                if(Error)               Option.error(ErrorCode)
+                else if(Deny && Denied) Option.deny()
+                
+            }, Opt)
+        /** Otherwise we call the notSupported callback if existed */
+        else
+            if(NotSupported)
+                Option.notSupported()
+    }
     
     
     
