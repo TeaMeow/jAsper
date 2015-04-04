@@ -2,7 +2,7 @@
   TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
   TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
      TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.9.2
+    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.9.3
    TTT        OO       OO   CCCC            AAA     AAA            SS
   TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
   TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
@@ -34,9 +34,11 @@
  *
  * We used a little part of it, yes, A LITTLE PART OF :
  * ZeptoJS     - zeptojs.com
+ * Slide       - http://stackoverflow.com/questions/3795481/javascript-slidedown-without-jquery
  * Serialize   - code.google.com/p/form-serialize/downloads/list
  * AvgColor    - http://tech.mozilla.com.tw/posts/5355/%E5%9C%A8-firefox-os-%E5%8F%96%E5%9C%96%E7%89%87%E8%89%B2%E5%BD%A9%E5%B9%B3%E5%9D%87%E5%80%BC%E4%B9%8B%E4%BA%8C%E4%B8%89%E4%BA%8B
  * Library     - youmightnotneedjquery.com/
+ * isNumeric   - http://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric
  */
 
 
@@ -402,7 +404,7 @@ var Tocas = (function ()
                                         /** We won't call this function if this elements which is triggered is not in the selector */
                                         if(!InSelector) return
                                     }
-                                
+                                    
                                     /** Execute */
                                     this.ts_eventHandler[Event].list[e].func.call(this, evt)
                                     
@@ -589,6 +591,7 @@ var Tocas = (function ()
                 })
             })
         },
+        
         click: function(Callback)
         {
             return this.each(function(){ if(!Callback) return false; this.onclick = Callback })
@@ -631,6 +634,175 @@ var Tocas = (function ()
         },
         
         
+        
+        /**
+         * Is Bottom
+         *
+         * Is reach to the bottom?
+         */
+        
+        isBottom: function()
+        {
+            if(0 in this)
+                if((this[0].scrollHeight - this[0].scrollTop - this[0].clientHeight) == 0)
+                    return true
+            else
+                return false
+        },
+        
+        
+        
+        
+        /**
+         * Slide
+         *
+         *
+         */
+        
+        slide: function(Action, Callback, Speed)
+        {
+            Callback = Callback || false
+            Speed    = Speed    || 500
+
+            /** If callback is a number means user want to set the speed not callback, then we set speed equals callback */
+            if($.isNumeric(Callback))
+                Speed = Callback
+                
+            /** Conver the million seconds to float */
+            Speed = Speed / 1000
+               
+            
+            var el    = this[0],
+                $this = $(el)
+            
+            var GetHeight = function()
+            {
+                if($this.hasClass('hidden')) $this.removeClass('hidden')
+                
+                var el_style      = window.getComputedStyle(el),
+                    el_display    = el_style.display,
+                    el_position   = el_style.position,
+                    el_visibility = el_style.visibility,
+                    el_max_height = el_style.maxHeight.replace('px', '').replace('%', ''),
+                    wanted_height = 0;
+                
+                /** Return the height if the element is not hidden */
+                if(el_display !== 'none' && el_max_height !== '0')
+                    return el.offsetHeight
+                
+                /** Remove the hidden style, so we can get the visible height */
+                $this.css({
+                           'position'  : 'absolute',
+                           'visibility': 'hidden',
+                           'display'   : 'block'
+                          })
+                
+                /** Get the height */
+                wanted_height     = el.offsetHeight
+
+                /** Now we set it back to the styles before */
+                $this.css({
+                           'position'  : el_display,
+                           'visibility': el_position,
+                           'display'   : el_visibility
+                          })
+
+                return wanted_height
+            }
+            
+            var el_max_height = 0
+            
+            var Intailize = function()
+            {
+                /** Get the height of the element when shown */
+                el_max_height = GetHeight() + 'px'
+                
+                
+                
+                /** Set the styles so we can do whatever we want >:D */
+                $this.css({
+                           'overflow-y': 'hidden',
+                           'display'   : 'block'
+                          })
+                
+                /** Store the max height as the attr */
+                $this.attr('data-max-height', el_max_height)
+            }
+            
+            
+            
+            /** If we intialize the element if we haven't intialized it before */
+            if(!$this.attr('data-max-height'))
+                Intailize()
+                
+            
+            if(typeof Callback === 'function')
+                $this.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
+                {
+                    Callback.call(el)
+                })
+            
+            
+            
+            /** If we want to slide down the element, then we set the max height as the number which we setted when intialized */
+            if(Action == 'down')
+            {
+                /** Set the height to the zero */
+                $this.css('max-height', '0')
+            
+                setTimeout(function()
+                {
+                    /** Now set the animate back */
+                    $this.css({
+                               'transition': 'max-height ' + Speed + 's ease-in-out',
+                               'max-height': $this.attr('data-max-height')
+                              })
+                }, 10)
+                
+            }
+            
+            /** Or set max height as 0 to make it like a slide up animation */
+            else
+            {
+                $this.css('max-height', $this.attr('data-max-height'))
+                
+                setTimeout(function()
+                {
+                    /** Now set the animate back */
+                    $this.css({
+                               'transition': 'max-height ' + Speed + 's ease-in-out',
+                               'max-height': '0'
+                              })
+                }, 10)
+            }
+            
+        
+            
+                          
+            /** Remove the trasition */
+            //$this.css('transition', 'max-height 0s ease-in-out')
+            
+        },
+        
+        
+        slideDown: function(Callback, Speed)
+        {
+            var that = this
+            Callback = Callback || false
+            Speed    = Speed    || false
+
+            $(this[0]).slide('down', Callback, Speed)
+        },
+        
+        
+        slideUp: function(Callback, Speed)
+        {
+            var that = this
+            Callback = Callback || false
+            Speed    = Speed    || false
+            
+            $(this[0]).slide('up', Callback, Speed)
+        },
         
         
         /**
@@ -980,6 +1152,41 @@ var Tocas = (function ()
         
         
         /**
+         * Parents
+         *
+         * Get parents, parent's parent, parent's parent's parent and par..
+         */
+        
+        parents: function(Selector)
+        {
+            var that     = this,
+                Selector = Selector || null,
+                Parents  = []
+            
+            if(Selector !== null) var Selector = $(Selector)
+
+            /** Non stop loop, until there's no parent of the element */
+            while(that)
+            {     
+                /** Not this one, we go upper */
+                that = $(that).parent()[0]
+
+                /** No parent? */
+                if(!that)
+                    break;
+                
+                /** Push to the parents list if it's in the selector or just push it if we don't set a selector */
+                if(Selector == null || (Selector !== null && Array.prototype.indexOf.call(Selector, that) !== -1))
+                    Parents.push(that)
+            }
+            
+            return $(Parents)
+        },
+        
+        
+        
+        
+        /**
          * Closest
          *
          * Get all the element with the selector, then check the element which we want to search for the closest thing is in the selector or not
@@ -1070,7 +1277,14 @@ var Tocas = (function ()
             {
                 return $(this).getCSS(Property);
             }
-            return this.each(function(){this.style.cssText = CSS;})
+            
+            
+            return this.each(function()
+            {
+                if(typeof this.style == 'undefined') return
+                
+                this.style.cssText = this.style.cssText + CSS
+            })
         },
         
         
@@ -1563,6 +1777,20 @@ var Tocas = (function ()
             if(NotSupported)
                 Option.notSupported()
     }
+        
+        
+      
+        
+    /**
+     * Is Numeric
+     *
+     *
+     */
+    $.isNumeric = function(Number)
+    {
+        return !isNaN(parseFloat(Number)) && isFinite(Number);
+    }
+    
     
     
     
