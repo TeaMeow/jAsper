@@ -1,28 +1,36 @@
 /* 
-  TTTTTTTTTTT        OOOOOOO       CCCCCCCCC        AAA        SSSSSSSS       
-  TTTTTTTTTTT       OOOOOOOOO     CCCCCCCCCC      AA  AA     SSSSSSSSS
-     TTT          OO       OO   CCCC           AAA   AAA    SS
-    TTT         OO       OO   CCCC            AAAAAAAAAA     SSSSSSSS            ver. 1.1.9.9.3
-   TTT        OO       OO   CCCC            AAA     AAA            SS
-  TTT        OOOOOOOOO     CCCCCCCCCCC    AAA      AAA     SSSSSSSSS   
-  TTT        OOOOOOO       CCCCCCCCCC   AAA       AAA     SSSSSSSS     
-  
-                      Here Comes Another World.
+/* 
+    @#%#^@$&%$##$#$%^^        ^$&%*%$%$#                      #$%^                #&%^&&$%@%#
+    #$%#$&!@$#%^^$%^*&     ^&%*^$%#%$$^&%^&%!#^$%@#$%^$#@$^ *&#&#$#            @#$%#$^&^#@$%$^&
+    %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
+          $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
+          %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
+          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.4
+          @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
+          *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
+          *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
+          @#$^&#       #$%#$%$#$      ##%^&*&^@#$@# @%#^%              #^%&&   %^$&#       %#%^&
+          !#$@%#         #$%^$&^$#%#$%$^%$$%^$^&^& #$%#$@#$%#^#$@^%$&^$#$#*#$  @#$%#$^&^#@$%$^& 
+          @%$%&%             #^$&^$&^%&%          @#$@%@#%^&$#@$%^$*@#$#%^$%$#    #&%^&&$%@%#   
+        
+                                        Glad to be with you.
 
-                TeaMeow / Open / Colorful / A.S.O / Simple
-                茶葉貓   / 開闊 /  多彩多姿 / 藍.白.澄 / 簡潔
-              
-              
-                            Basic colors
-                                
-                   A oi    -    Blue     -    #00ADEA
-                   S hiroi -    White    -    #FFFFFF
-                   O renji -    Orange   -    #FFA500        
+                           TeaMeow / Open / Colorful /  A.S.O  / Simple
+                            茶葉貓  / 開闊 /  多彩多姿 / 藍.白.澄 / 簡潔
+
+                                           Basic colors
+
+                                  A oi    -    Blue     -    #00ADEA
+                                  S hiroi -    White    -    #FFFFFF
+                                  O renji -    Orange   -    #FFA500    
                    
-                         Object of elements
+                                        Object of elements
                          
-             ts_eventHandler      -      store event handlers.
-             ts_longPressTimer    -      store the timer of longpress detection.
+                                          ts_eventHandler
+                                       (store event handlers.)
+                                       
+                                         ts_longPressTimer
+                              (store the timer of longpress detection.)
 */
 
 /**
@@ -51,12 +59,12 @@
 
 var Tocas = (function ()
 {
-    var $, EmptyArray = [], Slice = EmptyArray.slice, Filter = EmptyArray.filter, Queue = []
-    tocas = {}
-    isArray = Array.isArray || function(Obj){ return Obj instanceof Array }
-    isObject = function(Obj){ return Obj instanceof Object }
-    
-    isEmptyOrWhiteSpace = function(Str){ return str === null || str.match(/^\s*$/) !== null }
+    var $, EmptyArray = [], Slice = EmptyArray.slice, Filter = EmptyArray.filter, Queue = [],
+    tocas   = {},
+    isArray = Array.isArray || function(Obj){ return Obj instanceof Array  },
+    isObject                 = function(Obj){ return Obj instanceof Object },
+    isEmptyOrWhiteSpace      = function(Str){ return str === null || str.match(/^\s*$/) !== null },
+    dropzoneNumber           = 0
 
     /** Filter those thing which is we don't need it */
     function Compact(Array){ return Filter.call(Array, function(Item){ return Item != null }) }
@@ -672,23 +680,32 @@ var Tocas = (function ()
             Speed = Speed / 1000
                
             
-            var el    = this[0],
-                $this = $(el)
+            var El        = this[0],
+                $this     = $(El),
+                MaxHeight = 0
             
-            var GetHeight = function()
+            var GetInfo = function()
             {
                 if($this.hasClass('hidden')) $this.removeClass('hidden')
                 
-                var el_style      = window.getComputedStyle(el),
-                    el_display    = el_style.display,
-                    el_position   = el_style.position,
-                    el_visibility = el_style.visibility,
-                    el_max_height = el_style.maxHeight.replace('px', '').replace('%', ''),
-                    wanted_height = 0;
-                
+                var Style         = window.getComputedStyle(El),
+                    Display       = Style.display,
+                    Position      = Style.position,
+                    Visibility    = Style.visibility,
+                    PaddingTop    = Style.paddingTop,
+                    PaddingRight  = Style.paddingRight,
+                    PaddingBottom = Style.paddingBottom,
+                    PaddingLeft   = Style.paddingLeft,
+                    Padding       = PaddingTop + ' ' + PaddingRight + ' ' + PaddingBottom + ' ' + PaddingLeft,
+                    MaxHeight     = Style.maxHeight.replace('px', '').replace('%', ''),
+                    WantedHeight  = 0;
+
                 /** Return the height if the element is not hidden */
-                if(el_display !== 'none' && el_max_height !== '0')
-                    return el.offsetHeight
+                if(Display !== 'none' && MaxHeight !== '0')
+                    return {
+                            'WantedHeight': El.offsetHeight,
+                            'Padding': Padding
+                           }
                 
                 /** Remove the hidden style, so we can get the visible height */
                 $this.css({
@@ -698,27 +715,27 @@ var Tocas = (function ()
                           })
                 
                 /** Get the height */
-                wanted_height     = el.offsetHeight
+                WantedHeight = El.offsetHeight
 
                 /** Now we set it back to the styles before */
                 $this.css({
-                           'position'  : el_display,
-                           'visibility': el_position,
-                           'display'   : el_visibility
+                           'position'  : Display,
+                           'visibility': Position,
+                           'display'   : Visibility
                           })
-
-                return wanted_height
+            
+                return {
+                        'WantedHeight': WantedHeight,
+                        'Padding': Padding
+                       }
             }
             
-            var el_max_height = 0
+            
             
             var Intailize = function()
             {
-                /** Get the height of the element when shown */
-                el_max_height = GetHeight() + 'px'
-                
-                
-                
+                var Info = GetInfo()
+ 
                 /** Set the styles so we can do whatever we want >:D */
                 $this.css({
                            'overflow-y': 'hidden',
@@ -726,7 +743,8 @@ var Tocas = (function ()
                           })
                 
                 /** Store the max height as the attr */
-                $this.attr('data-max-height', el_max_height)
+                $this.attr('data-max-height', Info.WantedHeight + 'px')
+                $this.attr('data-padding', Info.Padding)
             }
             
             
@@ -735,21 +753,25 @@ var Tocas = (function ()
             if(!$this.attr('data-max-height'))
                 Intailize()
                 
-            
+                
+            /** The callback when transition ended */
             if(typeof Callback === 'function')
-                $this.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
+                $this.one('transitionend webkitTransitionEnd oTransitionEnd otransitionend MSTransitionEnd', function()
                 {
-                    Callback.call(el)
+                    Callback.call(El)
                 })
-            
-            
+                
+                
             
             /** If we want to slide down the element, then we set the max height as the number which we setted when intialized */
             if(Action == 'down')
             {
-                /** Set the height to the zero */
-                $this.css('max-height', '0')
+                /** Set the height to the zero and recover the padding */
+                $this.css({'max-height': '0',
+                           'padding'   : $this.attr('data-padding')})
             
+                
+                
                 setTimeout(function()
                 {
                     /** Now set the animate back */
@@ -765,13 +787,14 @@ var Tocas = (function ()
             else
             {
                 $this.css('max-height', $this.attr('data-max-height'))
-                
+
                 setTimeout(function()
                 {
-                    /** Now set the animate back */
+                    /** Now set the animate back and remove the padding so we can hide the whole element */
                     $this.css({
                                'transition': 'max-height ' + Speed + 's ease-in-out',
-                               'max-height': '0'
+                               'max-height': '0',
+                               'padding'   : '0px 0px 0px 0px'
                               })
                 }, 10)
             }
@@ -800,9 +823,134 @@ var Tocas = (function ()
             var that = this
             Callback = Callback || false
             Speed    = Speed    || false
-            
+                
             $(this[0]).slide('up', Callback, Speed)
         },
+        
+        
+        
+        
+        /**
+         * Dropzone
+         *
+         * Handle the drag and the drop events.
+         */
+        
+        dropzone: function(Config)
+        {
+            Config = Config || {}
+            
+            /** The number we used to name the file input */
+            dropzoneNumber += 1
+            
+            var DragEnter     = Config.dragenter     || function(){},
+                DragOver      = Config.dragover      || function(){},
+                Clickable     = Config.clickable     || true,
+                Multiple      = Config.multiple      || false,
+                ForceSingle   = Config.forceSingle   || false,
+                Error         = Config.error         || function(){},
+                Success       = Config.success       || function(){},
+                AccpetedFiles = Config.acceptedFiles || '*',
+                InputName     = Config.inputName     || 'tocas-dropzone-' + dropzoneNumber
+
+            /*
+            {
+                maxFilesize: 1024,
+                clickable: true,
+                multiple: true
+                success:
+                error:
+                accpetedFiles: "image/*"
+                dragenter:
+                dragover:
+                forceSingle:
+            }
+            
+            */
+            
+            
+            
+            /** Create an invisiable file input */
+            var UploadInput           = document.createElement('input')
+            UploadInput.type          = 'file'
+            UploadInput.style.display = 'none'
+            UploadInput.id            = InputName
+            
+            if(Multiple)
+                UploadInput.multiple  = 'multiple'
+        
+                
+                
+            /** Insert to the element before */
+            var Parent = $(this).parent()
+            $(Parent).prepend(UploadInput)
+
+            
+            
+            /** Set the dropzone file input name to the dropzone */
+            $(this).attr('data-dropzone-name', InputName)
+            
+            
+            
+            /** Allow to click to open the upload window if the clickable was true */
+            if(Clickable)
+            {
+                $(this).on('click'    , function(){ $('#' + InputName).trigger('click') })
+                $(this).on('mouseover', function(){ $(this).css('cursor', 'pointer') })
+            }
+            
+
+            
+            
+            /** The file input handler */
+            $('#' + InputName).on('change', function()
+            {
+                var Files = this.files,
+                    Length = Files.length
+                
+                /** Load each file and callback */
+                for(var i = 0; i < Length; i++)
+                    Success(Files[i])
+            })
+            
+            
+            
+            
+            /** The main event handler */
+            $(this).on('dragover dragenter drop', function(e)
+            {
+                /** Stop default events */
+                e.stopPropagation()
+                e.preventDefault()
+                
+                /** The callbacks */
+                switch(e.type)
+                {
+                    case 'dragover' : DragOver.call();  break
+                    case 'dragenter': DragEnter.call(); break
+                }
+
+                
+                /** Only accpet the drop action */
+                if(e.type != 'drop') return
+                
+                
+                /** The datas here */
+                var Data   = e.dataTransfer,
+                    Files  = Data.files,
+                    Length = Files.length
+
+                
+                /** Load each file or only single file and callback */
+                if(Multiple)
+                    for(var i = 0; i < Length; i++)
+                        Success(Files[i])
+                else
+                    Success(Files[0])
+            })
+        },
+        
+        
         
         
         /**
@@ -817,6 +965,7 @@ var Tocas = (function ()
                 else
                     return new RegExp('(^| )' + Class + '( |$)', 'gi').test(this[0].className)
         },
+        
         
         
         
@@ -838,6 +987,7 @@ var Tocas = (function ()
                         
             return Classes
         },
+        
         
         
         
