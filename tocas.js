@@ -5,7 +5,7 @@
     %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
           $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
           %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
-          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.4
+          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.5
           @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
           *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
           *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
@@ -428,6 +428,7 @@ var Tocas = (function ()
                     /** Push handler or anonymous function into that event list */
                     var eventHandler = this.ts_eventHandler[Event].list,
                         Data = {func: Handler, once: Once}
+                    
                     /** Store the selector if there's selector */     
                     if(HasSelector) Data.selector = Selector
                         
@@ -621,6 +622,57 @@ var Tocas = (function ()
         
         
         
+        
+        /**
+         * Ripple
+         *
+         * The ripple effect while clicking.
+         */
+        
+        ripple: function()
+        {
+            return this.each(function()
+            { 
+                
+                $(this).on('click', function(e)
+                {
+                    /** Create a ink if not existed */
+                    if(!$(this).find('.ink'))
+                        var InkElement = $(document.createElement('span')).attr('class', 'ink').prependTo(this)
+
+                    var InkElement = $(this).find('.ink')
+                        
+                    
+                    
+                    /** Set the width and the height of the ink */
+                    if(!InkElement[0].style.height && !InkElement[0].style.width)
+                    {
+                        /** Get this(not the ink) width and height, and pick up the max one, set the height and the width of the ink */
+                        var Max = Math.max(parseInt($(this).css('width')), parseInt($(this).css('height')))
+                        
+                        InkElement.css({height: Max, width: Max})
+                    }
+                    
+                    
+                    
+                    /** Get where we clicked */
+                    var InkWidth  = parseInt($(InkElement).css('width')),
+                        InkHeight = parseInt($(InkElement).css('height')),
+                        X         = e.pageX - this.getBoundingClientRect().left - InkWidth / 2,
+                        Y         = e.pageY - this.getBoundingClientRect().top - InkHeight / 2
+                        
+                        
+                    
+                    /** Set the position */
+                    InkElement.css({top: Y + 'px', left: X + 'px'}).cssAnimate('ripple')
+                })
+            })
+            
+        },
+        
+        
+                             
+                             
         /**
          * From Bottom
          *
@@ -850,8 +902,10 @@ var Tocas = (function ()
                 ForceSingle   = Config.forceSingle   || false,
                 Error         = Config.error         || function(){},
                 Success       = Config.success       || function(){},
+                Each          = Config.each          || function(){},
                 AccpetedFiles = Config.acceptedFiles || '*',
-                InputName     = Config.inputName     || 'tocas-dropzone-' + dropzoneNumber
+                InputName     = Config.inputName     || 'tocas-dropzone-' + dropzoneNumber,
+                Dropzone      = this
 
             /*
             {
@@ -859,6 +913,7 @@ var Tocas = (function ()
                 clickable: true,
                 multiple: true
                 success:
+                each:
                 error:
                 accpetedFiles: "image/*"
                 dragenter:
@@ -870,8 +925,18 @@ var Tocas = (function ()
             
             
             
-            /** Create an invisiable file input */
-            var UploadInput           = document.createElement('input')
+            
+            /**
+             * Create Input
+             *
+             * Create the file upload input or use the existing element.
+             */
+            
+            
+            /** Create an invisiable file input if the input was not existed or use the eixsted element */
+            var UploadInput = ($('#' + InputName).length == 0) ? document.createElement('input')
+                                                               : $_('#' + InputName)    
+                
             UploadInput.type          = 'file'
             UploadInput.style.display = 'none'
             UploadInput.id            = InputName
@@ -879,27 +944,50 @@ var Tocas = (function ()
             if(Multiple)
                 UploadInput.multiple  = 'multiple'
         
-                
-                
             /** Insert to the element before */
             var Parent = $(this).parent()
             $(Parent).prepend(UploadInput)
 
-            
-            
             /** Set the dropzone file input name to the dropzone */
             $(this).attr('data-dropzone-name', InputName)
+
             
             
             
-            /** Allow to click to open the upload window if the clickable was true */
+            /**
+             * Put File
+             *
+             * Put the files to the dropzone and store it.
+             */
+            
+            function PutFile(Files)
+            {
+                var Length = Files.length,
+                    dropzoneCount = $(Dropzone)[0].dropzoneCount || 0
+                
+                /** Store the files to the node */
+                $(Dropzone)[0].files = Files
+                
+                /** Add the total dropped or file selected count */
+                $(Dropzone)[0].dropzoneCount = dropzoneCount + Length
+            }
+
+            
+            
+            
+            /**
+             * Event Handlers
+             *
+             *
+             */
+            
+            /** Allow to click the dropzone to open the upload window if the clickable was true */
             if(Clickable)
             {
                 $(this).on('click'    , function(){ $('#' + InputName).trigger('click') })
                 $(this).on('mouseover', function(){ $(this).css('cursor', 'pointer') })
             }
             
-
             
             
             /** The file input handler */
@@ -908,12 +996,16 @@ var Tocas = (function ()
                 var Files = this.files,
                     Length = Files.length
                 
+                /** Put files to the dropzone */
+                PutFile(Files)
+                
                 /** Load each file and callback */
                 for(var i = 0; i < Length; i++)
-                    Success(Files[i])
+                    Each.call(Dropzone, Files[i])
+                    
+                Success.call(Dropzone, Files)
             })
-            
-            
+
             
             
             /** The main event handler */
@@ -941,12 +1033,18 @@ var Tocas = (function ()
                     Length = Files.length
 
                 
+                /** Put files to the dropzone */
+                PutFile(Files)
+                    
+                
                 /** Load each file or only single file and callback */
                 if(Multiple)
                     for(var i = 0; i < Length; i++)
-                        Success(Files[i])
+                        Each.call(Dropzone, Files[i])
                 else
-                    Success(Files[0])
+                    Each.call(Dropzone, Files[0])
+                    
+                Success.call(Dropzone, Files)
             })
         },
         
