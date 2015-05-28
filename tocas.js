@@ -5,7 +5,7 @@
     %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
           $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
           %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
-          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.5
+          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.6
           @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
           *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
           *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
@@ -277,12 +277,86 @@ var Tocas = (function ()
         html: function(HTML)
         {
             HTML = HTML || null
+            
             if(!HTML)
                 return 0 in this ? this[0].innerHTML : null
             else 
                 return this.each(function(){ this.innerHTML = HTML })
         },
         
+        
+        
+        /**
+         * Generate Date
+         * 
+         * Generate a date to past or future.
+         */
+         
+        genDate: function(Type, Direction)
+        {
+            Type      = Type      || 'Day'
+            Direction = Direction || 'Past'
+            
+            var Now = new Date()
+
+            return this.each(function(index, el)
+            {
+                switch(Type)
+                {
+                    /**
+                     * Year
+                     */
+                     
+                    case 'Year':
+                        var Year = Now.getFullYear()
+                        
+                        for(i = 0; i < 110; i++)
+                        {
+                            var option      = document.createElement('option');
+                                option.text = (Direction == 'Past') ? Year-- 
+                                                                    : Year++;
+                            el.add(option);
+                        }
+                        break;
+                    
+                    
+                    /**
+                     * Month
+                     */
+                     
+                    case 'Month':
+                        var Month = 1
+                        
+                        for(i = 0; i < 12; i++)
+                        {
+                            var option      = document.createElement('option');
+                                option.text = (Month < 10) ? '0' + Month 
+                                                           :       Month;
+                            Month++;
+                            el.add(option);
+                        }
+                        break;
+                        
+                    
+                    /**
+                     * Day
+                     */
+                     
+                    case 'Day':
+                        var Day = 1
+                        
+                        for(i = 0; i < 31; i++)
+                        {
+                            var option      = document.createElement('option');
+                                option.text = (Day < 10) ? '0' + Day 
+                                                         :       Day;
+                            Day++;
+                            el.add(option);
+                        }
+                        break;
+                }
+            })
+        },
         
         
         
