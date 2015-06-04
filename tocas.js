@@ -5,7 +5,7 @@
     %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
           $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
           %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
-          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.6
+          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.7
           @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
           *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
           *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
@@ -190,7 +190,10 @@ var Tocas = (function ()
         
         hide: function()
         {
-            return this.css('display', 'none')
+            return this.each(function()
+            {
+                $(this).addClass('hidden')
+            })
         },
  
         
@@ -200,10 +203,23 @@ var Tocas = (function ()
          * Show
          */
         
-        show: function(Display)
+        show: function()
         {
-            Display = Display || 'block'
-            return this.css('display', Display)
+            return this.each(function()
+            {
+                $(this).removeClass('hidden')
+            })
+        },
+        
+        
+        
+        /**
+         * Is Hidden?
+         */
+         
+        isHidden: function()
+        {
+            return $(this).hasClass('hidden')
         },
         
         
@@ -215,15 +231,14 @@ var Tocas = (function ()
          * When it's showed, we hide it, but if it's hidden, then you should know it.
          */
         
-        toggle: function(Display)
+        toggle: function()
         {
-            Display = Display || null
             return this.each(function()
             {
-                if($(this).getCSS('display') != 'none')
-                    return $(this).hide()
+                if($(this).hasClass('hidden'))
+                    $(this).show()
                 else
-                    return $(this).show(Display)
+                    $(this).hide()
             })
         },
         
@@ -1400,7 +1415,7 @@ var Tocas = (function ()
         {
             //if(typeof this.setAttribute !== 'function') return null
             
-            Value = Value || null
+            Value = (Value === null) ? null : Value
             
             /** Set multiple Attr if Attr is object */
             if(typeof Attr === 'object' && !Value)
@@ -1420,6 +1435,18 @@ var Tocas = (function ()
                 alert(Object.keys(this[0].attributes[0]))*/
         },
         
+        
+    
+        /**
+         * Remove Attr
+         * 
+         * Remove the attr.
+         */
+         
+        removeAttr: function(Attr)
+        {
+            return this.each(function(){ this.removeAttribute(Attr) })
+        },
         
         
         
@@ -1629,6 +1656,7 @@ var Tocas = (function ()
                 var z, a
                 for (var z = 0; z < this.elements.length; z++)
                 {
+                    
                     var Elements = this.elements[z]
                     var Name = Elements.name
                     var Value = Elements.value
