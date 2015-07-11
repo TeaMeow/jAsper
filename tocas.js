@@ -5,7 +5,7 @@
     %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
           $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
           %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
-          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.7
+          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.8
           @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
           *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
           *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
@@ -34,13 +34,8 @@
 */
 
 /**
- * For someone who think I'm copy other one's source code,
- * here comes the list which I used A LITTLE PART OF their source code.
- *
- * 給那些誰認為我是抄襲他人原始碼的，
- * 這裡是一份我用了它們「少部分」原始碼的來源清單。
- *
- * We used a little part of it, yes, A LITTLE PART OF :
+ * I learn lots of thing there, thanks:
+ * 
  * ZeptoJS     - zeptojs.com
  * Slide       - http://stackoverflow.com/questions/3795481/javascript-slidedown-without-jquery
  * Serialize   - code.google.com/p/form-serialize/downloads/list
@@ -1455,7 +1450,10 @@ var Tocas = (function ()
          */
 
         cssAnimate: function(Animate, Callback, Time)
-        {            
+        {
+            /** Animate list */
+            var AnimateList = 'slideInDown slideInLeft slideInRight slideInUp slideOutDown slideOutLeft slideOutRight slideOutUp'
+            
             /** If someone using callback field as time.. */
             if(typeof Callback == 'number') Time = Callback
             
@@ -1471,8 +1469,8 @@ var Tocas = (function ()
                 var that = this
                 
                 /** If last animation not end .. */
-                if($(this).hasClass(Animate))
-                    $(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(Animate + ' animated' + Time)
+                //if($(this).hasClass(Animate))
+                    $(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(AnimateList).removeClass(Animate + ' animated' + Time)
                 
                 /** Add animation */
                 $(this).addClass(Animate + ' animated' + Time)
@@ -1846,6 +1844,9 @@ var Tocas = (function ()
                 Obj.statusCode[XHR.status](XHR, XHR.responseText)
             
             if(XHR.status >= 200 && XHR.status < 400)
+            {
+                processBar.stop()
+                
                 switch(Obj.dataType)
                 {
                     case 'json':
@@ -1861,13 +1862,17 @@ var Tocas = (function ()
                         if(typeof Obj.success == 'function') Obj.success(XHR.responseText, XHR)
                         if(typeof XHR.close == 'function')   XHR.close()
                 }
+            }
             else
+            {
+                sysMessage.statusCode(XHR, 'success');
                 if(ErrorCallback) Obj.error(XHR, 'success')
+            }
         }
         
         /** When XHR timeout or error, we callback */
-        XHR.ontimeout = function(){ if(ErrorCallback) Obj.error(XHR, 'timeout') }
-        XHR.onerror   = function(){ if(ErrorCallback) Obj.error(XHR, 'error') }
+        XHR.ontimeout = function(){ sysMessage.statusCode(XHR, 'timeout'); if(ErrorCallback) Obj.error(XHR, 'timeout') }
+        XHR.onerror   = function(){ sysMessage.statusCode(XHR, 'error'); if(ErrorCallback) Obj.error(XHR, 'error') }
         
         /** If there's uploading process callback, we callback :D */
         if(typeof Obj.uploading != 'undefined')
@@ -1905,6 +1910,8 @@ var Tocas = (function ()
             
         /** SENDDDD! */
         XHR.send((IsObjectData) ? Params : Obj.data)
+        
+        processBar.delayStart()
         
         return XHR
     }
