@@ -5,7 +5,7 @@
     %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
           $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
           %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
-          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.8
+          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.9
           @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
           *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
           *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
@@ -1845,7 +1845,6 @@ var Tocas = (function ()
             
             if(XHR.status >= 200 && XHR.status < 400)
             {
-                processBar.stop()
                 
                 switch(Obj.dataType)
                 {
@@ -1865,14 +1864,13 @@ var Tocas = (function ()
             }
             else
             {
-                sysMessage.statusCode(XHR, 'success');
                 if(ErrorCallback) Obj.error(XHR, 'success')
             }
         }
         
         /** When XHR timeout or error, we callback */
-        XHR.ontimeout = function(){ sysMessage.statusCode(XHR, 'timeout'); if(ErrorCallback) Obj.error(XHR, 'timeout') }
-        XHR.onerror   = function(){ sysMessage.statusCode(XHR, 'error'); if(ErrorCallback) Obj.error(XHR, 'error') }
+        XHR.ontimeout = function(){ if(ErrorCallback) Obj.error(XHR, 'timeout') }
+        XHR.onerror   = function(){ if(ErrorCallback) Obj.error(XHR, 'error') }
         
         /** If there's uploading process callback, we callback :D */
         if(typeof Obj.uploading != 'undefined')
@@ -1910,8 +1908,6 @@ var Tocas = (function ()
             
         /** SENDDDD! */
         XHR.send((IsObjectData) ? Params : Obj.data)
-        
-        processBar.delayStart()
         
         return XHR
     }
@@ -2002,7 +1998,21 @@ var Tocas = (function ()
     $.sse = function(Obj)
     {
         var SSE = new EventSource(Obj.url)
-        if(typeof Obj.message !== 'undefined') SSE.onmessage = Obj.message
+        
+        /** Message */
+        if(typeof Obj.message == 'object') 
+            for(var i in Obj.message)
+                SSE.addEventListener(i, Obj.message[i], false)
+        else if(typeof Obj.message !== 'undefined')
+            SSE.onmessage = Obj.message
+            
+        /** Error */
+        if(typeof Obj.error !== 'undefined')
+            SSE.onerror = Obj.error
+            
+        /** Open */
+        if(typeof Obj.open !== 'undefined')
+            SSE.addEventListener('open', Obj.open, false)
     }
     
     
