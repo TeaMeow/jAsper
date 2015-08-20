@@ -4,7 +4,7 @@
     %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
           $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
           %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
-          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.9.3
+          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$
           @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
           *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
           *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
@@ -319,7 +319,7 @@ var Tocas = (function ()
                     case 'Year':
                         var Year = Now.getFullYear()
                         
-                        for(i = 0; i < 110; i++)
+                        for(var i = 0; i < 110; i++)
                         {
                             var option      = document.createElement('option');
                                 option.text = (Direction == 'Past') ? Year-- 
@@ -336,7 +336,7 @@ var Tocas = (function ()
                     case 'Month':
                         var Month = 1
                         
-                        for(i = 0; i < 12; i++)
+                        for(var i = 0; i < 12; i++)
                         {
                             var option      = document.createElement('option');
                                 option.text = (Month < 10) ? '0' + Month 
@@ -354,7 +354,7 @@ var Tocas = (function ()
                     case 'Day':
                         var Day = 1
                         
-                        for(i = 0; i < 31; i++)
+                        for(var i = 0; i < 31; i++)
                         {
                             var option      = document.createElement('option');
                                 option.text = (Day < 10) ? '0' + Day 
@@ -1456,11 +1456,12 @@ var Tocas = (function ()
             /** If someone using callback field as time.. */
             if(typeof Callback == 'number') Time = Callback
             
-            /** Turn millionsecond to float (ex: 300 -> 0.3), then turn float to string and remove the dot (0.3 -> 03)*/
-            var Timer = (Time / 1000).toString().replace('.', '')
-            
+            /** Turn millionsecond to float (ex: 300 -> 0.3), then turn float to string and remove the dot (0.3 -> 03 -> 3)*/
+            var Timer = parseInt((Time / 1000).toString().replace('.', ''), 10)
+
             /** Select animation duration by Time */      
-            Time = (typeof Time !== 'undefined') ? ' animated' + Timer + 's' : ''
+            Time = isNaN(Time) ? '' : ' animated' + Timer + 's'
+            
             
             return this.each(function()
             {
@@ -1470,7 +1471,7 @@ var Tocas = (function ()
                 /** If last animation not end .. */
                 //if($(this).hasClass(Animate))
                     $(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(AnimateList).removeClass(Animate + ' animated' + Time)
-                
+
                 /** Add animation */
                 $(this).addClass(Animate + ' animated' + Time)
                        /** Once the animation end, we remove the animate class and callback **/
