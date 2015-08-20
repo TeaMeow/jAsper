@@ -4,7 +4,7 @@
     %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
           $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
           %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
-          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.9.2
+          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.9.3
           @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
           *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
           *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
@@ -2058,32 +2058,39 @@ var Tocas = (function ()
             /** Split the targets */
                 Targets = Splits[1].split('&')
             
+            
+            /** Detect what to bind based on different events */
+            function BindThis(Target, Events, Bind)
+            {
+                var Event = Events.split(' ')
+                
+                for(var i in Event)
+                {
+                    var e = Event[i]
+                    
+                    /** Different ways to bind with different events */
+                    if(e == 'scrollBottom')
+                        $(Target).scrollBottom(Bind)
+                    else if(e != '')
+                        $(Target).on(Events, Bind)
+                }
+            }
+            
+            
             /** Each target */ 
             for(var t in Targets)
+                /** Bind each callback if it's a callback array */
                 if(Binds[i].isArray)
-                    /** Bind each callback if it's a callback array */
                     for(var f in Binds[i])
-                        $(Targets[t]).on(Events, Binds[i][f])
+                        BindThis(Targets[t], Events, Binds[i][f])
+                /** Or not, lol */
                 else
-                    $(Targets[t]).on(Events, Binds[i])
+                    BindThis(Targets[t], Events, Binds[i])
+                    
         }
     }
-    
-    
-    
-    
-    
-    $.binder
-    ({  
-        'click     | img & a' : meow.addNew,
-        'mouseover | img'     : meow.removeNew
-    })
-    
-    
-    
-    $(['img', 'a']).on('click', meow.addNew)
-    $('img').on('mouseover', meow.removeNew)
-    
+
+
     /**
      * Get Parameters From URL
      *
