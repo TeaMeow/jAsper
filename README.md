@@ -1,76 +1,77 @@
-# Tocas(JavaScript Part)
-**如果你在尋找中文文件，請參閱另一份「讀我.md」**
+# Tocas
 
-**NOTE: There's a lot of function are not writen in this document**
+**嗨，歡迎來到新世界。**
 
-A lighter JQuery-like library, we made it on our own,
+Tocas 提供 CSS3 介面元件和 JS 函式庫，
 
-if you know JQuery, then you already know how to use TocasJS,
+如果你知道如何使用 jQuery，那麼想必你就一定會 TocasJS 了，
 
-and it's supported more functions .. such as $.cookie(), and more ..
+不過當然地，我們多了很多東西。
 
-#Usage
+**需要注意的是：這篇文件尚未完成，還有許多功能尚未提及。**
+
+#使用方法
 ```javascript
-$(Element)    // This one for TocasJS
-$_(Element)   // This one for DOM, we called it secondary selector.
+$(元素)    // 這個是 TocasJS 的選擇器
+$_(元素)   // 這個則是原生的 DOM 選擇器，我們稱之為第二選擇器。
 ```
 
-#Browser Support
+#瀏覽器支援
 ![IE](https://raw.github.com/alrra/browser-logos/master/internet-explorer/internet-explorer_48x48.png) | ![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/opera/opera_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/safari/safari_48x48.png)
 --- | --- | --- | --- | --- |
 IE 10+ | Chrome 4.0+ | Firefox 16.0+ | Opera 15.0+ | Safari 4.0+ |
 
-#Supported Functions
-**[Core](#core)**  
+#功能列表
+**[基礎核心](#core)**  
 **[Content](#content)**  
 **[Style](#style)**  
 **[Events](#events)**  
 **[Others](#others)**  
 
-##Core
+##基礎核心
 **[.each()](#each)** **[.eq()](#eq)** 
-###Each
-Call function for each elements.
+###Each —— 每個
+替每一個元素都呼叫一次函式。
 ```javascript
-.each(Callback(Element, Index, Element))
+.each(回傳函式(元素, 索引, 元素))
 ```
 
-###Eq
-Jump to target element.
+###Eq —— 跳到
+當你的選擇器中有很多元素，你可以透過此指令選擇指定的索引元素。
 ```javascript
-.eq(Index)
+.eq(索引)
 ```
 
-##Content
+##內容
 **[.text()](#text)** **[.val()](#value)** **[.html()](#html)** **[.empty()](#empty)** **[.clone()](#clone)** 
-###Text
-Get the text or set a text of a element.
+###Text —— 文字
+你可以取得、設置一個元素的內容文字。
 ```javascript
-.text() //Get the text.
+.text() // 回傳元素的文字。
 ```
-for example:
+或者是：
 ```javascript
-.text('Hello') // Set the text.
+.text('Hello') // 設定該元素的文字為「Hello」。
 ```
 
-###Value
-Get the value or set a value of a element.
+###Value —— 值
+取得，或是設置一個元素的值，我們通常將它用在一個 input 中。
 ```javascript
-.val() //Get the value.
+.val() // 取得值。
 ```
-for example:
+或者是：
 ```javascript
-.val('Hello') // Set the value.
+.val('Hello') // 設置一個值。
 ```
 
 ###HTML
-Get the innerHTML or set the innerHTML of a element.
+取得 HTML 內容，或是設置一個 HTML 內容。
 ```javascript
-.html() //Get the HTML content.
+.html() // 取得 HTML 內容。
 ```
-for example:
+或者是：
 ```javascript
-.html('Hello') // Set the HTML content.
+.html('Hello') // 設置 HTML 內容。
 ```
 
 ###Empty
