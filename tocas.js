@@ -4,7 +4,7 @@
     %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
           $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
           %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
-          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.9.1
+          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$     ver. 1.1.9.9.9.2
           @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
           *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
           *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
@@ -2039,8 +2039,50 @@ var Tocas = (function ()
         $('head').append(script)
     }
     
+
+    
+    /**
+     * Quick Binder
+     * 
+     * Bind everything.
+     */
+     
+    $.binder = function(Binds)
+    {
+        for(var i in Binds)
+        {
+            /** Split the event and the target first */
+            var Splits  = i.split('|'),
+            /** The first array is events */
+                Events  = Splits[0],
+            /** Split the targets */
+                Targets = Splits[1].split('&')
+            
+            /** Each target */ 
+            for(var t in Targets)
+                if(Binds[i].isArray)
+                    /** Bind each callback if it's a callback array */
+                    for(var f in Binds[i])
+                        $(Targets[t]).on(Events, Binds[i][f])
+                else
+                    $(Targets[t]).on(Events, Binds[i])
+        }
+    }
     
     
+    
+    
+    
+    $.binder
+    ({  
+        'click     | img & a' : meow.addNew,
+        'mouseover | img'     : meow.removeNew
+    })
+    
+    
+    
+    $(['img', 'a']).on('click', meow.addNew)
+    $('img').on('mouseover', meow.removeNew)
     
     /**
      * Get Parameters From URL
