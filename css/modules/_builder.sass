@@ -67,3 +67,11 @@
   margin-left: auto !important
   margin-right: auto !important
   text-align: center !important
+
+
+=if-parent($parent, $class)
+  @at-root #{selector-replace(&, #{$parent}, $parent + $class)}
+    @content
+    
+=poi
+  cursor: pointer
