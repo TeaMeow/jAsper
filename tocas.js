@@ -2067,12 +2067,12 @@ var Tocas = (function ()
                 for(var i in Event)
                 {
                     var e = Event[i]
-                    
+
                     /** Different ways to bind with different events */
                     if(e == 'scrollBottom')
                         $(Target).scrollBottom(Bind)
                     else if(e != '')
-                        $(Target).on(Events, Bind)
+                        $(Target).on(e, Bind)
                 }
             }
             
