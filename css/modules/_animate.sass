@@ -7,20 +7,20 @@
  *Copyright (c) 2015 Daniel Eden
  
 .animated
+  webkit-animation-duration: 1s
+  animation-duration       : 1s
   -webkit-animation-fill-mode: both
   animation-fill-mode: both
   
+      
   &.infinite
     -webkit-animation-iteration-count: infinite
     animation-iteration-count: infinite
-  &.hinge
-    -webkit-animation-duration: 2s
-    animation-duration: 2s
   &.bounceIn, &.bounceOut, &.flipOutX, &.flipOutY
     -webkit-animation-duration: .75s
     animation-duration: .75s
  
-  @for $i from 1 through $animateTime
+  @for $i from 2 through $animateTime
     &.animated#{$i}s
       webkit-animation-duration: $i + s
       animation-duration       : $i + s
