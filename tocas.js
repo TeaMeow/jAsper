@@ -63,7 +63,7 @@ var Tocas = (function ()
     /** Filter those thing which is we don't need it */
     function Compact(Array){ return Filter.call(Array, function(Item){ return Item != null }) }
 
-    tocas.Init = function(Selector)
+    tocas.Init = function(Selector, Context)
     {
         var Dom
         /** If Selector is a normal string */
@@ -71,6 +71,10 @@ var Tocas = (function ()
         {
             /** Remove the space */
             Selector = Selector.trim()
+            
+            if(typeof Context != 'undefined')
+                return $(Selector).find(Context)
+            
             Dom = tocas.Select(document, Selector)
         }
         else if(tocas.IsTocas(Selector)) return Selector
@@ -120,9 +124,9 @@ var Tocas = (function ()
      * Call to Init to get everything ready.
      */
     
-    $ = function(Selector)
+    $ = function(Selector, Context)
     {
-        return tocas.Init(Selector)
+        return tocas.Init(Selector, Context)
     };
     
     
@@ -1178,19 +1182,20 @@ var Tocas = (function ()
         
         addClass: function(Class)
         {
+            if(Class == null) return
+            
             return this.each(function()
             {
                 List = Class.split(' ')
+                
                 for(var i in List)
                 {
+                    if(List[i] == '') continue
+                    
                     if(this.classList)
-                    {
                         this.classList.add(List[i]) 
-                    }
                     else
-                    {
                         this.className += ' ' + List[i]
-                    }
                 }
             })
         },
@@ -1215,6 +1220,8 @@ var Tocas = (function ()
                     List = Class.split(' ')
                     for(var i in List)
                     {
+                        if(List[i] == '') continue
+                        
                         /** If there's classList, the just remove it from classList, otherwise we replace the string which is in the (class="")*/
                         if(this.classList)
                             this.classList.remove(List[i]) 
@@ -1268,6 +1275,22 @@ var Tocas = (function ()
         
         
         /**
+         * Wrap
+         */
+        
+        wrap: function(Element)
+        {
+            return this.each(function()
+            {
+                this.parentNode.insertBefore(Element, this);
+                Element.appendChild(this);
+            })
+        },
+        
+        
+        
+        
+        /**
          * Append
          * 
          * Insert new content behind the HTML.
@@ -1310,9 +1333,9 @@ var Tocas = (function ()
             })
         },
     
-        
-        
-        
+
+
+
         /**
          * Clone
          *
@@ -2374,6 +2397,59 @@ var Tocas = (function ()
     {
         return Math.floor(Math.random() * (Max - Min + 1) + Min)
     }
+    
+    
+    
+    
+    
+    $.removeAllTags = function(Str)
+    {
+        Str = Str || null
+        
+        return Str.replace(/<\/?(\w+)\s*[\w\W]*?>/g, '');
+    }
+    
+    
+    $.replaceStyleAttr = function(Str)
+    {
+        Str = Str || null
+        
+        return Str.replace(/(<[\w\W]*?)(style)([\w\W]*?>)/g, function(a, b, c, d)
+        {
+            return b + 'style_replace' + d;
+        });
+    }
+    
+    
+    $.isset = function()
+    {
+        // discuss at: http://phpjs.org/functions/isset
+        // +   original by: Kevin van     Zonneveld (http://kevin.vanzonneveld.net)
+        // +   improved by: FremyCompany
+        // +   improved by: Onno Marsman
+        // +   improved by: Rafał Kukawski
+        // *     example 1: isset( undefined, true);
+        // *     returns 1: false
+        // *     example 2: isset( 'Kevin van Zonneveld' );
+        // *     returns 2: true
+        var a = arguments,
+            l = a.length,
+            i = 0,
+            undef;
+    
+        if (l === 0) {
+            throw new Error('Empty isset');
+        }
+    
+        while (i !== l) {
+            if (a[i] === undef || a[i] === null) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+    
     
     if(!window.$) window.$ = $
 })(Tocas);
