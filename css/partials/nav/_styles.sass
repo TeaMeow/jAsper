@@ -5,16 +5,17 @@
   +nav($nullColor)
   font-size: 14px
   
-  li
-    +padding(1.5)
-    +ease($easeTime, background-color)
-    
-  &.nav-smallest
+  > ul
     li
+      +padding(1.5)
+      +ease($easeTime, background-color)
+      
+  &.nav-smallest
+    > ul > li
       +padding
       
   &.nav-small
-    li
+    > ul > li
       +padding(1.2)
       
   &.nav-fill
@@ -34,7 +35,7 @@
     border-bottom-width: 2px
     
   &.nav-down
-    li
+    > ul > li
       padding            : $padding
       display            : block
       float              : none
@@ -45,18 +46,18 @@
       border-bottom-style: solid
       
   &.nav-down.nav-pills
-    li
+    > ul > li
       border-top-width   : 0px
       border-bottom-width: 0px
       margin-bottom      : $margin
       
   &.nav-no-float
-    li
+    > ul > li
       float  : none
       display: inline-block
       
   &.nav-pills:not(.nav-down)
-    li:not(:last-child)
+    > ul > li:not(:last-child)
       margin-right: $margin
 
 // Construct
@@ -68,8 +69,9 @@
   &.nav-pills
     background: none
     border: none
-    li
+    > ul > li
       +rd
+      
   &.nav-pills-dim
-    li
+    > ul > li
       background: none
