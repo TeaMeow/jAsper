@@ -6,10 +6,15 @@
   word-warp : break-word
   hyphens   : auto
 
-.bg-cover
+
+@mixin bg-cover
   background-position: center
   background-repeat  : no-repeat
   background-size    : cover
+
+
+.bg-cover
+  +bg-cover
 
 .poi:hover
   cursor: pointer
