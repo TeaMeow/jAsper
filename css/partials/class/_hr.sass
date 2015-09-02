@@ -1,13 +1,10 @@
-.hr-dashed
-  border: none
-  border-top-width: 1px
-  border-top-style: dashed
-
-
 // Construct
 //
 //
 
 @each $class, $color in $colors
-  .hr-#{$class}
-    border-top-color: $color !important
+  @each $place in top bottom right left
+    .hr-#{$place}-#{$class}
+      border-#{$place}-width: 1px
+      border-#{$place}-style: solid
+      border-#{$place}-color: $color
