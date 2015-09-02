@@ -1,16 +1,16 @@
 @for $i from 1 through 12
-  .g-#{$i}
+  .g-#{$i}, g-#{$i}
     width  : 6.65% + 8.25 * $i - 8.25
     display: block
     float  : left
-    margin : 0% 0 1% 1.6%
+    margin : 0% 0 1.6% 1.6%
 
 .g-n-mar
   margin: 0px !important
 
 .row
   width    : 100%
-  max-width: 960px
+  max-width: 1170px
 
 .row.row-mar
   margin: 1%
@@ -25,7 +25,7 @@
 
 +rwd(xs)
   @for $i from 1 through 12
-    .g-#{$i}
+    .g-#{$i}, g-#{$i}
       width: 97.4%
 
 
@@ -41,26 +41,35 @@
 
 
 +rwd(xs)
+  .row
+    max-width: 100%
+
   @for $i from 1 through 12
-    .g-xs-#{$i}
+    .g-xs-#{$i}, g-xs-#{$i}
       width: 6.65% + 8.25 * $i - 8.25 !important
 
 
 +rwd(sm)
+  .row
+    max-width: 750px
+    
   @for $i from 1 through 12
-    .g-sm-#{$i}
+    .g-sm-#{$i}, g-sm-#{$i}
       width: 6.65% + 8.25 * $i - 8.25 !important
 
 
 +rwd(md)
+  .row
+    max-width: 970px
+    
   @for $i from 1 through 12
-    .g-md-#{$i}
+    .g-md-#{$i}, g-md-#{$i}
       width: 6.65% + 8.25 * $i - 8.25 !important
 
 
 +rwd(xs)
   @for $i from 1 through 12
-    .g-xs-#{$i}
+    .g-xs-#{$i}, g-xs-#{$i}
       width: 6.65% + 8.25 * $i - 8.25 !important
 
 
