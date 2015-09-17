@@ -4,6 +4,8 @@
   border-collapse: collapse
   
   tr
+    border: #ededed 1px solid
+    
     // Construct
     @each $class, $color in $colors
       &.#{$class}
@@ -12,7 +14,7 @@
       
     td
       +padding
-    
+
       
   &.table-border
   
@@ -22,3 +24,13 @@
         
     td
       border: #CCC 1px solid
+      
+  &.table-striped
+  
+    tr:nth-child(even)
+      background-color: $nullColor
+      
+  &.table-hover
+  
+    tr:hover
+      background-color: darken($nullColor, 2%)
