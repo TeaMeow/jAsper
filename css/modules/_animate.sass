@@ -24,6 +24,9 @@
     &.animated#{$i}s
       webkit-animation-duration: $i + s
       animation-duration       : $i + s
+    &.animated0#{$i}s
+      webkit-animation-duration: $i / 10 + s
+      animation-duration       : $i / 10 + s
     
 
 @-webkit-keyframes bounce
