@@ -272,10 +272,11 @@ var Tocas = (function ()
         text: function(Text)
         {
             Text = Text || null;
-            return this.each(function()
-            {
-                this.textContent = Text
-            })
+            
+            if(!Text)
+                return 0 in this ? this[0].innerText : null
+            else
+                return this.each(function(){ this.textContent = Text })
         },
         
         
@@ -372,6 +373,40 @@ var Tocas = (function ()
         },
         
         
+        
+        clickToEdit: function(BlurCallback)
+        {
+            this.each(function(){
+                
+                if($(this).text() == '')
+                    $(this).html('&nbsp;')
+            })
+            
+            
+            
+            $(this).on('click', function()
+            {
+                $(this).addClass('tb').attr('contenteditable', 'true')
+                $(this).focus()
+            }) 
+        
+            $(this).on('blur', function()
+            {
+                $(this).removeClass('tb').attr('contenteditable', 'false')
+                
+                if(typeof BlurCallback !== 'undefined')
+                    BlurCallback.call(this, $(this).text())
+            })
+
+        },
+        
+        focus: function()
+        {
+            return this.each(function()
+            {
+                this.focus()
+            })
+        },
         
         /**
          * Empty
@@ -1481,6 +1516,8 @@ var Tocas = (function ()
             
             /** Turn millionsecond to float (ex: 300 -> 0.3), then turn float to string and remove the dot (0.3 -> 03 -> 3)*/
             var Timer = parseInt((Time / 1000).toString().replace('.', ''), 10)
+            
+            var Timer = Time < 1000 ? '0' + Timer : Timer
 
             /** Select animation duration by Time */      
             Time = isNaN(Time) ? '' : ' animated' + Timer + 's'
@@ -1947,6 +1984,20 @@ var Tocas = (function ()
         })
     }
     
+    
+    $.post = function(URL, Data, Callback)
+    {
+        Callback = Callback || null
+        
+        return $.ajax({
+            url     : URL,
+            type    : 'POST',
+            dataType: 'json',
+            data    : Data,
+            error   : Callback,
+            success : Callback, 
+        })
+    }
     
     
     $.isJSON = function(String)
