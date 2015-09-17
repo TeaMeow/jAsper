@@ -2256,7 +2256,7 @@ a {
   .btn:active {
     background: linear-gradient(to bottom, #ededed 0%, #d4d4d4 100%);
     color: #7a7a7a; }
-
+ 
 .btn-primary {
   padding: 8px 12px;
   font-size: 14px;
