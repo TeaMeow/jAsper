@@ -66,9 +66,13 @@ var Tocas = (function ()
     tocas.Init = function(Selector, Context)
     {
         var Dom
+        
         /** If Selector is a normal string */
         if(typeof Selector == 'string')
         {
+            if(Selector[0] == '<')
+                return tocas.Fragment(Selector)
+            
             /** Remove the space */
             Selector = Selector.trim()
             
@@ -89,6 +93,55 @@ var Tocas = (function ()
         }
         return tocas.Tocas(Dom, Selector)
     }
+    
+    tocas.Fragment = function(Selector)
+    {
+        var NoContent    = /^<([^\/].*?)>$/,
+            Regex        = /(?:<)(.*?)( .*?)?(?:>)/,
+            Match        = Regex.exec(Selector),
+            // <div class="foo" bar="BARRRR">
+            MainAll      = Match[0],
+            // div
+            MainElement  = Match[1],
+            // class="foo" bar="BARRRR"
+            MainAttrs    = Match[2],
+            HasAttr      = typeof MainAttrs !== 'undefined',
+            HasContent   = !MainAll.match(NoContent)
+            
+            
+            
+        /** Is this tag IS a container tag? (ex: div, section) */
+        if(HasContent)
+        {
+            /** Catch the content of it */
+        var ContentRegex = new RegExp(MainAll + '(.*?)(?:<\/' + MainElement + '>)$'),
+            ContentMatch = ContentRegex.exec(Selector),
+            Content = ContentMatch[1]
+        }
+        
+
+        /** Split Attrs into an array like this [KEY, VALUE, KEY, VALUE] */
+        if(HasAttr)
+        {
+            var Attrs = MainAttrs.split(/(?:\s)?(.*?)=(?:"|')(.*?)(?:"|')/).filter(Boolean),
+                AttrObj = {}
+                
+            /** Get odd and even values, convert [KEY, VALUE, KEY, VALUE] to {KEY: VALUE, KEY: VALUE} */
+            for(var i = 0; i < Attrs.length; i++)
+                if( (i + 2) % 2 == 0)
+                     AttrObj[Attrs[i]] = Attrs[i + 1]
+        }
+
+
+        var $Element = $(document.createElement(MainElement))
+        
+        if(HasAttr) $Element.attr(AttrObj)
+        if(HasContent) $Element.html(Content)
+
+        return $Element
+    }
+    
+    
     
     tocas.IsTocas = function(Obj)
     {
@@ -271,9 +324,7 @@ var Tocas = (function ()
     
         text: function(Text)
         {
-            Text = Text || null;
-            
-            if(!Text)
+            if(Text == undefined)
                 return 0 in this ? this[0].innerText : null
             else
                 return this.each(function(){ this.textContent = Text })
@@ -399,6 +450,18 @@ var Tocas = (function ()
             })
 
         },
+        
+        
+        
+        removeText: function()
+        {
+
+        },
+        
+        
+        
+        
+        
         
         focus: function()
         {
@@ -546,7 +609,7 @@ var Tocas = (function ()
                         })
                         this.ts_eventHandler[Event].registered = true
                     }
-                    
+
                     /** Push handler or anonymous function into that event list */
                     var eventHandler = this.ts_eventHandler[Event].list,
                         Data = {func: Handler, once: Once}
@@ -1354,6 +1417,19 @@ var Tocas = (function ()
             if(HTML != null) return this.each(function(){ this.parentNode.insertBefore(HTML, this.nextSibling) })
         },
         
+        appendTo: function(Selector)
+        {
+            return this.each(function()
+            {
+               
+                var that = this
+                $(Selector).each(function()
+                {
+                    this.appendChild(that, this.nextSibling);  
+                })
+            })
+        },
+        
         prependTo: function(Selector)
         {
             return this.each(function()
@@ -1362,8 +1438,33 @@ var Tocas = (function ()
                 var that = this
                 $(Selector).each(function()
                 {
-                    
-                    this.appendChild(that, this.nextSibling);  
+                    this.insertBefore(that, this.firstChild)
+                })
+            })
+        },
+        
+        insertAfter: function(Selector)
+        {
+            return this.each(function()
+            {
+               
+                var that = this
+                $(Selector).each(function()
+                {
+                    this.parentNode.insertBefore(that, this.nextSibling);
+                })
+            })
+        },
+        
+        insertBefore: function(Selector)
+        {
+            return this.each(function()
+            {
+               
+                var that = this
+                $(Selector).each(function()
+                {
+                    this.insertAdjacentHTML('beforeBegin', that)
                 })
             })
         },
@@ -1733,6 +1834,8 @@ var Tocas = (function ()
                                 case 'button':
                                 case 'reset':
                                 case 'submit':
+                                case 'number':
+                                    
                                     Array.push(Name + '=' + encodeURIComponent(Value))
                                     break
 
@@ -2122,8 +2225,10 @@ var Tocas = (function ()
      * Bind everything.
      */
      
-    $.binder = function(Binds)
+    $.binder = function(Binds, Rebind)
     {
+        Rebind = Rebind || false
+        
         for(var i in Binds)
         {
             /** Split the event and the target first */
@@ -2145,9 +2250,26 @@ var Tocas = (function ()
 
                     /** Different ways to bind with different events */
                     if(e == 'scrollBottom')
+                    {
+                        if(Rebind)
+                            $(Target).off('scroll')
+                            
                         $(Target).scrollBottom(Bind)
+                    }
+                    else if(e == 'clickToEdit')
+                    {
+                        if(Rebind)
+                            $(Target).off('click')
+                            
+                        $(Target).clickToEdit(Bind)
+                    }
                     else if(e != '')
+                    {
+                        if(Rebind)
+                            $(Target).off(e)
+                            
                         $(Target).on(e, Bind)
+                    }
                 }
             }
             
