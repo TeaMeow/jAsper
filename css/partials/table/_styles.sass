@@ -4,14 +4,14 @@
   border-collapse: collapse
   
   tr
-    border: #ededed 1px solid
+    border: #ededed 2px solid
     
     // Construct
     @each $class, $color in $colors
       &.#{$class}
         color     : auten($color)
         background: $color
-      
+
     td
       +padding
 
