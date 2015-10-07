@@ -866,6 +866,7 @@ var Tocas = (function ()
         
         scrollBottom: function(Scroll, ReachBottom)
         {
+            
             $(this).on('scroll', function()
             {
                 var Distance = this.scrollHeight - this.scrollTop - this.clientHeight
@@ -1835,6 +1836,7 @@ var Tocas = (function ()
                                 case 'reset':
                                 case 'submit':
                                 case 'number':
+                                case 'email':
                                     
                                     Array.push(Name + '=' + encodeURIComponent(Value))
                                     break
@@ -2088,18 +2090,87 @@ var Tocas = (function ()
     }
     
     
+    /**
+     * 
+     * @source http://stackoverflow.com/questions/18096715/implement-deferred-object-without-using-jquery
+     * @supported THEtheChad
+     */
+     
+    $.Deferred = function()
+    {
+        this._always = [];
+        this._done   = [];
+        this._fail   = [];
+    }
+
+    $.Deferred.prototype = 
+    {
+        execute: function(List, Args)
+        {
+            var i = List.length;
+
+            Args = Array.prototype.slice.call(Args);
+
+             while(i--) List[i].apply(null, Args);
+        },
+        
+        anyway: function()
+        {
+            this.execute(this._always, arguments);
+            return this
+        },
+        
+        resolve: function()
+        {
+            this.execute(this._done, arguments);
+            return this
+        },
+        
+        reject: function()
+        {
+            this.execute(this._fail, arguments);
+            return this
+        }, 
+        
+        done: function(Callback)
+        {
+            this._done.push(Callback);
+            return this
+        },
+        
+        fail: function(Callback)
+        {
+            this._fail.push(Callback);
+            return this
+        },
+        
+        always: function(Callback)
+        {
+            this._always.push(Callback);
+            return this
+        }
+    }
+
+
+
     $.post = function(URL, Data, Callback)
     {
         Callback = Callback || null
         
-        return $.ajax({
+        var d = new $.Deferred();
+        
+   
+        $.ajax({
             url     : URL,
             type    : 'POST',
             dataType: 'json',
             data    : Data,
-            error   : Callback,
-            success : Callback, 
+            error   : function(r){d.reject(r)},
+            success : function(r){d.resolve(r)}, 
         })
+         
+        
+        return d
     }
     
     
@@ -2244,6 +2315,22 @@ var Tocas = (function ()
             {
                 var Event = Events.split(' ')
                 
+
+                switch(Target)
+                {
+                    case ' window':
+                    case ' Window':
+                        
+                        Target = window
+                        break;
+                    
+                    case ' document':
+                    case ' Document':
+                        Target = document
+                        break;
+                }
+                
+
                 for(var i in Event)
                 {
                     var e = Event[i]
@@ -2262,6 +2349,13 @@ var Tocas = (function ()
                             $(Target).off('click')
                             
                         $(Target).clickToEdit(Bind)
+                    }
+                    else if(e == 'ready')
+                    {
+                        if(Rebind)
+                            $(Target).off('DOMContentLoaded')
+                            
+                        $(Target).ready(Bind)
                     }
                     else if(e != '')
                     {
@@ -2593,6 +2687,10 @@ var Tocas = (function ()
         });
     }
     
+    $.digits = function(Number)
+    {
+        return Number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
     
     $.isset = function()
     {
