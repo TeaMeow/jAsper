@@ -1,48 +1,24 @@
 /* 
-    @#%#^@$&%$##$#$%^^        ^$&%*%$%$#                      #$%^                #&%^&&$%@%#
-    #$%#$&!@$#%^^$%^*&     ^&%*^$%#%$$^&%^&%!#^$%@#$%^$#@$^ *&#&#$#            @#$%#$^&^#@$%$^&
-    %^$&%*^%$%&^*^^&@#   &%*$$%#$     @@##$^%$&%^$%@#$%%^%# @$%^#$%%$         %^$&#        %#%^&
-          $^&%*%       $%^$&%&          #$%$^%^@#$@#$%#^$ #!$^$  $%#$^        #!$^$        @$#$$
-          %^$&%*      %^$&%*            &^%*%^           #^&&#    #$%^&       $%*$&           
-          &@^!$%      #$%$^&            @#$%#^          &@!^&      *^&%^      @$#%^$%$^$%^$%&@$
-          @$%^*^      *^&%^%            $%^%&$         #%^@%^       %^$^&      $&%#%$#^$&$^%^#$%
-          *!*$&#      #%^$&@            #$%^$%        %#$%#          %*&^%                 $%*$&
-          *&$@$!       *&^&%!           ^%&*%^%*%&#! %#$%%            $#^%$   #!$^$        @$#$$
-          @#$^&#       #$%#$%$#$      ##%^&*&^@#$@# @%#^%              #^%&&   %^$&#       %#%^&
-          !#$@%#         #$%^$&^$#%#$%$^%$$%^$^&^& #$%#$@#$%#^#$@^%$&^$#$#*#$  @#$%#$^&^#@$%$^& 
-          @%$%&%             #^$&^$&^%&%          @#$@%@#%^&$#@$%^$*@#$#%^$%$#    #&%^&&$%@%#   
-        
-                                        Glad to be with you.
+   ,,                                                   
+   db       db                                          
+           ;MM:                                         
+ `7MM     ,V^MM.    ,pP"Ybd `7MMpdMAo.  .gP"Ya `7Mb,od8 
+   MM    ,M  `MM    8I   `"   MM   `Wb ,M'   Yb  MM' "' 
+   MM    AbmmmqMA   `YMMMa.   MM    M8 8M""""""  MM     
+   MM   A'     VML  L.   I8   MM   ,AP YM.    ,  MM     
+   MM .AMA.   .AMMA.M9mmmP'   MMbmmd'   `Mbmmd'.JMML.   
+QO MP                         MM                        
+`bmP                        .JMML.      
 
-                           TeaMeow / Open / Colorful /  A.S.O  / Simple
-                            茶葉貓  / 開闊 /  多彩多姿 / 藍.白.澄 / 簡潔
-
-                                           Basic colors
-
-                                  A oi    -    Blue     -    #00ADEA
-                                  S hiroi -    White    -    #FFFFFF
-                                  O renji -    Orange   -    #FFA500    
+                   contributors
                    
-                                        Object of elements
-                         
-                                          ts_eventHandler
-                                       (store event handlers.)
-                                       
-                                         ts_longPressTimer
-                              (store the timer of longpress detection.)
+          ZeptoJS   : http://goo.gl/yFtHui
+          Slide     : http://goo.gl/VjYiOU
+          Serialize : http://goo.gl/UTqTzI
+          AvgColor  : http://goo.gl/eGcxJ5
+          Library   : http://goo.gl/ECZAWR
+          isNumeric : http://goo.gl/0qmDLc
 */
-
-/**
- * I learn lots of thing there, thanks:
- * 
- * ZeptoJS     - zeptojs.com
- * Slide       - http://stackoverflow.com/questions/3795481/javascript-slidedown-without-jquery
- * Serialize   - code.google.com/p/form-serialize/downloads/list
- * AvgColor    - http://tech.mozilla.com.tw/posts/5355/%E5%9C%A8-firefox-os-%E5%8F%96%E5%9C%96%E7%89%87%E8%89%B2%E5%BD%A9%E5%B9%B3%E5%9D%87%E5%80%BC%E4%B9%8B%E4%BA%8C%E4%B8%89%E4%BA%8B
- * Library     - youmightnotneedjquery.com/
- * isNumeric   - http://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric
- */
-
 
 
 /**
