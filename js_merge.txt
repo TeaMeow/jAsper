@@ -20,3 +20,4 @@ src/form/serialize.js
 src/protocol/ajax.js
 src/protocol/pjax.js
 src/protocol/sse.js
+src/protocol/rest.js
