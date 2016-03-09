@@ -29,7 +29,7 @@ QO MP                         MM
 
 var Tocas = (function ()
 {
-    var $, 
+    var jA, 
         emptyArray          = [], 
         slice               = emptyArray.slice, 
         filter              = emptyArray.filter, 
@@ -60,7 +60,7 @@ var Tocas = (function ()
             selector = selector.trim();
             
             if(typeof Context != 'undefined')
-                return $(selector).find(context);
+                return jA(selector).find(context);
             
             dom = tocas.select(document, selector);
         }
@@ -119,7 +119,7 @@ var Tocas = (function ()
                      attrObj[attrs[i]] = attrs[i + 1];
         }
 
-        var $element = $(document.createElement(mainElement));
+        var $element = jA(document.createElement(mainElement));
         
         if(hasAttr)
             $element.attr(attrObj);
@@ -152,7 +152,7 @@ var Tocas = (function ()
     tocas.Tocas = function(dom, selector)
     {
         dom           = dom || [];
-        dom.__proto__ = $.fn;
+        dom.__proto__ = jA.fn;
         dom.selector  = selector || '';
         
         return dom;
@@ -167,7 +167,7 @@ var Tocas = (function ()
      * Call to Init to get everything ready.
      */
     
-    $ = function(selector, context)
+    jA = function(selector, context)
     {
         return tocas.init(selector, context);
     };
@@ -179,7 +179,7 @@ var Tocas = (function ()
      * Library
      */
     
-    $.fn =
+    jA.fn =
     {
         /**
          * Each
@@ -205,7 +205,7 @@ var Tocas = (function ()
         slice: function()
         {
             /** Regenerate a new object */
-            return $(slice.apply(this, arguments));
+            return jA(slice.apply(this, arguments));
         },
 
         
@@ -220,12 +220,12 @@ var Tocas = (function ()
         eq: function(index)
         {
             return this.slice(index, + index + 1);
-        },
+        }
      
 
 }
 
-    if(!window.$) window.$ = $;
+    if(!window.jA) window.jA = jA;
     
 })(Tocas);
 

@@ -2,11 +2,11 @@
  * Hide
  */
 
-$.fn.hide = function()
+jA.fn.hide = function()
 {
     return this.each(function()
     {
-        $(this).addClass('hidden');
+        jA(this).addClass('hidden');
     });
 }
 
@@ -17,29 +17,29 @@ $.fn.hide = function()
  * Show
  */
 
-$.fn.show = function()
+jA.fn.show = function()
 {
     return this.each(function()
     {
-        $(this).removeClass('hidden');
+        jA(this).removeClass('hidden');
     });
 }
 
     
-$.fn.isHidden = function()
+jA.fn.isHidden = function()
 {
-    return $(this).hasClass('hidden');
+    return jA(this).hasClass('hidden');
 }
         
         
 
-$.fn.toggle = function()
+jA.fn.toggle = function()
 {
     return this.each(function()
     {
-        if($(this).hasClass('hidden'))
-            $(this).show();
+        if(jA(this).hasClass('hidden'))
+            jA(this).show();
         else
-            $(this).hide();
+            jA(this).hide();
     })
 }

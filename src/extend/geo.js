@@ -1,4 +1,4 @@
-$.geo = function(option)
+jA.geo = function(option)
 {
     if(typeof option == 'undefined')
         return false;

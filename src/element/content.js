@@ -8,7 +8,7 @@
  * @return mixed
  */
 
-$.fn.val = function(value)
+jA.fn.val = function(value)
 {
     if(value == null)
     {
@@ -37,7 +37,7 @@ $.fn.val = function(value)
  * @return object
  */
 
-$.fn.empty = function()
+jA.fn.empty = function()
 {
     return this.each(function()
     {
@@ -59,7 +59,7 @@ $.fn.empty = function()
  * @return mixed
  */
 
-$.fn.text = function(text)
+jA.fn.text = function(text)
 {
     if(text === undefined)
         return 0 in this ? this[0].innerText : null;
@@ -80,7 +80,7 @@ $.fn.text = function(text)
  * @return mixed
  */
 
-$.fn.html = function(html)
+jA.fn.html = function(html)
 {
     html = html || null;
     

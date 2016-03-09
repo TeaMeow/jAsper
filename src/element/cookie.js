@@ -10,7 +10,7 @@
  * @return mixed
  */
 
-$.cookie = function(name, value, options)
+jA.cookie = function(name, value, options)
 {
     /** If value is not null, means this is SET a cookie, not GET a cookie */
     if(value != null)

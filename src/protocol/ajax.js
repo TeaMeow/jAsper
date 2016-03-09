@@ -1,4 +1,4 @@
-$.ajax = function(obj, type)
+jA.ajax = function(obj, type)
 {
     if(obj == null)
         return false;
@@ -30,7 +30,7 @@ $.ajax = function(obj, type)
             switch(obj.dataType)
             {
                 case 'json':
-                    if($.isJSON(XHR.responseText))
+                    if(jA.isJSON(XHR.responseText))
                         obj.success(JSON.parse(XHR.responseText), XHR);
                     else
                         if(errorCallback) obj.error(XHR, 'parsererror');
@@ -104,14 +104,14 @@ $.ajax = function(obj, type)
 
 
 
-$.post = function(url, data, callback)
+jA.post = function(url, data, callback)
 {
     callback = callback || null;
     
-    var d = new $.deferred();
+    var d = new jA.deferred();
     
 
-    $.ajax({
+    jA.ajax({
         url     : url,
         type    : 'POST',
         dataType: 'json',
@@ -127,9 +127,9 @@ $.post = function(url, data, callback)
 
 
 
-$.getJSON = function(url, callback)
+jA.getJSON = function(url, callback)
 {
-    return $.ajax({
+    return jA.ajax({
         url: url,
         type: 'GET',
         dataType: 'json',

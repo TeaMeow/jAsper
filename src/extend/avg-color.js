@@ -8,7 +8,7 @@
  * @return int|string
  */
  
-$.fn.avgColor = function(type)
+jA.fn.avgColor = function(type)
 {
     type = type || null;
     

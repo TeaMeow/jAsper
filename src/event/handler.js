@@ -1,4 +1,4 @@
-$.fn.on = function(eventName, selector, handler, once)
+jA.fn.on = function(eventName, selector, handler, once)
 {
     once            = once || false
     var hasSelector = true
@@ -65,7 +65,7 @@ $.fn.on = function(eventName, selector, handler, once)
                                 var inSelector = false;
                                 
                                 /** If this element is in the selector, then we set InSelector as true */
-                                $(this.ts_eventHandler[event].list[e].selector).each(function(i, el)
+                                jA(this.ts_eventHandler[event].list[e].selector).each(function(i, el)
                                 {
                                     if(evt.target === el) inSelector = true;
                                 })
@@ -105,19 +105,19 @@ $.fn.on = function(eventName, selector, handler, once)
 
 
 
-$.fn.one = function(eventName, selector, handler)
+jA.fn.one = function(eventName, selector, handler)
 {   
     return this.each(function()
     {
         /** Set "once" true, it will auto remove once we call it */
-        $(this).on(eventName, selector, handler, true);
+        jA(this).on(eventName, selector, handler, true);
     });
 }
 
         
 
 
-$.fn.off = function(eventName, handler)
+jA.fn.off = function(eventName, handler)
 {
     return this.each(function()
     {

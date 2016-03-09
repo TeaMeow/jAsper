@@ -9,7 +9,7 @@
  * @return mixed
  */
  
-$.fn.attr = function(attr, value)
+jA.fn.attr = function(attr, value)
 {
     value = (value === null) ? null : value;
     
@@ -39,7 +39,7 @@ $.fn.attr = function(attr, value)
  * @return object
  */
  
-$.fn.removeAttr = function(attr)
+jA.fn.removeAttr = function(attr)
 {
     return this.each(function(){ this.removeAttribute(attr); });
 }

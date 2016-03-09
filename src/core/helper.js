@@ -1,4 +1,4 @@
-$.isJSON = function(string)
+jA.isJSON = function(string)
 {
     /** Detect the type of the respone is json or not */
     var isJSON = true;
@@ -10,7 +10,7 @@ $.isJSON = function(string)
 }
 
 
-$.inArray = function(item, targetArray)
+jA.inArray = function(item, targetArray)
 {
     return targetArray.indexOf(item);
 }
@@ -21,7 +21,7 @@ $.inArray = function(item, targetArray)
  *
  *
  */
-$.isNumeric = function(number)
+jA.isNumeric = function(number)
 {
     return !isNaN(parseFloat(Number)) && isFinite(Number);
 }
@@ -38,7 +38,7 @@ $.isNumeric = function(number)
  * Generate a random number.
  */
 
-$.rand = function(min, max)
+jA.rand = function(min, max)
 {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -46,7 +46,7 @@ $.rand = function(min, max)
 
 
 
-$.digits = function(number)
+jA.digits = function(number)
 {
-    return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "jA1,");
 }

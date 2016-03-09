@@ -4,7 +4,7 @@
  * We called it SSE here, get newest update, blah blah..
  */
 
-$.sse = function(obj)
+jA.sse = function(obj)
 {
     var sse = new EventSource(obj.url);
     

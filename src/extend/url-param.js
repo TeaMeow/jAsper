@@ -1,4 +1,4 @@
-$.urlParam = function(paramName)
+jA.urlParam = function(paramName)
 {
     /** Are we getting all parameters or just a special one? */
     var getAll    = (typeof paramName === 'undefined'),

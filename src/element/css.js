@@ -8,7 +8,7 @@
  * @param int      time       The animation time.
  */
 
-$.fn.cssAnimate = function(animate, callback, time)
+jA.fn.cssAnimate = function(animate, callback, time)
 {
     /** Animate list */
     //var animateList = 'slideInDown slideInLeft slideInRight slideInUp slideOutDown slideOutLeft slideOutRight slideOutUp'
@@ -26,19 +26,19 @@ $.fn.cssAnimate = function(animate, callback, time)
     
     return this.each(function()
     {
-        /** For passing $(this) to inside function */
+        /** For passing jA(this) to inside function */
         var that = this;
         
         /** If last animation not end .. */
-        //if($(this).hasClass(Animate))
-            //$(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(animateList).removeClass(animate + ' animated' + time)
+        //if(jA(this).hasClass(Animate))
+            //jA(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(animateList).removeClass(animate + ' animated' + time)
 
         /** Add animation */
-        $(this).addClass(animate + ' animated' + time)
+        jA(this).addClass(animate + ' animated' + time)
                /** Once the animation end, we remove the animate class and callback **/
                .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
                 {
-                   $(that).removeClass(animate + ' animated' + time);
+                   jA(that).removeClass(animate + ' animated' + time);
                    
                    if((typeof callback !== 'undefined' && callback != null) && typeof callback !== 'number')
                         callback.call(that);
@@ -60,7 +60,7 @@ $.fn.cssAnimate = function(animate, callback, time)
  * @return mixed
  */
 
-$.fn.css = function(property, value)
+jA.fn.css = function(property, value)
 {
     var css = '';
     
@@ -81,14 +81,14 @@ $.fn.css = function(property, value)
     {
         var cssObject = {};
         
-        this.each(function(){ for(var i in property) cssObject[property[i]] = $(this).getCss(property[i]); })
+        this.each(function(){ for(var i in property) cssObject[property[i]] = jA(this).getCss(property[i]); })
         
         return cssObject;
     }
     /** Get single CSS : If only style name */
     else if(property != null && value == null)
     {
-        return $(this).getCss(property);
+        return jA(this).getCss(property);
     }
     
     return this.each(function()
@@ -113,7 +113,7 @@ $.fn.css = function(property, value)
  * @return bool
  */
 
-$.fn.hasClass = function(classes)
+jA.fn.hasClass = function(classes)
 {
     if(0 in this)
         if(this[0].classList)
@@ -133,7 +133,7 @@ $.fn.hasClass = function(classes)
  * @return array
  */
 
-$.fn.classList = function()
+jA.fn.classList = function()
 {
     var classes = [];
     
@@ -161,7 +161,7 @@ $.fn.classList = function()
  * @return object
  */
 
-$.fn.addClass = function(classes)
+jA.fn.addClass = function(classes)
 {
     if(classes === null)
         return;
@@ -196,7 +196,7 @@ $.fn.addClass = function(classes)
  * @return object
  */
 
-$.fn.removeClass = function(classes)
+jA.fn.removeClass = function(classes)
 {
     return this.each(function()
     {
@@ -236,7 +236,7 @@ $.fn.removeClass = function(classes)
  * @return object
  */
 
-$.fn.toggleClass = function(classes)
+jA.fn.toggleClass = function(classes)
 {
     return this.each(function()
     {
@@ -274,7 +274,7 @@ $.fn.toggleClass = function(classes)
  * Get CSS
  */
 
-$.fn.getCss = function(property)
+jA.fn.getCss = function(property)
 {
     /** Get computed style */
     try

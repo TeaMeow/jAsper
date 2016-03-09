@@ -5,7 +5,7 @@
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-/* Last merge : Tue Mar 8 15:33:06 UTC 2016  */
+/* Last merge : Tue Mar 8 20:02:43 UTC 2016  */
 
 /* Merging order :
 
@@ -18,6 +18,7 @@
 - src/element/css.js
 - src/element/dom.js
 - src/element/visibility.js
+- src/form/serialize.js
 - src/event/binder.js
 - src/event/common.js
 - src/event/handler.js
@@ -69,7 +70,7 @@ QO MP                         MM
 
 var Tocas = (function ()
 {
-    var $, 
+    var jA, 
         emptyArray          = [], 
         slice               = emptyArray.slice, 
         filter              = emptyArray.filter, 
@@ -100,7 +101,7 @@ var Tocas = (function ()
             selector = selector.trim();
             
             if(typeof Context != 'undefined')
-                return $(selector).find(context);
+                return jA(selector).find(context);
             
             dom = tocas.select(document, selector);
         }
@@ -159,7 +160,7 @@ var Tocas = (function ()
                      attrObj[attrs[i]] = attrs[i + 1];
         }
 
-        var $element = $(document.createElement(mainElement));
+        var $element = jA(document.createElement(mainElement));
         
         if(hasAttr)
             $element.attr(attrObj);
@@ -192,7 +193,7 @@ var Tocas = (function ()
     tocas.Tocas = function(dom, selector)
     {
         dom           = dom || [];
-        dom.__proto__ = $.fn;
+        dom.__proto__ = jA.fn;
         dom.selector  = selector || '';
         
         return dom;
@@ -207,7 +208,7 @@ var Tocas = (function ()
      * Call to Init to get everything ready.
      */
     
-    $ = function(selector, context)
+    jA = function(selector, context)
     {
         return tocas.init(selector, context);
     };
@@ -219,7 +220,7 @@ var Tocas = (function ()
      * Library
      */
     
-    $.fn =
+    jA.fn =
     {
         /**
          * Each
@@ -245,7 +246,7 @@ var Tocas = (function ()
         slice: function()
         {
             /** Regenerate a new object */
-            return $(slice.apply(this, arguments));
+            return jA(slice.apply(this, arguments));
         },
 
         
@@ -260,12 +261,12 @@ var Tocas = (function ()
         eq: function(index)
         {
             return this.slice(index, + index + 1);
-        },
+        }
      
 
 }
 
-    if(!window.$) window.$ = $;
+    if(!window.jA) window.jA = jA;
     
 })(Tocas);
 
@@ -293,14 +294,14 @@ function $_(Selector)
  * @supported THEtheChad
  */
  
-$.deferred = function()
+jA.deferred = function()
 {
     this._always = [];
     this._done   = [];
     this._fail   = [];
 }
 
-$.deferred.prototype = 
+jA.deferred.prototype = 
 {
     execute: function(list, args)
     {
@@ -355,7 +356,7 @@ $.deferred.prototype =
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-$.isJSON = function(string)
+jA.isJSON = function(string)
 {
     /** Detect the type of the respone is json or not */
     var isJSON = true;
@@ -367,7 +368,7 @@ $.isJSON = function(string)
 }
 
 
-$.inArray = function(item, targetArray)
+jA.inArray = function(item, targetArray)
 {
     return targetArray.indexOf(item);
 }
@@ -378,7 +379,7 @@ $.inArray = function(item, targetArray)
  *
  *
  */
-$.isNumeric = function(number)
+jA.isNumeric = function(number)
 {
     return !isNaN(parseFloat(Number)) && isFinite(Number);
 }
@@ -395,7 +396,7 @@ $.isNumeric = function(number)
  * Generate a random number.
  */
 
-$.rand = function(min, max)
+jA.rand = function(min, max)
 {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -403,9 +404,9 @@ $.rand = function(min, max)
 
 
 
-$.digits = function(number)
+jA.digits = function(number)
 {
-    return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "jA1,");
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -424,7 +425,7 @@ $.digits = function(number)
  * @return mixed
  */
  
-$.fn.attr = function(attr, value)
+jA.fn.attr = function(attr, value)
 {
     value = (value === null) ? null : value;
     
@@ -454,7 +455,7 @@ $.fn.attr = function(attr, value)
  * @return object
  */
  
-$.fn.removeAttr = function(attr)
+jA.fn.removeAttr = function(attr)
 {
     return this.each(function(){ this.removeAttribute(attr); });
 }
@@ -476,7 +477,7 @@ $.fn.removeAttr = function(attr)
  * @return mixed
  */
 
-$.fn.val = function(value)
+jA.fn.val = function(value)
 {
     if(value == null)
     {
@@ -505,7 +506,7 @@ $.fn.val = function(value)
  * @return object
  */
 
-$.fn.empty = function()
+jA.fn.empty = function()
 {
     return this.each(function()
     {
@@ -527,7 +528,7 @@ $.fn.empty = function()
  * @return mixed
  */
 
-$.fn.text = function(text)
+jA.fn.text = function(text)
 {
     if(text === undefined)
         return 0 in this ? this[0].innerText : null;
@@ -548,7 +549,7 @@ $.fn.text = function(text)
  * @return mixed
  */
 
-$.fn.html = function(html)
+jA.fn.html = function(html)
 {
     html = html || null;
     
@@ -575,7 +576,7 @@ $.fn.html = function(html)
  * @return mixed
  */
 
-$.cookie = function(name, value, options)
+jA.cookie = function(name, value, options)
 {
     /** If value is not null, means this is SET a cookie, not GET a cookie */
     if(value != null)
@@ -635,7 +636,7 @@ $.cookie = function(name, value, options)
  * @param int      time       The animation time.
  */
 
-$.fn.cssAnimate = function(animate, callback, time)
+jA.fn.cssAnimate = function(animate, callback, time)
 {
     /** Animate list */
     //var animateList = 'slideInDown slideInLeft slideInRight slideInUp slideOutDown slideOutLeft slideOutRight slideOutUp'
@@ -653,19 +654,19 @@ $.fn.cssAnimate = function(animate, callback, time)
     
     return this.each(function()
     {
-        /** For passing $(this) to inside function */
+        /** For passing jA(this) to inside function */
         var that = this;
         
         /** If last animation not end .. */
-        //if($(this).hasClass(Animate))
-            //$(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(animateList).removeClass(animate + ' animated' + time)
+        //if(jA(this).hasClass(Animate))
+            //jA(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(animateList).removeClass(animate + ' animated' + time)
 
         /** Add animation */
-        $(this).addClass(animate + ' animated' + time)
+        jA(this).addClass(animate + ' animated' + time)
                /** Once the animation end, we remove the animate class and callback **/
                .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
                 {
-                   $(that).removeClass(animate + ' animated' + time);
+                   jA(that).removeClass(animate + ' animated' + time);
                    
                    if((typeof callback !== 'undefined' && callback != null) && typeof callback !== 'number')
                         callback.call(that);
@@ -687,7 +688,7 @@ $.fn.cssAnimate = function(animate, callback, time)
  * @return mixed
  */
 
-$.fn.css = function(property, value)
+jA.fn.css = function(property, value)
 {
     var css = '';
     
@@ -708,14 +709,14 @@ $.fn.css = function(property, value)
     {
         var cssObject = {};
         
-        this.each(function(){ for(var i in property) cssObject[property[i]] = $(this).getCss(property[i]); })
+        this.each(function(){ for(var i in property) cssObject[property[i]] = jA(this).getCss(property[i]); })
         
         return cssObject;
     }
     /** Get single CSS : If only style name */
     else if(property != null && value == null)
     {
-        return $(this).getCss(property);
+        return jA(this).getCss(property);
     }
     
     return this.each(function()
@@ -740,7 +741,7 @@ $.fn.css = function(property, value)
  * @return bool
  */
 
-$.fn.hasClass = function(classes)
+jA.fn.hasClass = function(classes)
 {
     if(0 in this)
         if(this[0].classList)
@@ -760,7 +761,7 @@ $.fn.hasClass = function(classes)
  * @return array
  */
 
-$.fn.classList = function()
+jA.fn.classList = function()
 {
     var classes = [];
     
@@ -788,7 +789,7 @@ $.fn.classList = function()
  * @return object
  */
 
-$.fn.addClass = function(classes)
+jA.fn.addClass = function(classes)
 {
     if(classes === null)
         return;
@@ -823,7 +824,7 @@ $.fn.addClass = function(classes)
  * @return object
  */
 
-$.fn.removeClass = function(classes)
+jA.fn.removeClass = function(classes)
 {
     return this.each(function()
     {
@@ -863,7 +864,7 @@ $.fn.removeClass = function(classes)
  * @return object
  */
 
-$.fn.toggleClass = function(classes)
+jA.fn.toggleClass = function(classes)
 {
     return this.each(function()
     {
@@ -901,7 +902,7 @@ $.fn.toggleClass = function(classes)
  * Get CSS
  */
 
-$.fn.getCss = function(property)
+jA.fn.getCss = function(property)
 {
     /** Get computed style */
     try
@@ -929,7 +930,7 @@ $.fn.getCss = function(property)
  * @return mixed
  */
  
-$.fn.wrap = function(element)
+jA.fn.wrap = function(element)
 {
     return this.each(function()
     {
@@ -940,7 +941,7 @@ $.fn.wrap = function(element)
 
 
 
-$.fn.append = function(html)
+jA.fn.append = function(html)
 {
     if(html != null && typeof html == 'object')
         return this.each(function(){ this.appendChild(html); });
@@ -948,70 +949,70 @@ $.fn.append = function(html)
         return this.each(function(){ this.innerHTML += html; });
 }
 
-$.fn.after = function(html)
+jA.fn.after = function(html)
 {
     if(html != null)
         return this.each(function(){ this.insertAdjacentHTML('afterend', html); });
 }
 
-$.fn.before = function(html)
+jA.fn.before = function(html)
 {
     if(html != null)
         return this.each(function(){ this.insertAdjacentHTML('beforeBegin', html); });
 }
 
-$.fn.prepend = function(html)
+jA.fn.prepend = function(html)
 {
     if(html != null)
         return this.each(function(){ this.parentNode.insertBefore(html, this.nextSibling); });
 }
 
-$.fn.appendTo = function(selector)
+jA.fn.appendTo = function(selector)
 {
     return this.each(function()
     {
         var that = this;
         
-        $(selector).each(function()
+        jA(selector).each(function()
         {
             this.appendChild(that, this.nextSibling);  
         });
     })
 }
 
-$.fn.prependTo = function(selector)
+jA.fn.prependTo = function(selector)
 {
     return this.each(function()
     {
         var that = this;
         
-        $(selector).each(function()
+        jA(selector).each(function()
         {
             this.insertBefore(that, this.firstChild);
         });
     })
 }
 
-$.fn.insertAfter = function(selector)
+jA.fn.insertAfter = function(selector)
 {
     return this.each(function()
     {
         var that = this;
         
-        $(selector).each(function()
+        jA(selector).each(function()
         {
             this.parentNode.insertBefore(that, this.nextSibling);
         });
     })
 }
 
-$.fn.insertBefore = function(selector)
+jA.fn.insertBefore = function(selector)
 {
     return this.each(function()
     {
         var that = this;
         
-        $(selector).each(function()
+        jA(selector).each(function()
         {
             this.insertAdjacentHTML('beforeBegin', that);
         });
@@ -1020,7 +1021,7 @@ $.fn.insertBefore = function(selector)
 
 
 
-$.fn.clone = function(deep)
+jA.fn.clone = function(deep)
 {
     /** Copy child too? */
     deep = (typeof deep == 'undefined') ? true : deep;
@@ -1034,12 +1035,12 @@ $.fn.clone = function(deep)
     });
 
     /** Using the elements which we cloned */
-    return $(cloneList);
+    return jA(cloneList);
 }
 
 
 
-$.fn.remove = function()
+jA.fn.remove = function()
 {
     return this.each(function(){ this.parentNode.removeChild(this) });
 }
@@ -1047,7 +1048,7 @@ $.fn.remove = function()
 
 
 
-$.fn.children = function()
+jA.fn.children = function()
 {
     var list = [];
         
@@ -1061,12 +1062,12 @@ $.fn.children = function()
     })
     
     /** Return the list with $ */
-    return $(list);
+    return jA(list);
 }
 
 
 
-$.fn.find = function(selector)
+jA.fn.find = function(selector)
 {
     /** The selector must be string */
     if(typeof selector !== 'string')
@@ -1081,7 +1082,7 @@ $.fn.find = function(selector)
     });
 
     /** Return the list with $ */
-    return list.length ? $(list) : null;
+    return list.length ? jA(list) : null;
 }
 
 
@@ -1091,28 +1092,28 @@ $.fn.find = function(selector)
          * Parent
          */
         
-        $.fn.parent = function()
+        jA.fn.parent = function()
         {
-            return 0 in this ? $(this[0].parentNode) : null;
+            return 0 in this ? jA(this[0].parentNode) : null;
         }
         
         
         
 
-        $.fn.parents = function(selector)
+        jA.fn.parents = function(selector)
         {
             var that     = this,
                 selector = selector || null,
                 parents  = [];
             
             if(selector !== null)
-                var selector = $(selector);
+                var selector = jA(selector);
 
             /** Non stop loop, until there's no parent of the element */
             while(that)
             {     
                 /** Not this one, we go upper */
-                that = $(that).parent()[0];
+                that = jA(that).parent()[0];
 
                 /** No parent? */
                 if(!that)
@@ -1123,23 +1124,23 @@ $.fn.find = function(selector)
                     parents.push(that);
             }
             
-            return $(parents);
+            return jA(parents);
         }
         
         
         
         
 
-        $.fn.closest = function(selector)
+        jA.fn.closest = function(selector)
         {
             var that     = this,
-                selector = $(selector);
+                selector = jA(selector);
 
             /** Non stop loop, until there's no parent of the element */
             while(true)
             {     
                 /** Not this one, we go upper */
-                that = $(that).parent()[0];
+                that = jA(that).parent()[0];
 
                 /** No parent? */
                 if(!that)
@@ -1147,15 +1148,15 @@ $.fn.find = function(selector)
                 
                 /** Is the parent in the closest selector? If it do, then the parent is the closest element which we want */
                 if(Array.prototype.indexOf.call(selector, that) !== -1)
-                    return $(that);
+                    return jA(that);
             }
         }
          
         
 
-        $.fn.contains = function(wants)
+        jA.fn.contains = function(wants)
         {
-            var selector = $(wants),
+            var selector = jA(wants),
                 isTrue   = false;
 
             this.each(function(i, el)
@@ -1181,11 +1182,11 @@ $.fn.find = function(selector)
  * Hide
  */
 
-$.fn.hide = function()
+jA.fn.hide = function()
 {
     return this.each(function()
     {
-        $(this).addClass('hidden');
+        jA(this).addClass('hidden');
     });
 }
 
@@ -1196,31 +1197,119 @@ $.fn.hide = function()
  * Show
  */
 
-$.fn.show = function()
+jA.fn.show = function()
 {
     return this.each(function()
     {
-        $(this).removeClass('hidden');
+        jA(this).removeClass('hidden');
     });
 }
 
     
-$.fn.isHidden = function()
+jA.fn.isHidden = function()
 {
-    return $(this).hasClass('hidden');
+    return jA(this).hasClass('hidden');
 }
         
         
 
-$.fn.toggle = function()
+jA.fn.toggle = function()
 {
     return this.each(function()
     {
-        if($(this).hasClass('hidden'))
-            $(this).show();
+        if(jA(this).hasClass('hidden'))
+            jA(this).show();
         else
-            $(this).hide();
+            jA(this).hide();
     })
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Merging js: src/form/serialize.js begins */
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+
+jA.fn.serialize = function()
+{
+    var array = [];
+
+    this.each(function()
+    {
+        var z, a;
+        
+        for (var z = 0; z < this.elements.length; z++)
+        {
+            var elements = this.elements[z],
+                 name    = elements.name,
+                 value   = elements.value;
+
+            /** If element's name is empty or disabled or no value, we skip this one */
+            if(!name || elements.disabled || !value)
+                continue;
+
+            switch (elements.nodeName)
+            {
+                case 'INPUT':
+                    switch(elements.type)
+                    {
+                        case 'text'    :
+                        case 'hidden'  :
+                        case 'password':
+                        case 'button'  :
+                        case 'reset'   :
+                        case 'submit'  :
+                        case 'number'  :
+                        case 'email'   :
+                            array.push(name + '=' + encodeURIComponent(value));
+                            break;
+
+                        case 'checkbox':
+                        case 'radio'   :
+                            /** No checked, we skip. */
+                            if(!elements.checked)
+                                continue;
+
+                            array.push(name + '=' + encodeURIComponent(value));
+                            break;
+                    }
+                    break;
+
+                case 'TEXTAREA':
+                    array.push(name + '=' + encodeURIComponent(value));
+                    break;
+
+                case 'SELECT':
+                    switch(elements.type)
+                    {
+                        case 'select-one':
+                            array.push(name + '=' + encodeURIComponent(value));
+                            break;
+
+                        case 'select-multiple':
+                            for(var a = 0; a < elements.options.length; a++)
+                            {
+                                var optionValue = elements.options[a].value;
+                                
+                                if (elements.options[a].selected)
+                                    array.push(name + '=' + encodeURIComponent(optionValue));
+                            }
+                    }
+                    break;
+
+                case 'BUTTON':
+                    switch(elements.type)
+                    {
+                        case 'reset' :
+                        case 'submit':
+                        case 'button':
+                            array.push(name + '=' + encodeURIComponent(value));
+                    }
+            }  
+         }
+    });
+
+    /** Prevent sending a object or array via XHR cause an error */
+    return array.join('&').toString();
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -1228,7 +1317,7 @@ $.fn.toggle = function()
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-$.binder = function(binds, rebind)
+jA.binder = function(binds, rebind)
 {
     rebind = rebind || false;
     
@@ -1270,23 +1359,23 @@ $.binder = function(binds, rebind)
                 if(e == 'scrollBottom')
                 {
                     if(rebind)
-                        $(target).off('scroll');
+                        jA(target).off('scroll');
                         
-                    $(target).scrollBottom(bind);
+                    jA(target).scrollBottom(bind);
                 }
                 else if(e == 'ready')
                 {
                     if(rebind)
-                        $(target).off('DOMContentLoaded');
+                        jA(target).off('DOMContentLoaded');
                         
-                    $(target).ready(bind);
+                    jA(target).ready(bind);
                 }
                 else if(e != '')
                 {
                     if(rebind)
-                        $(target).off(e);
+                        jA(target).off(e);
                         
-                    $(target).on(e, bind);
+                    jA(target).on(e, bind);
                 }
             }
         }
@@ -1311,35 +1400,35 @@ $.binder = function(binds, rebind)
 
 
 
-$.fn.mousedown = function(callback)
+jA.fn.mousedown = function(callback)
 {
-    return $(this).on('mousedown', callback);
+    return jA(this).on('mousedown', callback);
 }
 
-$.fn.mouseup = function(callback)
+jA.fn.mouseup = function(callback)
 {
-    return $(this).on('mouseup', callback);
+    return jA(this).on('mouseup', callback);
 }
 
-$.fn.mousemove = function(callback)
+jA.fn.mousemove = function(callback)
 {
-    return $(this).on('mousemove', callback);
+    return jA(this).on('mousemove', callback);
 }
 
-$.fn.click = function(callback)
+jA.fn.click = function(callback)
 {
-    return $(this).on('click', callback);
+    return jA(this).on('click', callback);
 }
 
-$.fn.dragstart = function(callback)
+jA.fn.dragstart = function(callback)
 {
-    return $(this).on('dragstart', callback);
+    return jA(this).on('dragstart', callback);
 }
 
 
 
 
-$.fn.longpress = function(callback, clickCallback, timer)
+jA.fn.longPress = function(callback, clickCallback, timer)
 {
     /** If callback is not an number, which means it must be a function */
     if(!isNaN(clickCallback))
@@ -1349,7 +1438,7 @@ $.fn.longpress = function(callback, clickCallback, timer)
     
     return this.each(function()
     {
-        $(this).mousedown(function(event)
+        jA(this).mousedown(function(event)
         {
             var that = this;
             /** Haven't trigger long press yet, so we set this to false */
@@ -1386,15 +1475,15 @@ $.fn.longpress = function(callback, clickCallback, timer)
 }
 
 
-$.fn.trigger = function(Event)
+jA.fn.trigger = function(Event)
 {
     return this.each(function(){ this[Event]() });
 }
 
 
-$.fn.scrollBottom = function(scroll, reachBottom)
+jA.fn.scrollBottom = function(scroll, reachBottom)
 {
-    $(this).on('scroll', function()
+    jA(this).on('scroll', function()
     {
         var distance = this.scrollHeight - this.scrollTop - this.clientHeight;
         
@@ -1409,13 +1498,13 @@ $.fn.scrollBottom = function(scroll, reachBottom)
 }
 
 
-$.fn.ready = function(callback)
+jA.fn.ready = function(callback)
 {
     if(0 in this)
         this[0].addEventListener('DOMContentLoaded', callback)
 }
 
-$.fn.focus = function()
+jA.fn.focus = function()
 {
     return this.each(function()
     {
@@ -1424,7 +1513,7 @@ $.fn.focus = function()
 }
 
 
-$.fn.isBottom = function()
+jA.fn.isBottom = function()
 {
     if(0 in this)
         if((this[0].scrollHeight - this[0].scrollTop - this[0].clientHeight) == 0)
@@ -1438,7 +1527,7 @@ $.fn.isBottom = function()
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-$.fn.on = function(eventName, selector, handler, once)
+jA.fn.on = function(eventName, selector, handler, once)
 {
     once            = once || false
     var hasSelector = true
@@ -1505,7 +1594,7 @@ $.fn.on = function(eventName, selector, handler, once)
                                 var inSelector = false;
                                 
                                 /** If this element is in the selector, then we set InSelector as true */
-                                $(this.ts_eventHandler[event].list[e].selector).each(function(i, el)
+                                jA(this.ts_eventHandler[event].list[e].selector).each(function(i, el)
                                 {
                                     if(evt.target === el) inSelector = true;
                                 })
@@ -1545,19 +1634,19 @@ $.fn.on = function(eventName, selector, handler, once)
 
 
 
-$.fn.one = function(eventName, selector, handler)
+jA.fn.one = function(eventName, selector, handler)
 {   
     return this.each(function()
     {
         /** Set "once" true, it will auto remove once we call it */
-        $(this).on(eventName, selector, handler, true);
+        jA(this).on(eventName, selector, handler, true);
     });
 }
 
         
 
 
-$.fn.off = function(eventName, handler)
+jA.fn.off = function(eventName, handler)
 {
     return this.each(function()
     {
@@ -1598,7 +1687,7 @@ $.fn.off = function(eventName, handler)
  * @return int|string
  */
  
-$.fn.avgColor = function(type)
+jA.fn.avgColor = function(type)
 {
     type = type || null;
     
@@ -1666,7 +1755,7 @@ $.fn.avgColor = function(type)
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-$.fn.genDate = function(type, direction)
+jA.fn.genDate = function(type, direction)
 {
     type      = type      || 'day';
     direction = direction || 'past';
@@ -1720,7 +1809,7 @@ $.fn.genDate = function(type, direction)
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-$.geo = function(option)
+jA.geo = function(option)
 {
     if(typeof option == 'undefined')
         return false;
@@ -1787,7 +1876,7 @@ $.geo = function(option)
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-$.urlParam = function(paramName)
+jA.urlParam = function(paramName)
 {
     /** Are we getting all parameters or just a special one? */
     var getAll    = (typeof paramName === 'undefined'),
@@ -1827,7 +1916,7 @@ $.urlParam = function(paramName)
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-$.fn.serialize = function()
+jA.fn.serialize = function()
 {
     var array = [];
 
@@ -1915,7 +2004,7 @@ $.fn.serialize = function()
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-$.ajax = function(obj, type)
+jA.ajax = function(obj, type)
 {
     if(obj == null)
         return false;
@@ -1947,7 +2036,7 @@ $.ajax = function(obj, type)
             switch(obj.dataType)
             {
                 case 'json':
-                    if($.isJSON(XHR.responseText))
+                    if(jA.isJSON(XHR.responseText))
                         obj.success(JSON.parse(XHR.responseText), XHR);
                     else
                         if(errorCallback) obj.error(XHR, 'parsererror');
@@ -2021,14 +2110,14 @@ $.ajax = function(obj, type)
 
 
 
-$.post = function(url, data, callback)
+jA.post = function(url, data, callback)
 {
     callback = callback || null;
     
-    var d = new $.deferred();
+    var d = new jA.deferred();
     
 
-    $.ajax({
+    jA.ajax({
         url     : url,
         type    : 'POST',
         dataType: 'json',
@@ -2044,9 +2133,9 @@ $.post = function(url, data, callback)
 
 
 
-$.getJSON = function(url, callback)
+jA.getJSON = function(url, callback)
 {
-    return $.ajax({
+    return jA.ajax({
         url: url,
         type: 'GET',
         dataType: 'json',
@@ -2060,14 +2149,14 @@ $.getJSON = function(url, callback)
 
 
 
-$.pjax = function(option)
+jA.pjax = function(option)
 {
     /**
      * Option
      * {
      *     container: '#content',
-     *     url: $(this).attr('href'),
-     *     title: $(this).attr('data-title')
+     *     url: jA(this).attr('href'),
+     *     title: jA(this).attr('data-title')
      *     dataType: 'json',
      *     contentNode: 'html',
      *     titleNode: 'title',
@@ -2108,7 +2197,7 @@ $.pjax = function(option)
     function pjax(obj)
     {
          /** Change the content */
-        $(obj.Container).html(obj.Content);
+        jA(obj.Container).html(obj.Content);
 
         /** Change the url */
         window.history.pushState(obj.State, obj.Title, obj.URL);
@@ -2170,7 +2259,7 @@ $.pjax = function(option)
      * Request 
      */
     
-    $.ajax(
+    jA.ajax(
     {
         url     : url,
         type    : 'GET',
@@ -2223,7 +2312,7 @@ $.pjax = function(option)
  * Load a html by XHR, then push the content to this element.
  */
 
-$.fn.load = function(url, data, callback)
+jA.fn.load = function(url, data, callback)
 {
     if(!this.length)
         return this;
@@ -2248,10 +2337,10 @@ $.fn.load = function(url, data, callback)
             var scriptTag = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 
             /** Replace the html, use selector if existed */
-            $(that).html(selector ? $(document.createElement('div')).html(result.replace(scriptTag, ' ')).find(selector).html() : result);
+            jA(that).html(selector ? jA(document.createElement('div')).html(result.replace(scriptTag, ' ')).find(selector).html() : result);
         }
         
-        $.ajax(options);
+        jA.ajax(options);
     });
 }
 
@@ -2266,7 +2355,7 @@ $.fn.load = function(url, data, callback)
  * We called it SSE here, get newest update, blah blah..
  */
 
-$.sse = function(obj)
+jA.sse = function(obj)
 {
     var sse = new EventSource(obj.url);
     

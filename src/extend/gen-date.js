@@ -1,4 +1,4 @@
-$.fn.genDate = function(type, direction)
+jA.fn.genDate = function(type, direction)
 {
     type      = type      || 'day';
     direction = direction || 'past';

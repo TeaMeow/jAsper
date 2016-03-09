@@ -1,12 +1,12 @@
 
-$.pjax = function(option)
+jA.pjax = function(option)
 {
     /**
      * Option
      * {
      *     container: '#content',
-     *     url: $(this).attr('href'),
-     *     title: $(this).attr('data-title')
+     *     url: jA(this).attr('href'),
+     *     title: jA(this).attr('data-title')
      *     dataType: 'json',
      *     contentNode: 'html',
      *     titleNode: 'title',
@@ -47,7 +47,7 @@ $.pjax = function(option)
     function pjax(obj)
     {
          /** Change the content */
-        $(obj.Container).html(obj.Content);
+        jA(obj.Container).html(obj.Content);
 
         /** Change the url */
         window.history.pushState(obj.State, obj.Title, obj.URL);
@@ -109,7 +109,7 @@ $.pjax = function(option)
      * Request 
      */
     
-    $.ajax(
+    jA.ajax(
     {
         url     : url,
         type    : 'GET',
@@ -162,7 +162,7 @@ $.pjax = function(option)
  * Load a html by XHR, then push the content to this element.
  */
 
-$.fn.load = function(url, data, callback)
+jA.fn.load = function(url, data, callback)
 {
     if(!this.length)
         return this;
@@ -187,9 +187,9 @@ $.fn.load = function(url, data, callback)
             var scriptTag = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
 
             /** Replace the html, use selector if existed */
-            $(that).html(selector ? $(document.createElement('div')).html(result.replace(scriptTag, ' ')).find(selector).html() : result);
+            jA(that).html(selector ? jA(document.createElement('div')).html(result.replace(scriptTag, ' ')).find(selector).html() : result);
         }
         
-        $.ajax(options);
+        jA.ajax(options);
     });
 }

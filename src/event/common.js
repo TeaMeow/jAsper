@@ -1,33 +1,33 @@
 
-$.fn.mousedown = function(callback)
+jA.fn.mousedown = function(callback)
 {
-    return $(this).on('mousedown', callback);
+    return jA(this).on('mousedown', callback);
 }
 
-$.fn.mouseup = function(callback)
+jA.fn.mouseup = function(callback)
 {
-    return $(this).on('mouseup', callback);
+    return jA(this).on('mouseup', callback);
 }
 
-$.fn.mousemove = function(callback)
+jA.fn.mousemove = function(callback)
 {
-    return $(this).on('mousemove', callback);
+    return jA(this).on('mousemove', callback);
 }
 
-$.fn.click = function(callback)
+jA.fn.click = function(callback)
 {
-    return $(this).on('click', callback);
+    return jA(this).on('click', callback);
 }
 
-$.fn.dragstart = function(callback)
+jA.fn.dragstart = function(callback)
 {
-    return $(this).on('dragstart', callback);
+    return jA(this).on('dragstart', callback);
 }
 
 
 
 
-$.fn.longpress = function(callback, clickCallback, timer)
+jA.fn.longPress = function(callback, clickCallback, timer)
 {
     /** If callback is not an number, which means it must be a function */
     if(!isNaN(clickCallback))
@@ -37,7 +37,7 @@ $.fn.longpress = function(callback, clickCallback, timer)
     
     return this.each(function()
     {
-        $(this).mousedown(function(event)
+        jA(this).mousedown(function(event)
         {
             var that = this;
             /** Haven't trigger long press yet, so we set this to false */
@@ -74,15 +74,15 @@ $.fn.longpress = function(callback, clickCallback, timer)
 }
 
 
-$.fn.trigger = function(Event)
+jA.fn.trigger = function(Event)
 {
     return this.each(function(){ this[Event]() });
 }
 
 
-$.fn.scrollBottom = function(scroll, reachBottom)
+jA.fn.scrollBottom = function(scroll, reachBottom)
 {
-    $(this).on('scroll', function()
+    jA(this).on('scroll', function()
     {
         var distance = this.scrollHeight - this.scrollTop - this.clientHeight;
         
@@ -97,13 +97,13 @@ $.fn.scrollBottom = function(scroll, reachBottom)
 }
 
 
-$.fn.ready = function(callback)
+jA.fn.ready = function(callback)
 {
     if(0 in this)
         this[0].addEventListener('DOMContentLoaded', callback)
 }
 
-$.fn.focus = function()
+jA.fn.focus = function()
 {
     return this.each(function()
     {
@@ -112,7 +112,7 @@ $.fn.focus = function()
 }
 
 
-$.fn.isBottom = function()
+jA.fn.isBottom = function()
 {
     if(0 in this)
         if((this[0].scrollHeight - this[0].scrollTop - this[0].clientHeight) == 0)

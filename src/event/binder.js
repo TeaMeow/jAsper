@@ -1,4 +1,4 @@
-$.binder = function(binds, rebind)
+jA.binder = function(binds, rebind)
 {
     rebind = rebind || false;
     
@@ -40,23 +40,23 @@ $.binder = function(binds, rebind)
                 if(e == 'scrollBottom')
                 {
                     if(rebind)
-                        $(target).off('scroll');
+                        jA(target).off('scroll');
                         
-                    $(target).scrollBottom(bind);
+                    jA(target).scrollBottom(bind);
                 }
                 else if(e == 'ready')
                 {
                     if(rebind)
-                        $(target).off('DOMContentLoaded');
+                        jA(target).off('DOMContentLoaded');
                         
-                    $(target).ready(bind);
+                    jA(target).ready(bind);
                 }
                 else if(e != '')
                 {
                     if(rebind)
-                        $(target).off(e);
+                        jA(target).off(e);
                         
-                    $(target).on(e, bind);
+                    jA(target).on(e, bind);
                 }
             }
         }

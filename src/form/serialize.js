@@ -1,4 +1,4 @@
-$.fn.serialize = function()
+jA.fn.serialize = function()
 {
     var array = [];
 

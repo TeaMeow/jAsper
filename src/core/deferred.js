@@ -4,14 +4,14 @@
  * @supported THEtheChad
  */
  
-$.deferred = function()
+jA.deferred = function()
 {
     this._always = [];
     this._done   = [];
     this._fail   = [];
 }
 
-$.deferred.prototype = 
+jA.deferred.prototype = 
 {
     execute: function(list, args)
     {
