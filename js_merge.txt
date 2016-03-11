@@ -8,6 +8,7 @@ src/element/css.js
 src/element/dom.js
 src/element/visibility.js
 src/form/serialize.js
+src/form/form-explode.js
 src/event/binder.js
 src/event/common.js
 src/event/handler.js

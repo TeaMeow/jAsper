@@ -5,7 +5,7 @@
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-/* Last merge : Wed Mar 9 15:27:03 UTC 2016  */
+/* Last merge : Thu Mar 10 17:28:57 UTC 2016  */
 
 /* Merging order :
 
@@ -19,6 +19,7 @@
 - src/element/dom.js
 - src/element/visibility.js
 - src/form/serialize.js
+- src/form/form-explode.js
 - src/event/binder.js
 - src/event/common.js
 - src/event/handler.js
@@ -1314,6 +1315,23 @@ jA.fn.serialize = function()
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Merging js: src/form/form-explode.js begins */
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+
+jA.fn.formExplode = function()
+{
+    var formData = {};
+
+    this.find('[name]').each(function()
+    {
+        formData[this.name] = this.value == '' ? undefined : this.value;
+    });
+
+    return formData;
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 /* Merging js: src/event/binder.js begins */
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -1411,6 +1429,11 @@ jA.fn.mouseup = function(callback)
     return jA(this).on('mouseup', callback);
 }
 
+jA.fn.keyup = function(callback)
+{
+    return jA(this).on('keyup', callback);
+}
+
 jA.fn.mousemove = function(callback)
 {
     return jA(this).on('mousemove', callback);
@@ -1434,9 +1457,9 @@ jA.fn.longPress = function(callback, clickCallback, timer)
     /** If callback is not an number, which means it must be a function */
     if(!isNaN(clickCallback))
         timer = clickCallback;
-    
+
     timer = timer || 500;
-    
+
     return this.each(function()
     {
         jA(this).mousedown(function(event)
@@ -1444,17 +1467,17 @@ jA.fn.longPress = function(callback, clickCallback, timer)
             var that = this;
             /** Haven't trigger long press yet, so we set this to false */
             that.ts_longPressed    = false;
-            
+
             this.ts_longPressTimer = setTimeout(function()
             {
                 /** Call long press callback */
                 callback.call(that);
-                
+
                 /** Long press has been triggered */
                 that.ts_longPressed = true;
-                
+
             }, timer);
-            
+
             return false;
         })
         .mouseup(function(event)
@@ -1463,12 +1486,12 @@ jA.fn.longPress = function(callback, clickCallback, timer)
             if(!this.ts_longPressed)
                 if(typeof clickCallback !== 'undefined')
                     clickCallback.call(this);
-            
+
             clearTimeout(this.ts_longPressTimer);
             return false;
         })
         .mousemove(function(event)
-        { 
+        {
             clearTimeout(this.ts_longPressTimer);
             return false;
         })
@@ -1487,13 +1510,13 @@ jA.fn.scrollBottom = function(scroll, reachBottom)
     jA(this).on('scroll', function()
     {
         var distance = this.scrollHeight - this.scrollTop - this.clientHeight;
-        
+
         /** Call ReachBottom if user scroll to the bottom */
-        if(typeof scroll !== 'undefined' || scroll != null) 
+        if(typeof scroll !== 'undefined' || scroll != null)
             scroll.call(this, distance); //Pass distance from the bottom to the function.
-            
+
         /** Call ReachBottom if user scroll to the bottom */
-        if(distance == 0 && typeof reachBottom !== 'undefined') 
+        if(distance == 0 && typeof reachBottom !== 'undefined')
             reachBottom.call(this, distance);
     });
 }
@@ -1521,6 +1544,30 @@ jA.fn.isBottom = function()
             return true;
     else
         return false;
+}
+
+
+jA.fn.delayKeyup = function(callback, ms)
+{
+    return this.each(function()
+    {
+        var timer = 0,
+            el    = jA(this),
+            that  = this;
+
+         jA(this).keyup(function(event)
+         {
+             var event = event;
+
+            clearTimeout(timer);
+
+            timer = setTimeout(function()
+            {
+                 callback.call(that, event)
+            }, ms);
+         });
+    })
+
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -2097,7 +2144,8 @@ jA.ajax = function(obj, type)
         var params = '';
 
         for(var i in obj.data)
-            params += i + '=' + obj.data[i] + '&' ;
+            if(obj.data[i] !== undefined)
+                params += i + '=' + obj.data[i] + '&' ;
 
         /** Remove the unnecessary symbol at the end */
         params = params.slice(0, -1);
@@ -2385,15 +2433,26 @@ jA.post = function(url, data, callback)
 }
 
 
-jA.get = function(url, callback)
+jA.get = function(url, data)
 {
-    callback = callback || null;
+    data = data || null;
 
     var d = new jA.deferred();
 
+    if(data !== null)
+    {
+        /** explode the object into a string */
+        var params = '';
+
+        for(var i in data)
+            params += i + '=' + data[i] + '&' ;
+
+        /** Remove the unnecessary symbol at the end */
+        params = '?' + params.slice(0, -1);
+    }
 
     jA.ajax({
-        url     : url,
+        url     : url + params,
         type    : 'GET',
         dataType: 'json',
         error   : function(r){d.reject(r)},
