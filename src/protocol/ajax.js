@@ -90,7 +90,8 @@ jA.ajax = function(obj, type)
         var params = '';
 
         for(var i in obj.data)
-            params += i + '=' + obj.data[i] + '&' ;
+            if(obj.data[i] !== undefined)
+                params += i + '=' + obj.data[i] + '&' ;
 
         /** Remove the unnecessary symbol at the end */
         params = params.slice(0, -1);

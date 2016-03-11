@@ -19,15 +19,26 @@ jA.post = function(url, data, callback)
 }
 
 
-jA.get = function(url, callback)
+jA.get = function(url, data)
 {
-    callback = callback || null;
+    data = data || null;
 
     var d = new jA.deferred();
 
+    if(data !== null)
+    {
+        /** explode the object into a string */
+        var params = '';
+
+        for(var i in data)
+            params += i + '=' + data[i] + '&' ;
+
+        /** Remove the unnecessary symbol at the end */
+        params = '?' + params.slice(0, -1);
+    }
 
     jA.ajax({
-        url     : url,
+        url     : url + params,
         type    : 'GET',
         dataType: 'json',
         error   : function(r){d.reject(r)},
