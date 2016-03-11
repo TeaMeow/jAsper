@@ -5,7 +5,7 @@
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-/* Last merge : Thu Mar 10 17:28:57 UTC 2016  */
+/* Last merge : Fri Mar 11 10:24:29 UTC 2016  */
 
 /* Merging order :
 
@@ -16,10 +16,12 @@
 - src/element/content.js
 - src/element/cookie.js
 - src/element/css.js
+- src/element/validate.js
 - src/element/dom.js
 - src/element/visibility.js
 - src/form/serialize.js
 - src/form/form-explode.js
+- src/form/form-validate.js
 - src/event/binder.js
 - src/event/common.js
 - src/event/handler.js
@@ -362,10 +364,10 @@ jA.isJSON = function(string)
 {
     /** Detect the type of the respone is json or not */
     var isJSON = true;
-    
+
     try     { JSON.parse(string); }
     catch(e){ var isJSON = false; }
-    
+
     return isJSON;
 }
 
@@ -409,6 +411,36 @@ jA.rand = function(min, max)
 jA.digits = function(number)
 {
     return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "jA1,");
+}
+
+
+jA.isset = function()
+{
+    // discuss at: http://phpjs.org/functions/isset
+    // +   original by: Kevin van     Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: FremyCompany
+    // +   improved by: Onno Marsman
+    // +   improved by: Rafał Kukawski
+    // *     example 1: isset( undefined, true);
+    // *     returns 1: false
+    // *     example 2: isset( 'Kevin van Zonneveld' );
+    // *     returns 2: true
+    var a = arguments,
+        l = a.length,
+        i = 0,
+        undef;
+
+    if (l === 0) {
+        throw new Error('Empty isset');
+    }
+
+    while (i !== l) {
+        if (a[i] === undef || a[i] === null) {
+            return false;
+        }
+        i++;
+    }
+    return true;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -918,6 +950,52 @@ jA.fn.getCss = function(property)
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Merging js: src/element/validate.js begins */
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+
+jA.fn.validate = function()
+{
+    var jAthis    = jA(this),
+        minlength = jAthis.attr('minlength'),
+        maxlength = jAthis.attr('maxlength'),
+        min       = jAthis.attr('min'),
+        max       = jAthis.attr('max'),
+        required  = jAthis.attr('required') != null,
+        pattern   = jAthis.attr('pattern'),
+        type      = jAthis.attr('type'),
+        value     = jAthis.val();
+
+    if(required && value == '')
+        return 'required';
+
+    if(minlength !== null && value.length < minlength)
+        return 'minlegnth';
+
+    if(maxlength !== null && value.length > maxlength)
+        return 'maxlegnth';
+
+    if(min !== null && parseInt(value) < min)
+        return 'min';
+
+    if(max !== null && parseInt(value) > max)
+        return 'max';
+
+    if(pattern !== null)
+    {
+        var regEx = new RegExp(pattern.replace(/\//g, ''));
+
+        if(!regEx.test(value))
+            return 'pattern';
+    }
+
+    if(type !== null && type == 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        return 'email';
+
+    return true;
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 /* Merging js: src/element/dom.js begins */
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
@@ -1329,6 +1407,57 @@ jA.fn.formExplode = function()
     });
 
     return formData;
+}
+
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* Merging js: src/form/form-validate.js begins */
+/*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+
+jA.fn.formValidate = function(rules, stopAtFirst)
+{
+    var pass    = true,
+        isFirst = true;
+        rules       = rules       || null,
+        stopAtFirst = stopAtFirst || false;
+
+
+
+    jA(this).find('[name]').each(function()
+    {
+        var jAthis     = jA(this),
+            name       = this.getAttribute('name'),
+            validation = jAthis.validate();
+
+        if(!pass && !isFirst && stopAtFirst)
+            return false;
+
+        if(validation === true)
+        {
+            if(rules !== null && rules[name] !== undefined && rules[name].valid !== undefined)
+                rules[name].valid.call(this);
+
+            return true;
+        }
+
+        pass = false;
+
+        if(rules !== null)
+        {
+            if(rules[name] !== undefined)
+            {
+                if(rules[name][validation] !== undefined)
+                    rules[name][validation].call(this);
+
+                if(rules[name].invalid !== undefined)
+                    rules[name].invalid.call(this, name);
+
+                isFirst = false;
+            }
+        }
+    })
+
+    return pass;
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
