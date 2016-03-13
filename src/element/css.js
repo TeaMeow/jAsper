@@ -1,8 +1,8 @@
 /**
  * Css Animate
- * 
+ *
  * Animate a css animation.
- * 
+ *
  * @param string   animate    The name of the animation
  * @param func|int callback   The callback when the animation ended, or the animation time.
  * @param int      time       The animation time.
@@ -12,23 +12,27 @@ jA.fn.cssAnimate = function(animate, callback, time)
 {
     /** Animate list */
     //var animateList = 'slideInDown slideInLeft slideInRight slideInUp slideOutDown slideOutLeft slideOutRight slideOutUp'
-    
+
     /** If someone using callback field as time.. */
     if(typeof callback == 'number')
         time = callback;
-    
+
     /** Turn millionsecond to float (ex: 300 -> 0.3), then turn float to string and remove the dot (0.3 -> 03 -> 3)*/
     var timer = parseInt((time / 1000).toString().replace('.', ''), 10);
         timer = time < 1000 ? '0' + timer : timer;
 
-    /** Select animation duration by Time */      
+    /** Select animation duration by Time */
     time = isNaN(time) ? '' : ' animated' + timer + 's';
-    
-    return this.each(function()
+
+    var d        = new jA.deferred(),
+        veryThat = this;
+
+    this.each(function()
     {
         /** For passing jA(this) to inside function */
         var that = this;
-        
+
+
         /** If last animation not end .. */
         //if(jA(this).hasClass(Animate))
             //jA(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(animateList).removeClass(animate + ' animated' + time)
@@ -39,31 +43,34 @@ jA.fn.cssAnimate = function(animate, callback, time)
                .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
                 {
                    jA(that).removeClass(animate + ' animated' + time);
-                   
-                   if((typeof callback !== 'undefined' && callback != null) && typeof callback !== 'number')
-                        callback.call(that);
+
+                   //if((typeof callback !== 'undefined' && callback != null) && typeof callback !== 'number')
+                   //     callback.call(that);
+                   d.resolve(that);
                 });
     });
+
+    return d;
 }
 
-  
-  
-  
+
+
+
 /**
  * CSS
  *
  * Set CSS to elements or get CSS from elements.
- * 
+ *
  * @param mixed      property   Can be a object and the key as the css property, and the value as the property value.
  * @param int|string value      The value of the css property.
- * 
+ *
  * @return mixed
  */
 
 jA.fn.css = function(property, value)
 {
     var css = '';
-    
+
     /** Set single CSS : If CSS and content is not empty, then set the CSS */
     if(property != null && value != null)
     {
@@ -80,9 +87,9 @@ jA.fn.css = function(property, value)
     else if(Array.isArray(property) && value == null)
     {
         var cssObject = {};
-        
+
         this.each(function(){ for(var i in property) cssObject[property[i]] = jA(this).getCss(property[i]); })
-        
+
         return cssObject;
     }
     /** Get single CSS : If only style name */
@@ -90,12 +97,12 @@ jA.fn.css = function(property, value)
     {
         return jA(this).getCss(property);
     }
-    
+
     return this.each(function()
     {
         if(typeof this.style == 'undefined')
             return;
-        
+
         this.style.cssText = this.style.cssText + css;
     })
 }
@@ -105,11 +112,11 @@ jA.fn.css = function(property, value)
 
 /**
  * Has Class
- * 
+ *
  * Returns true when the class(es) does exist.
- * 
+ *
  * @param string classes   The class name, can be a list split by the space.
- * 
+ *
  * @return bool
  */
 
@@ -121,22 +128,22 @@ jA.fn.hasClass = function(classes)
         else
             return new RegExp('(^| )' + classes + '( |$)', 'gi').test(this[0].className);
 }
-        
-        
-        
+
+
+
 
 /**
  * Class List
- * 
+ *
  * Returns a class list of the element.
- * 
+ *
  * @return array
  */
 
 jA.fn.classList = function()
 {
     var classes = [];
-    
+
     if(0 in this)
         if(this[0].classList)
             for(var i=0; i<this[0].classList.length; i++)
@@ -144,7 +151,7 @@ jA.fn.classList = function()
         else
             for(var i in this[0].className.split(' '))
                 classes.push(this[0].className.split(' ')[i]);
-                
+
     return classes;
 }
 
@@ -153,11 +160,11 @@ jA.fn.classList = function()
 
 /**
  * Add Class
- * 
+ *
  * Add a single or multiple classes to an element.
- * 
+ *
  * @param string classes   The name of the class, can be a list split by space.
- * 
+ *
  * @return object
  */
 
@@ -165,16 +172,16 @@ jA.fn.addClass = function(classes)
 {
     if(classes === null)
         return;
-    
+
     return this.each(function()
     {
         var list = classes.split(' ');
-        
+
         for(var i in list)
         {
             if(list[i] === '')
                 continue;
-            
+
             if(this.classList)
                 this.classList.add(list[i]);
             else
@@ -184,15 +191,15 @@ jA.fn.addClass = function(classes)
 }
 
 
-                     
+
 
 /**
  * Remove Class
- * 
+ *
  * Remove a single or multiple classes of the element.
- * 
+ *
  * @param string classes   The name of the class can be a list split by the space.
- * 
+ *
  * @return object
  */
 
@@ -207,32 +214,32 @@ jA.fn.removeClass = function(classes)
         else
         {
             var list = classes.split(' ');
-            
+
             for(var i in list)
             {
                 if(list[i] == '')
                     continue;
-                
+
                 /** If there's classList, the just remove it from classList, otherwise we replace the string which is in the (class="")*/
                 if(this.classList)
-                    this.classList.remove(list[i]); 
+                    this.classList.remove(list[i]);
                 else if(typeof this.className !== 'undefined')
                     this.className = this.className.replace(new RegExp('(^|\\b)' + classes.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
             }
         }
     })
 }
-                     
-        
+
+
 
 
 /**
  * Toggle Class
- * 
+ *
  * Toggle a single or multiple classes, add the class when the class is not existed, and remove the class when it does exist.
- * 
+ *
  * @param string classes   The name of the class, can be a list split by the space.
- * 
+ *
  * @return object
  */
 
@@ -241,9 +248,9 @@ jA.fn.toggleClass = function(classes)
     return this.each(function()
     {
         var list, index, objClassList;
-        
+
         list = classes.split(' ');
-        
+
         for(var i in list)
         {
             if(this.classList)
@@ -269,7 +276,7 @@ jA.fn.toggleClass = function(classes)
     });
 }
 
- 
+
 /**
  * Get CSS
  */

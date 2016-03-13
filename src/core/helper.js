@@ -80,3 +80,18 @@ jA.isset = function()
     }
     return true;
 }
+
+
+
+jA.setTimeout = function(timer)
+{
+    var d = new jA.deferred();
+    var that = this;
+
+    setTimeout(function(r)
+    {
+        d.resolve(r);
+    }, timer);
+
+    return d;
+}
