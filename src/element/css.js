@@ -14,8 +14,17 @@ jA.fn.cssAnimate = function(animate, callback, time)
     //var animateList = 'slideInDown slideInLeft slideInRight slideInUp slideOutDown slideOutLeft slideOutRight slideOutUp'
 
     /** If someone using callback field as time.. */
-    if(typeof callback == 'number')
+    if(typeof callback == 'number' && typeof time != 'function')
         time = callback;
+
+    if(typeof callback == 'number' && typeof time == 'function')
+    {
+        var trueCallback = time,
+            trueTime     = callback;
+
+        callback = trueCallback,
+        time     = trueTime;
+    }
 
     /** Turn millionsecond to float (ex: 300 -> 0.3), then turn float to string and remove the dot (0.3 -> 03 -> 3)*/
     var timer = parseInt((time / 1000).toString().replace('.', ''), 10);
@@ -24,10 +33,9 @@ jA.fn.cssAnimate = function(animate, callback, time)
     /** Select animation duration by Time */
     time = isNaN(time) ? '' : ' animated' + timer + 's';
 
-    var d        = new jA.deferred(),
-        veryThat = this;
+    //var d        = new jA.deferred();
 
-    this.each(function()
+    return this.each(function()
     {
         /** For passing jA(this) to inside function */
         var that = this;
@@ -44,13 +52,13 @@ jA.fn.cssAnimate = function(animate, callback, time)
                 {
                    jA(that).removeClass(animate + ' animated' + time);
 
-                   //if((typeof callback !== 'undefined' && callback != null) && typeof callback !== 'number')
-                   //     callback.call(that);
-                   d.resolve(that);
+                   if((typeof callback !== 'undefined' && callback != null) && typeof callback !== 'number')
+                        callback.call(that);
+                   //d.resolve(that);
                 });
     });
 
-    return d;
+    //return d;
 }
 
 
