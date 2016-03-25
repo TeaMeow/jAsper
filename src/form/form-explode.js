@@ -4,7 +4,8 @@ jA.fn.formExplode = function()
 
     this.find('[name]').each(function()
     {
-        formData[this.name] = this.value == '' ? undefined : this.value;
+        if(this.type !== 'file')
+            formData[this.name] = this.value == '' ? undefined : this.value;
     });
 
     return formData;
