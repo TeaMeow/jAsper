@@ -16,14 +16,14 @@ jA.pjax = function(option)
      *     success: function
      * }
      */
-    
+
     if(typeof history.pushState !== 'function')
         return false;
-    
+
     /** Check url hostname */
     var fakeLink      = document.createElement('a');
         fakeLink.href = option.url;
-        
+
     //if(fakeLink.host == '')
     //    fakeLink.href = fakeLink.href;
 
@@ -33,17 +33,17 @@ jA.pjax = function(option)
 
     var pjaxFullURL = fakeLink.protocol + '//' + fakeLink.hostname + fakeLink.pathname,
         fullURL     = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
-    
+
     /** Exit if the pjax url is just about add a hash or a anchor or even same */
     if(pjaxFullURL === fullURL)
         return false;
-    
+
 
 
     /**
      * PJAX
      */
-    
+
     function pjax(obj)
     {
          /** Change the content */
@@ -54,31 +54,31 @@ jA.pjax = function(option)
 
         /** Change the title */
         document.title = obj.Title;
-        
+
         /** Callback */
         if(typeof option.success != 'undefined')
             option.success(obj);
-        
+
     }
-    
-    
+
+
     /** Set variables */
-    var title      = option.title    || '', 
+    var title      = option.title    || '',
         dataType   = option.dataType || 'html',
         url        = option.url,
         expire     = option.expire   || 3600,
         cache      = option.cache    || false,
         cachedName = 'cached_' + url;
-    
+
     /** Create a state with url and title */
     var state = {url: url, title: title};
-            
+
     /** Merge state if needed */
     if(typeof option.state !== 'undefined')
         for(var i in option.state)
             state[i] = option.state[i];
-           
-    
+
+
     /**
      * Cache
      */
@@ -94,7 +94,7 @@ jA.pjax = function(option)
         if(JSON.stringify(obj.State) === JSON.stringify(state) || title === '')
         {
             var time = Math.floor(Date.now() / 1000) - obj.time;
-            
+
             /** Just be sure if it's not expired yet */
             if(expire && !(time > expire))
             {
@@ -103,19 +103,19 @@ jA.pjax = function(option)
             }
         }
     }
-    
-    
+
+
     /**
-     * Request 
+     * Request
      */
-    
+
     jA.ajax(
     {
         url     : url,
         type    : 'GET',
         dataType: dataType,
         /** Send a PJAX header, so we can deal with it on the server side */
-        headers: {'X_HTTP_PJAX': 'true'},
+        headers: {'HTTP_X_PJAX': 'true'},
         success: function(result, xhr)
         {
             var title     = (option.dataType == 'json') ? result[option.titleNode]   : option.title,
@@ -127,26 +127,26 @@ jA.pjax = function(option)
                     title = option.title;
                 else
                     title = '';
-            
+
             if(option.dataType == 'json' && typeof result[option.contentNode] == 'undefined')
                 content = result;
-                
+
             /** Remove the script in the content */
             content = content.replace(scriptTag, ' ');
-            
+
             /** Replace the title in the state */
             state['title'] = title;
-    
-            var data = {container: Option.container, 
+
+            var data = {container: Option.container,
                         content: content,
                             url: url,
                           title: title,
                           state: state,
                            time: Math.floor(Date.now() / 1000)};
-            
+
             /** Store this PJAX to web storage as cache, localStorage don't eat object, so we conver it to json format */
             localStorage.setItem(cachedName, JSON.stringify(data));
-            
+
             pjax(data);
         }
     });
@@ -166,7 +166,7 @@ jA.fn.load = function(url, data, callback)
 {
     if(!this.length)
         return this;
-    
+
     return this.each(function()
     {
         var that    = this,
@@ -176,12 +176,12 @@ jA.fn.load = function(url, data, callback)
                        data: data},
             /** Split URL to two parts, first one is the URL, second one is the selector */
             split = url.split(/\s/), selector;
-        
+
         /** If selector is existed, then we get it */
         if(split.length > 1)
             options.url = split[0];
             selector    = split[1];
-        
+
         options.success = function(result)
         {
             var scriptTag = /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;
@@ -189,7 +189,7 @@ jA.fn.load = function(url, data, callback)
             /** Replace the html, use selector if existed */
             jA(that).html(selector ? jA(document.createElement('div')).html(result.replace(scriptTag, ' ')).find(selector).html() : result);
         }
-        
+
         jA.ajax(options);
     });
 }

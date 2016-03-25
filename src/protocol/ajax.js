@@ -4,8 +4,11 @@ jA.ajax = function(obj, type)
         return false;
 
     /** Is error handler existed or not */
-    var errorCallback = typeof obj.error !== 'undefined',
-        isObjectData  = typeof obj.data  === 'object' && obj.data.constructor != FormData;
+    var errorCallback   = typeof obj.error !== 'undefined',
+        successCallback = typeof obj.success !== 'undefined',
+        isObjectData    = typeof obj.data  === 'object' && obj.data.constructor != FormData;
+
+    var d = new jA.deferred();
 
     /** Default */
     if(typeof obj.async === 'undefined')
@@ -31,16 +34,30 @@ jA.ajax = function(obj, type)
             {
                 case 'json':
                     if(jA.isJSON(XHR.responseText))
-                        obj.success(JSON.parse(XHR.responseText), XHR);
+                    {
+                        if(successCallback)
+                            obj.success(JSON.parse(XHR.responseText), XHR);
+
+                        d.resolve(JSON.parse(XHR.responseText), XHR);
+                    }
                     else
-                        if(errorCallback) obj.error(XHR, 'parsererror');
+                    {
+                        if(errorCallback)
+                            obj.error(XHR, 'parsererror');
+
+                        d.reject(XHR, 'parsererror');
+                    }
                     break;
                 case 'html':
                 case 'text':
                 case 'string':
                 default:
                     if(typeof obj.success == 'function')
+                    {
                         obj.success(XHR.responseText, XHR);
+
+                        d.resolve(XHR.responseText, XHR)
+                    }
 
                     if(typeof XHR.close == 'function')
                         XHR.close();
@@ -50,12 +67,27 @@ jA.ajax = function(obj, type)
         {
             if(errorCallback)
                 obj.error(XHR, 'success');
+
+            d.reject(XHR, 'success');
         }
     }
 
     /** When XHR timeout or error, we callback */
-    XHR.ontimeout = function(){ if(errorCallback) obj.error(XHR, 'timeout'); };
-    XHR.onerror   = function(){ if(errorCallback) obj.error(XHR, 'error'); };
+    XHR.ontimeout = function()
+    {
+        if(errorCallback)
+            obj.error(XHR, 'timeout');
+
+        d.reject(XHR, 'timeout');
+    };
+
+    XHR.onerror = function()
+    {
+        if(errorCallback)
+            obj.error(XHR, 'error');
+
+        d.reject(XHR, 'error');
+    };
 
     /** If there's uploading process callback, we callback :D */
     if(typeof obj.uploading != 'undefined')
@@ -100,7 +132,7 @@ jA.ajax = function(obj, type)
     /** SENDDDD! */
     XHR.send((isObjectData) ? params : obj.data);
 
-    return XHR;
+    return d;
 }
 
 
