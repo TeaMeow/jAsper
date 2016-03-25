@@ -16,6 +16,7 @@ src/event/common.js
 src/event/handler.js
 src/extend/avg-color.js
 #src/extend/dropzone.js
+src/extend/draw.js
 src/extend/gen-date.js
 src/extend/geo.js
 src/extend/url-param.js
