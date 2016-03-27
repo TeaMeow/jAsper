@@ -92,7 +92,7 @@ jA.ajax = function(obj, type)
     /** If there's uploading process callback, we callback :D */
     if(typeof obj.uploading != 'undefined')
     {
-        XHR.upload.addEventListener('progress', function(e)
+        XHR.addEventListener('progress', function(e)
         {
             if(e.lengthComputable)
             {
