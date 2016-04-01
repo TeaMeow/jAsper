@@ -1,10 +1,10 @@
 /**
  * Val
- * 
+ *
  * Get the value or set the value of an element.
- * 
+ *
  * @param string|int value   Leave this undefined if we want to get the value instead of set it.
- * 
+ *
  * @return mixed
  */
 
@@ -20,7 +20,7 @@ jA.fn.val = function(value)
         else
             return null;
     }
-    else 
+    else
     {
         return this.each(function(){ this.value = value });
     }
@@ -31,9 +31,9 @@ jA.fn.val = function(value)
 
 /**
  * Empty
- * 
+ *
  * Clean a field or a container.
- * 
+ *
  * @return object
  */
 
@@ -51,11 +51,11 @@ jA.fn.empty = function()
 
 /**
  * Text
- * 
+ *
  * Set a text for an element, or get the text when the parameter is underfined.
- * 
+ *
  * @param string text   The text we want to set.
- * 
+ *
  * @return mixed
  */
 
@@ -72,20 +72,30 @@ jA.fn.text = function(text)
 
 /**
  * HTML
- * 
+ *
  * Set a html content or get the html content if the parameter is undefined.
- * 
+ *
  * @param string html   The html content.
- * 
+ *
  * @return mixed
  */
 
 jA.fn.html = function(html)
 {
     html = html || null;
-    
+
     if(!html)
         return 0 in this ? this[0].innerHTML : null;
-    else 
+    else
         return this.each(function(){ this.innerHTML = html });
+}
+
+
+
+jA.fn.fdPush = function(obj)
+{
+    for(var i in obj)
+        this[0].append(i, obj[i])
+
+    return this[0];
 }
