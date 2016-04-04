@@ -5,7 +5,7 @@
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-/* Last merge : Thu Mar 31 07:11:39 UTC 2016  */
+/* Last merge : Fri Apr 1 17:43:58 UTC 2016  */
 
 /* Merging order :
 
@@ -105,7 +105,7 @@ var Jasper = (function ()
             /** Remove the space */
             selector = selector.trim();
 
-            if(typeof Context != 'undefined')
+            if(typeof context != 'undefined')
                 return jA(selector).find(context);
 
             dom = jasper.select(document, selector);
@@ -268,7 +268,7 @@ var Jasper = (function ()
 
         eq: function(index)
         {
-            return this.slice(index, + index + 1);
+            return this.slice(index, index + 1);
         }
 
 
@@ -1474,15 +1474,20 @@ jA.fn.serialize = function()
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-jA.fn.formExplode = function()
+jA.fn.formExplode = function(extraData)
 {
-    var formData = {};
+    var formData  = {};
+    var extraData = extraData || null;
 
     this.find('[name]').each(function()
     {
         if(this.type !== 'file')
             formData[this.name] = this.value == '' ? undefined : this.value;
     });
+
+    if(extraData !== null)
+        for(var name in extraData)
+            formData[name] = extraData[name]
 
     return formData;
 }
