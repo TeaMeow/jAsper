@@ -59,7 +59,7 @@ var Jasper = (function ()
             /** Remove the space */
             selector = selector.trim();
 
-            if(typeof Context != 'undefined')
+            if(typeof context != 'undefined')
                 return jA(selector).find(context);
 
             dom = jasper.select(document, selector);
@@ -222,7 +222,7 @@ var Jasper = (function ()
 
         eq: function(index)
         {
-            return this.slice(index, + index + 1);
+            return this.slice(index, index + 1);
         }
 
 
