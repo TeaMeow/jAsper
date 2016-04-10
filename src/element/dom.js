@@ -43,7 +43,23 @@ jA.fn.before = function(html)
 jA.fn.prepend = function(html)
 {
     if(html != null)
-        return this.each(function(){ this.parentNode.insertBefore(html, this.nextSibling); });
+    {
+        return this.each(function()
+        {
+            var template = document.createElement('template');
+            template.innerHTML = html;
+
+            if(typeof this.nodeType !== 'undefined')
+            {
+                if(this.firstChild)
+                {
+                    return this.insertBefore(template.content, this.firstChild);
+                } else {
+                    return this.appendChild(template.content);
+                }
+            }
+        });
+    }
 }
 
 jA.fn.appendTo = function(selector)
@@ -67,7 +83,12 @@ jA.fn.prependTo = function(selector)
 
         jA(selector).each(function()
         {
-            this.insertBefore(that, this.firstChild);
+            if(this.firstChild)
+            {
+                return this.insertBefore(that, this.firstChild);
+            } else {
+                return this.appendChild(that);
+            }
         });
     })
 }
