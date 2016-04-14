@@ -5,7 +5,7 @@
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-/* Last merge : Sun Apr 10 06:51:37 UTC 2016  */
+/* Last merge : Thu Apr 14 14:34:32 UTC 2016  */
 
 /* Merging order :
 
@@ -3165,6 +3165,46 @@ jA.post = function(url, data, callback)
     return d;
 }
 
+
+jA.patch = function(url, data, callback)
+{
+    callback = callback || null;
+
+    var d = new jA.deferred();
+
+
+    jA.ajax({
+        url     : url,
+        type    : 'PATCH',
+        dataType: 'json',
+        data    : data,
+        error   : function(r){d.reject(r)},
+        success : function(r){d.resolve(r)}
+    });
+
+
+    return d;
+}
+
+jA.put = function(url, data, callback)
+{
+    callback = callback || null;
+
+    var d = new jA.deferred();
+
+
+    jA.ajax({
+        url     : url,
+        type    : 'PUT',
+        dataType: 'json',
+        data    : data,
+        error   : function(r){d.reject(r)},
+        success : function(r){d.resolve(r)}
+    });
+
+
+    return d;
+}
 
 jA.get = function(url, data)
 {

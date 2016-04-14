@@ -19,6 +19,46 @@ jA.post = function(url, data, callback)
 }
 
 
+jA.patch = function(url, data, callback)
+{
+    callback = callback || null;
+
+    var d = new jA.deferred();
+
+
+    jA.ajax({
+        url     : url,
+        type    : 'PATCH',
+        dataType: 'json',
+        data    : data,
+        error   : function(r){d.reject(r)},
+        success : function(r){d.resolve(r)}
+    });
+
+
+    return d;
+}
+
+jA.put = function(url, data, callback)
+{
+    callback = callback || null;
+
+    var d = new jA.deferred();
+
+
+    jA.ajax({
+        url     : url,
+        type    : 'PUT',
+        dataType: 'json',
+        data    : data,
+        error   : function(r){d.reject(r)},
+        success : function(r){d.resolve(r)}
+    });
+
+
+    return d;
+}
+
 jA.get = function(url, data)
 {
     data = data || null;
