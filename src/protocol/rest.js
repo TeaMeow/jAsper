@@ -39,6 +39,26 @@ jA.patch = function(url, data, callback)
     return d;
 }
 
+jA.delete = function(url, data, callback)
+{
+    callback = callback || null;
+
+    var d = new jA.deferred();
+
+
+    jA.ajax({
+        url     : url,
+        type    : 'DELETE',
+        dataType: 'json',
+        data    : data,
+        error   : function(r){d.reject(r)},
+        success : function(r){d.resolve(r)}
+    });
+
+
+    return d;
+}
+
 jA.put = function(url, data, callback)
 {
     callback = callback || null;
@@ -62,6 +82,7 @@ jA.put = function(url, data, callback)
 jA.get = function(url, data)
 {
     data = data || null;
+    var params = '';
 
     var d = new jA.deferred();
 
