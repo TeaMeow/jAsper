@@ -151,3 +151,13 @@ jA.getJSON = function(url, callback)
         success: callback,
     });
 }
+
+
+
+jA.xhrResponse = function(XHR, type)
+{
+    type = type || 'json';
+
+    if(type === 'json')
+        return JSON.parse(XHR.responseText);
+}
