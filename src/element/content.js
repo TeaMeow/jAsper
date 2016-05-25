@@ -99,3 +99,18 @@ jA.fn.fdPush = function(obj)
 
     return this[0];
 }
+
+jA.fn.map = function(callback)
+{
+    var array = []
+
+    this.each(function()
+    {
+        var result = callback.call(this)
+
+        if(result)
+            array.push(result)
+    });
+
+    return array
+}

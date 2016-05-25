@@ -5,7 +5,7 @@
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-/* Last merge : Mon May 23 14:10:24 UTC 2016  */
+/* Last merge : Wed May 25 14:23:53 UTC 2016  */
 
 /* Merging order :
 
@@ -399,6 +399,13 @@ jA.isNumeric = function(number)
 
 
 
+jA.map = function(array, callback)
+{
+    if(Object.prototype.toString.call(array) === '[object Array]')
+        return array.map(callback)
+
+    return []
+}
 
 
 
@@ -650,6 +657,21 @@ jA.fn.fdPush = function(obj)
         this[0].append(i, obj[i])
 
     return this[0];
+}
+
+jA.fn.map = function(callback)
+{
+    var array = []
+
+    this.each(function()
+    {
+        var result = callback.call(this)
+
+        if(result)
+            array.push(result)
+    });
+
+    return array
 }
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */

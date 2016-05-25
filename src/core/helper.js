@@ -28,6 +28,13 @@ jA.isNumeric = function(number)
 
 
 
+jA.map = function(array, callback)
+{
+    if(Object.prototype.toString.call(array) === '[object Array]')
+        return array.map(callback)
+
+    return []
+}
 
 
 
