@@ -85,7 +85,7 @@ jA.fn.css = function(property, value)
         css = property + ':' + value + ';';
     }
     /** Set multi CSS : If CSS is a Object */
-    else if(typeof Property === 'object' && !Array.isArray(property) && value == null)
+    else if(typeof property === 'object' && !Array.isArray(property) && value == null)
     {
         for(var i in property)
             if(property.hasOwnProperty(i))
