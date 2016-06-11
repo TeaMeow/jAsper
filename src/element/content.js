@@ -114,3 +114,4 @@ jA.fn.map = function(callback)
 
     return array
 }
+
