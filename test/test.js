@@ -5,7 +5,7 @@
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-/* Last merge : Thu May 26 11:22:51 UTC 2016  */
+/* Last merge : Thu Jun 2 09:56:33 UTC 2016  */
 
 /* Merging order :
 
@@ -397,6 +397,48 @@ jA.isNumeric = function(number)
     return !isNaN(parseFloat(Number)) && isFinite(Number);
 }
 
+jA.escapeHTML = function(string)
+{
+    if(typeof string === 'string')
+        return string.replace(/&/g, "&amp;")
+                     .replace(/</g, "&lt;")
+                     .replace(/>/g, "&gt;")
+                     .replace(/"/g, "&quot;")
+                     .replace(/'/g, "&#039;")
+    else
+        return null
+}
+
+jA.unescapeHTML = function(string)
+{
+    if(typeof string === 'string')
+        return string.replace(/&amp;/g, '&')
+                     .replace(/&lt;/g, '<')
+                     .replace(/&gt;/g, '>')
+                     .replace(/&quot;/g, '"')
+                     .replace(/&#039;/g, "'")
+    else
+        return null
+}
+
+jA.nl2br = function(string)
+{
+    if(typeof string === 'string')
+        return string.replace(/\n/g, "<br>")
+    else
+        return null
+
+}
+
+jA.br2nl = function(string)
+{
+    if(typeof string === 'string')
+        return string.replace(/<br>/g, "\r")
+    else
+        return null
+
+}
+
 
 
 jA.map = function(array, callback)
@@ -673,6 +715,8 @@ jA.fn.map = function(callback)
 
     return array
 }
+
+
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 /* Merging js: src/element/cookie.js begins */
