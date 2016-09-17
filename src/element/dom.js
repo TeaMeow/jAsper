@@ -190,87 +190,131 @@ jA.fn.find = function(selector)
 
 
 
-        /**
-         * Parent
-         */
+/**
+ * Parent
+ */
 
-        jA.fn.parent = function()
+jA.fn.parent = function()
+{
+    return 0 in this ? jA(this[0].parentNode) : null;
+}
+
+
+
+
+jA.fn.parents = function(selector)
+{
+    var that     = this,
+        selector = selector || null,
+        parents  = [];
+
+    if(selector !== null)
+        var selector = jA(selector);
+
+    /** Non stop loop, until there's no parent of the element */
+    while(that)
+    {
+        /** Not this one, we go upper */
+        that = jA(that).parent()[0];
+
+        /** No parent? */
+        if(!that)
+            break;
+
+        /** Push to the parents list if it's in the selector or just push it if we don't set a selector */
+        if(selector == null || (selector !== null && Array.prototype.indexOf.call(selector, that) !== -1))
+            parents.push(that);
+    }
+
+    return jA(parents);
+}
+
+
+
+
+
+jA.fn.closest = function(selector)
+{
+    var that     = this,
+        selector = jA(selector);
+
+    /** Non stop loop, until there's no parent of the element */
+    while(true)
+    {
+        /** Not this one, we go upper */
+        that = jA(that).parent()[0];
+
+        /** No parent? */
+        if(!that)
+            return null;
+
+        /** Is the parent in the closest selector? If it do, then the parent is the closest element which we want */
+        if(Array.prototype.indexOf.call(selector, that) !== -1)
+            return jA(that);
+    }
+}
+
+
+
+jA.fn.contains = function(wants)
+{
+    var selector = jA(wants),
+        isTrue   = false;
+
+    this.each(function(i, el)
+    {
+        var children = el.childNodes;
+
+        for(var si = 0; si < selector.length; si++)
         {
-            return 0 in this ? jA(this[0].parentNode) : null;
+            if(Array.prototype.indexOf.call(children, selector[si]) != -1)
+                isTrue = true;
         }
+    });
 
+    return isTrue;
+}
 
-
-
-        jA.fn.parents = function(selector)
+jA.fn.next = function()
+{
+    if(0 in this)
+    {
+        var next = this[0].nextElementSibling
+        
+        if(next)
         {
-            var that     = this,
-                selector = selector || null,
-                parents  = [];
-
-            if(selector !== null)
-                var selector = jA(selector);
-
-            /** Non stop loop, until there's no parent of the element */
-            while(that)
-            {
-                /** Not this one, we go upper */
-                that = jA(that).parent()[0];
-
-                /** No parent? */
-                if(!that)
-                    break;
-
-                /** Push to the parents list if it's in the selector or just push it if we don't set a selector */
-                if(selector == null || (selector !== null && Array.prototype.indexOf.call(selector, that) !== -1))
-                    parents.push(that);
-            }
-
-            return jA(parents);
+            return jA(next);
         }
-
-
-
-
-
-        jA.fn.closest = function(selector)
+        else
         {
-            var that     = this,
-                selector = jA(selector);
-
-            /** Non stop loop, until there's no parent of the element */
-            while(true)
-            {
-                /** Not this one, we go upper */
-                that = jA(that).parent()[0];
-
-                /** No parent? */
-                if(!that)
-                    return null;
-
-                /** Is the parent in the closest selector? If it do, then the parent is the closest element which we want */
-                if(Array.prototype.indexOf.call(selector, that) !== -1)
-                    return jA(that);
-            }
+            return null;
         }
+    }
+    else
+    {
+        return null;
+    }
+}
 
 
 
-        jA.fn.contains = function(wants)
+jA.fn.prev = function()
+{
+    if(0 in this)
+    {
+        var prev = this[0].previousElementSibling
+        
+        if(prev)
         {
-            var selector = jA(wants),
-                isTrue   = false;
-
-            this.each(function(i, el)
-            {
-                var children = el.childNodes;
-
-                for(var si = 0; si < selector.length; si++)
-                {
-                    if(Array.prototype.indexOf.call(children, selector[si]) != -1)
-                        isTrue = true;
-                }
-            });
-
-            return isTrue;
+            return jA(prev);
         }
+        else
+        {
+            return null;
+        }
+    }
+    else
+    {
+        return null;
+    }
+}
