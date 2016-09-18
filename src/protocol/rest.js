@@ -1,87 +1,101 @@
-jA.post = function(url, data, callback)
+jA.post = function(url, data, dataType)
 {
-    callback = callback || null;
-
-    var d = new jA.deferred();
-
-
-    jA.ajax({
+    dataType = dataType || 'json';
+    
+    var d      = new jA.deferred();
+    var config =
+    {
         url     : url,
         type    : 'POST',
-        dataType: 'json',
+        dataType: dataType,
         data    : data,
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
+    }
 
+    if(jA.isJSON(data))
+        config.contentType = 'application/json; charset=UTF-8'
+
+    jA.ajax(config);
 
     return d;
 }
 
 
-jA.patch = function(url, data, callback)
+jA.patch = function(url, data, dataType)
 {
-    callback = callback || null;
+    dataType = dataType || 'json';
 
-    var d = new jA.deferred();
-
-
-    jA.ajax({
+    var d      = new jA.deferred();
+    var config =
+    {
         url     : url,
         type    : 'PATCH',
-        dataType: 'json',
+        dataType: dataType,
         data    : data,
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
+    }
 
+    if(jA.isJSON(data))
+        config.contentType = 'application/json; charset=UTF-8'
+        
+    jA.ajax(config);
 
     return d;
 }
 
-jA.delete = function(url, data, callback)
+jA.delete = function(url, data, dataType)
 {
-    callback = callback || null;
+    dataType = dataType || 'json';
 
-    var d = new jA.deferred();
-
-
-    jA.ajax({
+    var d      = new jA.deferred();
+    var config =
+    {
         url     : url,
         type    : 'DELETE',
-        dataType: 'json',
+        dataType: dataType,
         data    : data,
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
+    }
 
+    if(jA.isJSON(data))
+        config.contentType = 'application/json; charset=UTF-8'
+        
+    jA.ajax(config);
 
     return d;
 }
 
-jA.put = function(url, data, callback)
+jA.put = function(url, data, dataType)
 {
-    callback = callback || null;
+    dataType = dataType || 'json';
 
-    var d = new jA.deferred();
-
-
-    jA.ajax({
+    var d      = new jA.deferred();
+    var config =
+    {
         url     : url,
         type    : 'PUT',
-        dataType: 'json',
+        dataType: dataType,
         data    : data,
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
-
+    }
+    
+    if(jA.isJSON(data))
+        config.contentType = 'application/json; charset=UTF-8'
+        
+    jA.ajax(config);
 
     return d;
 }
 
-jA.get = function(url, data)
+jA.get = function(url, data, dataType)
 {
-    data = data || null;
+    data     = data     || null;
+    dataType = dataType || 'json';
+    
     var params = '';
 
     var d = new jA.deferred();
@@ -97,15 +111,17 @@ jA.get = function(url, data)
         /** Remove the unnecessary symbol at the end */
         params = '?' + params.slice(0, -1);
     }
-
-    jA.ajax({
+    
+    var config = 
+    {
         url     : url + params,
         type    : 'GET',
         dataType: 'json',
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
+    }
 
+    jA.ajax(config);
 
     return d;
 }

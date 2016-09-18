@@ -1,11 +1,11 @@
 
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-/* Merging js from "js_merge.txt" begins */
+/* Merging js from "merge.txt" begins */
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-/* Last merge : Thu Jun 2 09:56:33 UTC 2016  */
+/* Last merge : Sun Sep 18 08:22:38 UTC 2016  */
 
 /* Merging order :
 
@@ -369,15 +369,27 @@ jA.deferred.prototype =
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
+
+
+// http://stackoverflow.com/a/33369954/5203951
 jA.isJSON = function(string)
 {
-    /** Detect the type of the respone is json or not */
-    var isJSON = true;
+    string = typeof string !== "string" ? JSON.stringify(string)
+                                        : string;
+    try
+    {
+        string = JSON.parse(string);
+    } catch (e)
+    {
+        return false;
+    }
 
-    try     { JSON.parse(string); }
-    catch(e){ var isJSON = false; }
+    if (typeof string === "object" && string !== null)
+    {
+        return true;
+    }
 
-    return isJSON;
+    return false;
 }
 
 
@@ -1332,90 +1344,135 @@ jA.fn.find = function(selector)
 
 
 
-        /**
-         * Parent
-         */
+/**
+ * Parent
+ */
 
-        jA.fn.parent = function()
+jA.fn.parent = function()
+{
+    return 0 in this ? jA(this[0].parentNode) : null;
+}
+
+
+
+
+jA.fn.parents = function(selector)
+{
+    var that     = this,
+        selector = selector || null,
+        parents  = [];
+
+    if(selector !== null)
+        var selector = jA(selector);
+
+    /** Non stop loop, until there's no parent of the element */
+    while(that)
+    {
+        /** Not this one, we go upper */
+        that = jA(that).parent()[0];
+
+        /** No parent? */
+        if(!that)
+            break;
+
+        /** Push to the parents list if it's in the selector or just push it if we don't set a selector */
+        if(selector == null || (selector !== null && Array.prototype.indexOf.call(selector, that) !== -1))
+            parents.push(that);
+    }
+
+    return jA(parents);
+}
+
+
+
+
+
+jA.fn.closest = function(selector)
+{
+    var that     = this,
+        selector = jA(selector);
+
+    /** Non stop loop, until there's no parent of the element */
+    while(true)
+    {
+        /** Not this one, we go upper */
+        that = jA(that).parent()[0];
+
+        /** No parent? */
+        if(!that)
+            return null;
+
+        /** Is the parent in the closest selector? If it do, then the parent is the closest element which we want */
+        if(Array.prototype.indexOf.call(selector, that) !== -1)
+            return jA(that);
+    }
+}
+
+
+
+jA.fn.contains = function(wants)
+{
+    var selector = jA(wants),
+        isTrue   = false;
+
+    this.each(function(i, el)
+    {
+        var children = el.childNodes;
+
+        for(var si = 0; si < selector.length; si++)
         {
-            return 0 in this ? jA(this[0].parentNode) : null;
+            if(Array.prototype.indexOf.call(children, selector[si]) != -1)
+                isTrue = true;
         }
+    });
 
+    return isTrue;
+}
 
-
-
-        jA.fn.parents = function(selector)
+jA.fn.next = function()
+{
+    if(0 in this)
+    {
+        var next = this[0].nextElementSibling
+        
+        if(next)
         {
-            var that     = this,
-                selector = selector || null,
-                parents  = [];
-
-            if(selector !== null)
-                var selector = jA(selector);
-
-            /** Non stop loop, until there's no parent of the element */
-            while(that)
-            {
-                /** Not this one, we go upper */
-                that = jA(that).parent()[0];
-
-                /** No parent? */
-                if(!that)
-                    break;
-
-                /** Push to the parents list if it's in the selector or just push it if we don't set a selector */
-                if(selector == null || (selector !== null && Array.prototype.indexOf.call(selector, that) !== -1))
-                    parents.push(that);
-            }
-
-            return jA(parents);
+            return jA(next);
         }
-
-
-
-
-
-        jA.fn.closest = function(selector)
+        else
         {
-            var that     = this,
-                selector = jA(selector);
-
-            /** Non stop loop, until there's no parent of the element */
-            while(true)
-            {
-                /** Not this one, we go upper */
-                that = jA(that).parent()[0];
-
-                /** No parent? */
-                if(!that)
-                    return null;
-
-                /** Is the parent in the closest selector? If it do, then the parent is the closest element which we want */
-                if(Array.prototype.indexOf.call(selector, that) !== -1)
-                    return jA(that);
-            }
+            return null;
         }
+    }
+    else
+    {
+        return null;
+    }
+}
 
 
 
-        jA.fn.contains = function(wants)
+jA.fn.prev = function()
+{
+    if(0 in this)
+    {
+        var prev = this[0].previousElementSibling
+        
+        if(prev)
         {
-            var selector = jA(wants),
-                isTrue   = false;
-
-            this.each(function(i, el)
-            {
-                var children = el.childNodes;
-
-                for(var si = 0; si < selector.length; si++)
-                {
-                    if(Array.prototype.indexOf.call(children, selector[si]) != -1)
-                        isTrue = true;
-                }
-            });
-
-            return isTrue;
+            return jA(prev);
         }
+        else
+        {
+            return null;
+        }
+    }
+    else
+    {
+        return null;
+    }
+}
+
 
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 /* Merging js: src/element/visibility.js begins */
@@ -3221,90 +3278,104 @@ jA.sse = function(obj)
 /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-jA.post = function(url, data, callback)
+jA.post = function(url, data, dataType)
 {
-    callback = callback || null;
-
-    var d = new jA.deferred();
-
-
-    jA.ajax({
+    dataType = dataType || 'json';
+    
+    var d      = new jA.deferred();
+    var config =
+    {
         url     : url,
         type    : 'POST',
-        dataType: 'json',
+        dataType: dataType,
         data    : data,
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
+    }
 
+    if(jA.isJSON(data))
+        config.contentType = 'application/json; charset=UTF-8'
+
+    jA.ajax(config);
 
     return d;
 }
 
 
-jA.patch = function(url, data, callback)
+jA.patch = function(url, data, dataType)
 {
-    callback = callback || null;
+    dataType = dataType || 'json';
 
-    var d = new jA.deferred();
-
-
-    jA.ajax({
+    var d      = new jA.deferred();
+    var config =
+    {
         url     : url,
         type    : 'PATCH',
-        dataType: 'json',
+        dataType: dataType,
         data    : data,
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
+    }
 
+    if(jA.isJSON(data))
+        config.contentType = 'application/json; charset=UTF-8'
+        
+    jA.ajax(config);
 
     return d;
 }
 
-jA.delete = function(url, data, callback)
+jA.delete = function(url, data, dataType)
 {
-    callback = callback || null;
+    dataType = dataType || 'json';
 
-    var d = new jA.deferred();
-
-
-    jA.ajax({
+    var d      = new jA.deferred();
+    var config =
+    {
         url     : url,
         type    : 'DELETE',
-        dataType: 'json',
+        dataType: dataType,
         data    : data,
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
+    }
 
+    if(jA.isJSON(data))
+        config.contentType = 'application/json; charset=UTF-8'
+        
+    jA.ajax(config);
 
     return d;
 }
 
-jA.put = function(url, data, callback)
+jA.put = function(url, data, dataType)
 {
-    callback = callback || null;
+    dataType = dataType || 'json';
 
-    var d = new jA.deferred();
-
-
-    jA.ajax({
+    var d      = new jA.deferred();
+    var config =
+    {
         url     : url,
         type    : 'PUT',
-        dataType: 'json',
+        dataType: dataType,
         data    : data,
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
-
+    }
+    
+    if(jA.isJSON(data))
+        config.contentType = 'application/json; charset=UTF-8'
+        
+    jA.ajax(config);
 
     return d;
 }
 
-jA.get = function(url, data)
+jA.get = function(url, data, dataType)
 {
-    data = data || null;
+    data     = data     || null;
+    dataType = dataType || 'json';
+    
     var params = '';
 
     var d = new jA.deferred();
@@ -3320,15 +3391,17 @@ jA.get = function(url, data)
         /** Remove the unnecessary symbol at the end */
         params = '?' + params.slice(0, -1);
     }
-
-    jA.ajax({
+    
+    var config = 
+    {
         url     : url + params,
         type    : 'GET',
         dataType: 'json',
         error   : function(r){d.reject(r)},
         success : function(r){d.resolve(r)}
-    });
+    }
 
+    jA.ajax(config);
 
     return d;
 }

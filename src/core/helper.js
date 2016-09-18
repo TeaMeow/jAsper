@@ -1,12 +1,24 @@
+
+
+// http://stackoverflow.com/a/33369954/5203951
 jA.isJSON = function(string)
 {
-    /** Detect the type of the respone is json or not */
-    var isJSON = true;
+    string = typeof string !== "string" ? JSON.stringify(string)
+                                        : string;
+    try
+    {
+        string = JSON.parse(string);
+    } catch (e)
+    {
+        return false;
+    }
 
-    try     { JSON.parse(string); }
-    catch(e){ var isJSON = false; }
+    if (typeof string === "object" && string !== null)
+    {
+        return true;
+    }
 
-    return isJSON;
+    return false;
 }
 
 
