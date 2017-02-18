@@ -6,9 +6,9 @@
 
 jA.post = function(url, data, dataType)
 {
-    dataType = dataType || 'json';
+    dataType = dataType || 'json'
 
-    var d      = new jA.deferred();
+    var d      = new jA.deferred()
     var config =
     {
         url     : url,
@@ -22,9 +22,9 @@ jA.post = function(url, data, dataType)
     if(jA.isJSON(data))
         config.contentType = 'application/json; charset=UTF-8'
 
-    jA.ajax(config);
+    jA.ajax(config)
 
-    return d;
+    return d
 }
 
 /**
@@ -35,9 +35,9 @@ jA.post = function(url, data, dataType)
 
 jA.patch = function(url, data, dataType)
 {
-    dataType = dataType || 'json';
+    dataType = dataType || 'json'
 
-    var d      = new jA.deferred();
+    var d      = new jA.deferred()
     var config =
     {
         url     : url,
@@ -51,9 +51,9 @@ jA.patch = function(url, data, dataType)
     if(jA.isJSON(data))
         config.contentType = 'application/json; charset=UTF-8'
 
-    jA.ajax(config);
+    jA.ajax(config)
 
-    return d;
+    return d
 }
 
 /**
@@ -64,9 +64,9 @@ jA.patch = function(url, data, dataType)
 
 jA.delete = function(url, data, dataType)
 {
-    dataType = dataType || 'json';
+    dataType = dataType || 'json'
 
-    var d      = new jA.deferred();
+    var d      = new jA.deferred()
     var config =
     {
         url     : url,
@@ -80,9 +80,9 @@ jA.delete = function(url, data, dataType)
     if(jA.isJSON(data))
         config.contentType = 'application/json; charset=UTF-8'
 
-    jA.ajax(config);
+    jA.ajax(config)
 
-    return d;
+    return d
 }
 
 /**
@@ -93,9 +93,9 @@ jA.delete = function(url, data, dataType)
 
 jA.put = function(url, data, dataType)
 {
-    dataType = dataType || 'json';
+    dataType = dataType || 'json'
 
-    var d      = new jA.deferred();
+    var d      = new jA.deferred()
     var config =
     {
         url     : url,
@@ -109,9 +109,9 @@ jA.put = function(url, data, dataType)
     if(jA.isJSON(data))
         config.contentType = 'application/json; charset=UTF-8'
 
-    jA.ajax(config);
+    jA.ajax(config)
 
-    return d;
+    return d
 }
 
 /**
@@ -122,23 +122,23 @@ jA.put = function(url, data, dataType)
 
 jA.get = function(url, data, dataType)
 {
-    data     = data     || null;
-    dataType = dataType || 'json';
+    data     = data     || null
+    dataType = dataType || 'json'
 
-    var params = '';
+    var params = ''
 
-    var d = new jA.deferred();
+    var d = new jA.deferred()
 
     if(data !== null)
     {
         /** explode the object into a string */
-        var params = '';
+        var params = ''
 
         for(var i in data)
-            params += i + '=' + data[i] + '&' ;
+            params += i + '=' + data[i] + '&'
 
         /** Remove the unnecessary symbol at the end */
-        params = '?' + params.slice(0, -1);
+        params = '?' + params.slice(0, -1)
     }
 
     var config =
@@ -150,7 +150,7 @@ jA.get = function(url, data, dataType)
         success : function(r){d.resolve(r)}
     }
 
-    jA.ajax(config);
+    jA.ajax(config)
 
-    return d;
+    return d
 }

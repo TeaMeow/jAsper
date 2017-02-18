@@ -171,12 +171,12 @@ jA.fn.drawable = function()
         {
             /** Get mouse position in canvas */
             if (e.layerX || ev.layerX == 0) {
-                e._x = e.layerX;
-                e._y = e.layerY;
+                e._x = e.layerX
+                e._y = e.layerY
             // Opera
             } else if (e.offsetX || e.offsetX == 0) {
-                e._x = e.offsetX;
-                e._y = e.offsetY;
+                e._x = e.offsetX
+                e._y = e.offsetY
             }
 
             var tool = new this.drawTools[this.drawUsing]
@@ -268,14 +268,14 @@ jA.fn.tool = function(tools)
                                 w = Math.abs(e._x - canvas.x0),
                                 h = Math.abs(e._y - canvas.y0);
 
-                            c2d.clearRect(0, 0, canvas.width, canvas.height);
+                            c2d.clearRect(0, 0, canvas.width, canvas.height)
 
                             if (!w || !h) {
-                                return;
+                                return
                             }
 
                             c2d.strokeStyle = canvas.drawColor
-                            c2d.strokeRect(x, y, w, h);
+                            c2d.strokeRect(x, y, w, h)
                         }
 
                         this.mouseup = function(e)
@@ -432,7 +432,7 @@ jA.fn.updateCanvas = function()
             c2d = canvas.getContext('2d')
 
 
-        c2do.drawImage(canvas, 0, 0);
-        c2d.clearRect(0, 0, canvas.width, canvas.height);
+        c2do.drawImage(canvas, 0, 0)
+        c2d.clearRect(0, 0, canvas.width, canvas.height)
     })
 }

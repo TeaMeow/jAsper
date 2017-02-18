@@ -14,33 +14,33 @@ jA.fn.validate = function()
         required  = jAthis.attr('required') != null,
         pattern   = jAthis.attr('pattern'),
         type      = jAthis.attr('type'),
-        value     = jAthis.val();
+        value     = jAthis.val()
 
     if(required && value == '')
-        return 'required';
+        return 'required'
 
     if(minlength !== null && value.length < minlength)
-        return 'minlegnth';
+        return 'minlegnth'
 
     if(maxlength !== null && value.length > maxlength)
-        return 'maxlegnth';
+        return 'maxlegnth'
 
     if(min !== null && parseInt(value) < min)
-        return 'min';
+        return 'min'
 
     if(max !== null && parseInt(value) > max)
-        return 'max';
+        return 'max'
 
     if(pattern !== null)
     {
-        var regEx = new RegExp(pattern.replace(/\//g, ''));
+        var regEx = new RegExp(pattern.replace(/\//g, ''))
 
         if(!regEx.test(value))
-            return 'pattern';
+            return 'pattern'
     }
 
     if(type !== null && type == 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-        return 'email';
+        return 'email'
 
-    return true;
+    return true
 }

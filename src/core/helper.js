@@ -33,7 +33,7 @@ jA.isJSON = function(string)
 
 jA.inArray = function(item, targetArray)
 {
-    return targetArray.indexOf(item);
+    return targetArray.indexOf(item)
 }
 
 /**
@@ -44,7 +44,7 @@ jA.inArray = function(item, targetArray)
 
 jA.isNumeric = function(number)
 {
-    return !isNaN(parseFloat(Number)) && isFinite(Number);
+    return !isNaN(parseFloat(Number)) && isFinite(Number)
 }
 
 /**
@@ -135,7 +135,7 @@ jA.map = function(array, callback)
 
 jA.rand = function(min, max)
 {
-    return Math.floor(Math.random() * (max - min + 1) + min);
+    return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 /**
@@ -144,28 +144,28 @@ jA.rand = function(min, max)
  * 產生 GUID 編號。
  */
 
-var jAsperGuids = [];
+var jAsperGuids = []
 
 jA.guid = function()
 {
-    var guid;
+    var guid
 
     function s4()
     {
         return Math.floor((1 + Math.random()) * 0x10000)
                    .toString(16)
-                   .substring(1);
+                   .substring(1)
     }
 
     do
     {
-        guid = s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+        guid = s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4()
     }
-    while(jAsperGuids.indexOf(guid) != -1);
+    while(jAsperGuids.indexOf(guid) != -1)
 
-    jAsperGuids.push(guid);
+    jAsperGuids.push(guid)
 
-    return guid;
+    return guid
 }
 
 /**
@@ -176,7 +176,7 @@ jA.guid = function()
 
 jA.digits = function(number)
 {
-    return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "jA1,");
+    return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "jA1,")
 }
 
 /**
@@ -192,19 +192,19 @@ jA.isset = function()
     var a = arguments,
         l = a.length,
         i = 0,
-        undef;
+        undef
 
     if (l === 0) {
-        throw new Error('Empty isset');
+        throw new Error('Empty isset')
     }
 
     while (i !== l) {
         if (a[i] === undef || a[i] === null) {
-            return false;
+            return false
         }
-        i++;
+        i++
     }
-    return true;
+    return true
 }
 
 /**
@@ -215,13 +215,13 @@ jA.isset = function()
 
 jA.setTimeout = function(timer)
 {
-    var d = new jA.deferred();
-    var that = this;
+    var d = new jA.deferred()
+    var that = this
 
     setTimeout(function(r)
     {
-        d.resolve(r);
-    }, timer);
+        d.resolve(r)
+    }, timer)
 
-    return d;
+    return d
 }

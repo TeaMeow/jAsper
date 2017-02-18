@@ -6,7 +6,7 @@
 
 jA.fn.mousedown = function(callback)
 {
-    return jA(this).on('mousedown', callback);
+    return jA(this).on('mousedown', callback)
 }
 
 /**
@@ -17,7 +17,7 @@ jA.fn.mousedown = function(callback)
 
 jA.fn.mouseup = function(callback)
 {
-    return jA(this).on('mouseup', callback);
+    return jA(this).on('mouseup', callback)
 }
 
 /**
@@ -28,7 +28,7 @@ jA.fn.mouseup = function(callback)
 
 jA.fn.keyup = function(callback)
 {
-    return jA(this).on('keyup', callback);
+    return jA(this).on('keyup', callback)
 }
 
 /**
@@ -39,7 +39,7 @@ jA.fn.keyup = function(callback)
 
 jA.fn.mousemove = function(callback)
 {
-    return jA(this).on('mousemove', callback);
+    return jA(this).on('mousemove', callback)
 }
 
 /**
@@ -50,7 +50,7 @@ jA.fn.mousemove = function(callback)
 
 jA.fn.click = function(callback)
 {
-    return jA(this).on('click', callback);
+    return jA(this).on('click', callback)
 }
 
 /**
@@ -61,7 +61,7 @@ jA.fn.click = function(callback)
 
 jA.fn.dragstart = function(callback)
 {
-    return jA(this).on('dragstart', callback);
+    return jA(this).on('dragstart', callback)
 }
 
 /**
@@ -74,44 +74,44 @@ jA.fn.longPress = function(callback, clickCallback, timer)
 {
     /** If callback is not an number, which means it must be a function */
     if(!isNaN(clickCallback))
-        timer = clickCallback;
+        timer = clickCallback
 
-    timer = timer || 500;
+    timer = timer || 500
 
     return this.each(function()
     {
         jA(this).mousedown(function(event)
         {
-            var that = this;
+            var that = this
             /** Haven't trigger long press yet, so we set this to false */
-            that.ts_longPressed    = false;
+            that.ts_longPressed    = false
 
             this.ts_longPressTimer = setTimeout(function()
             {
                 /** Call long press callback */
-                callback.call(that);
+                callback.call(that)
 
                 /** Long press has been triggered */
-                that.ts_longPressed = true;
+                that.ts_longPressed = true
 
-            }, timer);
+            }, timer)
 
-            return false;
+            return false
         })
         .mouseup(function(event)
         {
             /** If it's not long press, we call the 'click' callback */
             if(!this.ts_longPressed)
                 if(typeof clickCallback !== 'undefined')
-                    clickCallback.call(this);
+                    clickCallback.call(this)
 
-            clearTimeout(this.ts_longPressTimer);
-            return false;
+            clearTimeout(this.ts_longPressTimer)
+            return false
         })
         .mousemove(function(event)
         {
-            clearTimeout(this.ts_longPressTimer);
-            return false;
+            clearTimeout(this.ts_longPressTimer)
+            return false
         })
     })
 }
@@ -124,7 +124,7 @@ jA.fn.longPress = function(callback, clickCallback, timer)
 
 jA.fn.trigger = function(Event)
 {
-    return this.each(function(){ this[Event]() });
+    return this.each(function(){ this[Event]() })
 }
 
 /**
@@ -137,16 +137,16 @@ jA.fn.scrollBottom = function(scroll, reachBottom)
 {
     jA(this).on('scroll', function()
     {
-        var distance = this.scrollHeight - this.scrollTop - this.clientHeight;
+        var distance = this.scrollHeight - this.scrollTop - this.clientHeight
 
         /** Call ReachBottom if user scroll to the bottom */
         if(typeof scroll !== 'undefined' || scroll != null)
-            scroll.call(this, distance); //Pass distance from the bottom to the function.
+            scroll.call(this, distance) //Pass distance from the bottom to the function.
 
         /** Call ReachBottom if user scroll to the bottom */
         if(distance == 0 && typeof reachBottom !== 'undefined')
-            reachBottom.call(this, distance);
-    });
+            reachBottom.call(this, distance)
+    })
 }
 
 /**
@@ -171,8 +171,8 @@ jA.fn.focus = function()
 {
     return this.each(function()
     {
-        this.focus();
-    });
+        this.focus()
+    })
 }
 
 /**
@@ -185,9 +185,9 @@ jA.fn.isBottom = function()
 {
     if(0 in this)
         if((this[0].scrollHeight - this[0].scrollTop - this[0].clientHeight) == 0)
-            return true;
+            return true
     else
-        return false;
+        return false
 }
 
 /**
@@ -202,19 +202,19 @@ jA.fn.delayKeyup = function(callback, ms)
     {
         var timer = 0,
             el    = jA(this),
-            that  = this;
+            that  = this
 
          jA(this).keyup(function(event)
          {
-             var event = event;
+             var event = event
 
-            clearTimeout(timer);
+            clearTimeout(timer)
 
             timer = setTimeout(function()
             {
                  callback.call(that, event)
-            }, ms);
-         });
+            }, ms)
+         })
     })
 
 }

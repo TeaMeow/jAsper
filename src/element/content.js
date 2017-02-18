@@ -10,15 +10,15 @@ jA.fn.val = function(value)
     {
         if(0 in this)
             if(this[0].nodeName == 'SELECT')
-                return this[0].options[this[0].selectedIndex].value;
+                return this[0].options[this[0].selectedIndex].value
             else
-                return this[0].value;
+                return this[0].value
         else
-            return null;
+            return null
     }
     else
     {
-        return this.each(function(){ this.value = value });
+        return this.each(function(){ this.value = value })
     }
 }
 
@@ -32,9 +32,9 @@ jA.fn.empty = function()
 {
     return this.each(function()
     {
-        if(this.innerHTML != 'undefined') this.innerHTML = '';
-        if(this.value     != 'undefined') this.value     = '';
-    });
+        if(this.innerHTML != 'undefined') this.innerHTML = ''
+        if(this.value     != 'undefined') this.value     = ''
+    })
 }
 
 /**
@@ -46,9 +46,9 @@ jA.fn.empty = function()
 jA.fn.text = function(text)
 {
     if(text === undefined)
-        return 0 in this ? this[0].innerText : null;
+        return 0 in this ? this[0].innerText : null
     else
-        return this.each(function(){ this.textContent = text; });
+        return this.each(function(){ this.textContent = text })
 }
 
 /**
@@ -59,12 +59,12 @@ jA.fn.text = function(text)
 
 jA.fn.html = function(html)
 {
-    html = html || null;
+    html = html || null
 
     if(!html)
-        return 0 in this ? this[0].innerHTML : null;
+        return 0 in this ? this[0].innerHTML : null
     else
-        return this.each(function(){ this.innerHTML = html });
+        return this.each(function(){ this.innerHTML = html })
 }
 
 /**
@@ -78,7 +78,7 @@ jA.fn.fdPush = function(obj)
     for(var i in obj)
         this[0].append(i, obj[i])
 
-    return this[0];
+    return this[0]
 }
 
 /**
@@ -97,7 +97,7 @@ jA.fn.map = function(callback)
 
         if(result)
             array.push(result)
-    });
+    })
 
     return array
 }

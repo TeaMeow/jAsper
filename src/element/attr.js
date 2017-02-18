@@ -6,19 +6,19 @@
 
 jA.fn.attr = function(attr, value)
 {
-    value = (value === null) ? null : value;
+    value = (value === null) ? null : value
 
     /** Set multiple Attr if Attr is object */
     if(typeof attr === 'object' && !value)
-        return this.each(function(){ for(var i in attr) this.setAttribute(i, attr[i]); });
+        return this.each(function(){ for(var i in attr) this.setAttribute(i, attr[i]) })
 
     /** Set single attr */
     else if(attr != null && value != null)
-        return this.each(function(){ this.setAttribute(attr, value); });
+        return this.each(function(){ this.setAttribute(attr, value) })
 
     /** Get single attr only if Attr is not null */
     else if(attr != null && !value)
-        return 0 in this ? this[0].getAttribute(attr) : null;
+        return 0 in this ? this[0].getAttribute(attr) : null
 }
 
 /**
@@ -29,6 +29,6 @@ jA.fn.attr = function(attr, value)
 
 jA.fn.removeAttr = function(attr)
 {
-    return this.each(function(){ this.removeAttribute(attr); });
+    return this.each(function(){ this.removeAttribute(attr) })
 }
 

@@ -7,7 +7,7 @@
 jA.geo = function(option)
 {
     if(typeof option == 'undefined')
-        return false;
+        return false
 
     /** Check some options is set or null, and gives some options a default value */
     var notSupported = typeof option.notSupported == 'function',
@@ -20,19 +20,19 @@ jA.geo = function(option)
         opt          = {
                            enableHighAccuracy: highAccurary,
                            timeout           : timeout
-                       };
+                       }
 
     /** Set the maximumAge if needed */
     if(maxAge)
-        opt.maximumAge = maxAge;
+        opt.maximumAge = maxAge
 
     /** Set the timer for the firefox */
     /** Firefox won't give us "Denied" status, so the only thing we can do is waiting for it timeout to call deny callback*/
     if(isFirefox)
         if(error)
-            var firefoxTimer = setTimeout(function(){ option.error(3) }, timeout);
+            var firefoxTimer = setTimeout(function(){ option.error(3) }, timeout)
         else if(deny)
-            var firefoxTimer = setTimeout(option.deny, timeout);
+            var firefoxTimer = setTimeout(option.deny, timeout)
 
     /** Use the geolocation function if the borwser was supported the HTML5 geolocation */
     if(navigator.geolocation)
@@ -40,28 +40,28 @@ jA.geo = function(option)
         {
             /** Clean the firefox "denied" timer */
             if(isFirefox)
-                clearTimeout(firefoxTimer);
+                clearTimeout(firefoxTimer)
 
             /** Call to the success callback */
-            option.success(position);
+            option.success(position)
         },
         function(errorCode)
         {
-            var denied    = (errorCode.code == errorCode.PERMISSION_DENIED);
+            var denied    = (errorCode.code == errorCode.PERMISSION_DENIED)
 
             /** Clean the firefox "denied" timer */
             if(isFirefox)
-                clearTimeout(firefoxTimer);
+                clearTimeout(firefoxTimer)
 
             /** Call error if error callback exists or deny callback when the callback exists and user denied it */
             if(error)
-                option.error(errorCode);
+                option.error(errorCode)
             else if(deny && denied)
-                option.deny();
+                option.deny()
 
         }, opt)
     /** Otherwise we call the notSupported callback if existed */
     else
         if(notSupported)
-            option.notSupported();
+            option.notSupported()
 }

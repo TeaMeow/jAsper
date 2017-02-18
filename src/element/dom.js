@@ -8,9 +8,9 @@ jA.fn.wrap = function(element)
 {
     return this.each(function()
     {
-        this.parentNode.insertBefore(element, this);
-        element.appendChild(this);
-    });
+        this.parentNode.insertBefore(element, this)
+        element.appendChild(this)
+    })
 }
 
 /**
@@ -22,9 +22,9 @@ jA.fn.wrap = function(element)
 jA.fn.append = function(html)
 {
     if(html != null && typeof html == 'object')
-        return this.each(function(){ this.appendChild(html); });
+        return this.each(function(){ this.appendChild(html) })
     else if(html != null)
-        return this.each(function(){ this.innerHTML += html; });
+        return this.each(function(){ this.innerHTML += html })
 }
 
 /**
@@ -36,7 +36,7 @@ jA.fn.append = function(html)
 jA.fn.after = function(html)
 {
     if(html != null)
-        return this.each(function(){ this.insertAdjacentHTML('afterend', html); });
+        return this.each(function(){ this.insertAdjacentHTML('afterend', html) })
 }
 
 /**
@@ -48,7 +48,7 @@ jA.fn.after = function(html)
 jA.fn.before = function(html)
 {
     if(html != null)
-        return this.each(function(){ this.insertAdjacentHTML('beforeBegin', html); });
+        return this.each(function(){ this.insertAdjacentHTML('beforeBegin', html) })
 }
 
 /**
@@ -63,15 +63,15 @@ jA.fn.prepend = function(html)
     {
         return this.each(function()
         {
-            var template = document.createElement('template');
-            template.innerHTML = html;
+            var template = document.createElement('template')
+            template.innerHTML = html
 
             if(typeof this.nodeType !== 'undefined')
                 if(this.firstChild)
                     return this.insertBefore(template.content, this.firstChild)
                 else
                     return this.appendChild(template.content)
-        });
+        })
     }
 }
 
@@ -85,12 +85,12 @@ jA.fn.appendTo = function(selector)
 {
     return this.each(function()
     {
-        var that = this;
+        var that = this
 
         jA(selector).each(function()
         {
-            this.appendChild(that, this.nextSibling);
-        });
+            this.appendChild(that, this.nextSibling)
+        })
     })
 }
 
@@ -104,7 +104,7 @@ jA.fn.prependTo = function(selector)
 {
     return this.each(function()
     {
-        var that = this;
+        var that = this
 
         jA(selector).each(function()
         {
@@ -112,7 +112,7 @@ jA.fn.prependTo = function(selector)
                 return this.insertBefore(that, this.firstChild)
             else
                 return this.appendChild(that)
-        });
+        })
     })
 }
 
@@ -126,12 +126,12 @@ jA.fn.insertAfter = function(selector)
 {
     return this.each(function()
     {
-        var that = this;
+        var that = this
 
         jA(selector).each(function()
         {
-            this.parentNode.insertBefore(that, this.nextSibling);
-        });
+            this.parentNode.insertBefore(that, this.nextSibling)
+        })
     })
 }
 
@@ -145,12 +145,12 @@ jA.fn.insertBefore = function(selector)
 {
     return this.each(function()
     {
-        var that = this;
+        var that = this
 
         jA(selector).each(function()
         {
-            this.insertAdjacentHTML('beforeBegin', that);
-        });
+            this.insertAdjacentHTML('beforeBegin', that)
+        })
     })
 }
 
@@ -162,7 +162,7 @@ jA.fn.insertBefore = function(selector)
 
 jA.fn.template = function()
 {
-    return jA(this.clone()[0].content).children();
+    return jA(this.clone()[0].content).children()
 }
 
 /**
@@ -174,18 +174,18 @@ jA.fn.template = function()
 jA.fn.clone = function(deep)
 {
     /** Copy child too? */
-    deep = (typeof deep == 'undefined') ? true : deep;
+    deep = (typeof deep == 'undefined') ? true : deep
 
-    var cloneList = [];
+    var cloneList = []
 
     /** Clone the elements */
     this.each(function()
     {
-        cloneList.push(this.cloneNode(deep));
-    });
+        cloneList.push(this.cloneNode(deep))
+    })
 
     /** Using the elements which we cloned */
-    return jA(cloneList);
+    return jA(cloneList)
 }
 
 /**
@@ -196,7 +196,7 @@ jA.fn.clone = function(deep)
 
 jA.fn.remove = function()
 {
-    return this.each(function(){ this.parentNode.removeChild(this) });
+    return this.each(function(){ this.parentNode.removeChild(this) })
 }
 
 /**
@@ -207,16 +207,16 @@ jA.fn.remove = function()
 
 jA.fn.children = function()
 {
-    var list = [];
+    var list = []
 
     this.each(function(i, el)
     {
         /** Push the child nodes to the list*/
-        list.push.apply(list, el.children);
+        list.push.apply(list, el.children)
     })
 
     /** Return the list with $ */
-    return jA(list);
+    return jA(list)
 }
 
 /**
@@ -229,18 +229,18 @@ jA.fn.find = function(selector)
 {
     /** The selector must be string */
     if(typeof selector !== 'string')
-        return null;
+        return null
 
-    var list = [];
+    var list = []
 
     this.each(function(i, el)
     {
         /** Push the child nodes to the list*/
-        list.push.apply(list, el.querySelectorAll(selector));
-    });
+        list.push.apply(list, el.querySelectorAll(selector))
+    })
 
     /** Return the list with $ */
-    return list.length ? jA(list) : null;
+    return list.length ? jA(list) : null
 }
 
 /**
@@ -251,7 +251,7 @@ jA.fn.find = function(selector)
 
 jA.fn.parent = function()
 {
-    return 0 in this ? jA(this[0].parentNode) : null;
+    return 0 in this ? jA(this[0].parentNode) : null
 }
 
 /**
@@ -264,27 +264,27 @@ jA.fn.parents = function(selector)
 {
     var that     = this,
         selector = selector || null,
-        parents  = [];
+        parents  = []
 
     if(selector !== null)
-        var selector = jA(selector);
+        var selector = jA(selector)
 
     /** Non stop loop, until there's no parent of the element */
     while(that)
     {
         /** Not this one, we go upper */
-        that = jA(that).parent()[0];
+        that = jA(that).parent()[0]
 
         /** No parent? */
         if(!that)
-            break;
+            break
 
         /** Push to the parents list if it's in the selector or just push it if we don't set a selector */
         if(selector == null || (selector !== null && Array.prototype.indexOf.call(selector, that) !== -1))
-            parents.push(that);
+            parents.push(that)
     }
 
-    return jA(parents);
+    return jA(parents)
 }
 
 /**
@@ -296,21 +296,21 @@ jA.fn.parents = function(selector)
 jA.fn.closest = function(selector)
 {
     var that     = this,
-        selector = jA(selector);
+        selector = jA(selector)
 
     /** Non stop loop, until there's no parent of the element */
     while(true)
     {
         /** Not this one, we go upper */
-        that = jA(that).parent()[0];
+        that = jA(that).parent()[0]
 
         /** No parent? */
         if(!that)
-            return null;
+            return null
 
         /** Is the parent in the closest selector? If it do, then the parent is the closest element which we want */
         if(Array.prototype.indexOf.call(selector, that) !== -1)
-            return jA(that);
+            return jA(that)
     }
 }
 
@@ -323,20 +323,20 @@ jA.fn.closest = function(selector)
 jA.fn.contains = function(wants)
 {
     var selector = jA(wants),
-        isTrue   = false;
+        isTrue   = false
 
     this.each(function(i, el)
     {
-        var children = el.childNodes;
+        var children = el.childNodes
 
         for(var si = 0; si < selector.length; si++)
         {
             if(Array.prototype.indexOf.call(children, selector[si]) != -1)
-                isTrue = true;
+                isTrue = true
         }
-    });
+    })
 
-    return isTrue;
+    return isTrue
 }
 
 /**
@@ -358,7 +358,7 @@ jA.fn.next = function()
     }
     else
     {
-        return null;
+        return null
     }
 }
 

@@ -34,25 +34,25 @@ jA.fn.on = function(eventName, selector, handler, once)
     {
         if(typeof this.addEventListener == 'undefined')
         {
-            console.log('TOCAS ERROR: Event listener is not worked with this element.');
-            return false;
+            console.log('TOCAS ERROR: Event listener is not worked with this element.')
+            return false
         }
 
         /** If the main event list of the element is not existed, we create one */
         if(typeof this.ts_eventHandler == 'undefined')
-            this.ts_eventHandler = {};
+            this.ts_eventHandler = {}
 
         /** Split the event by space */
-        var events = eventName.split(' ');
+        var events = eventName.split(' ')
 
         for(var i in events)
         {
-            var event = events[i];
+            var event = events[i]
 
             /** If the event handler list is not existed, we create an object, we will store function in here */
             /** so if someone triggered the event, we can just call this list. */
             if(typeof this.ts_eventHandler[event] == 'undefined')
-                this.ts_eventHandler[event] = {registered: false, list: []};
+                this.ts_eventHandler[event] = {registered: false, list: []}
 
             /** Bind if haven't bind yet */
             if(this.ts_eventHandler[event].registered === false)
@@ -68,43 +68,43 @@ jA.fn.on = function(eventName, selector, handler, once)
                             /** If there's a selector */
                             if(typeof this.ts_eventHandler[event].list[e].selector !== 'undefined')
                             {
-                                var inSelector = false;
+                                var inSelector = false
 
                                 /** If this element is in the selector, then we set InSelector as true */
                                 jA(this.ts_eventHandler[event].list[e].selector).each(function(i, el)
                                 {
-                                    if(evt.target === el) inSelector = true;
+                                    if(evt.target === el) inSelector = true
                                 })
 
                                 /** We won't call this function if this elements which is triggered is not in the selector */
-                                if(!inSelector) return;
+                                if(!inSelector) return
                             }
 
                             /** Execute */
-                            this.ts_eventHandler[event].list[e].func.call(this, evt);
+                            this.ts_eventHandler[event].list[e].func.call(this, evt)
 
                             /** If "once" is true, we remove it after call it */
                             if(this.ts_eventHandler[event].list[e].once)
-                                delete this.ts_eventHandler[event].list[e];
+                                delete this.ts_eventHandler[event].list[e]
                         }
                     }
                 })
 
-                this.ts_eventHandler[event].registered = true;
+                this.ts_eventHandler[event].registered = true
             }
 
             /** Push handler or anonymous function into that event list */
             var eventHandler = this.ts_eventHandler[event].list,
-                data         = {func: handler, once: once};
+                data         = {func: handler, once: once}
 
             /** Store the selector if there's selector */
             if(hasSelector)
-                data.selector = selector;
+                data.selector = selector
 
             /** Store the function info*/
-            eventHandler.push(data);
+            eventHandler.push(data)
 
-            this.ts_eventHandler[event].list = eventHandler;
+            this.ts_eventHandler[event].list = eventHandler
         }
     })
 }
@@ -120,8 +120,8 @@ jA.fn.one = function(eventName, selector, handler)
     return this.each(function()
     {
         /** Set "once" true, it will auto remove once we call it */
-        jA(this).on(eventName, selector, handler, true);
-    });
+        jA(this).on(eventName, selector, handler, true)
+    })
 }
 
 /**
@@ -135,21 +135,21 @@ jA.fn.off = function(eventName, handler)
     return this.each(function()
     {
         /** No list no talk */
-        if(typeof this.ts_eventHandler            == 'undefined') return;
-        if(typeof this.ts_eventHandler[eventName] == 'undefined') return;
+        if(typeof this.ts_eventHandler            == 'undefined') return
+        if(typeof this.ts_eventHandler[eventName] == 'undefined') return
 
         /** If there's no handler name, we remove all handler */
         if(handler == null)
         {
-            this.ts_eventHandler[eventName].list = [];
-            return;
+            this.ts_eventHandler[eventName].list = []
+            return
         }
 
         /** Otherwise we search for the index of function, then remove it */
         for(var e in this.ts_eventHandler[eventName].list)
-            if(handler === this.ts_eventHandler[eventName].list[e].func) 
-                delete this.ts_eventHandler[eventName].list[e];
-    });
+            if(handler === this.ts_eventHandler[eventName].list[e].func)
+                delete this.ts_eventHandler[eventName].list[e]
+    })
 }
 
 

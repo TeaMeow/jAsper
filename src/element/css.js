@@ -8,40 +8,40 @@ jA.fn.cssAnimate = function(animate, callback, time)
 {
     /** If someone using callback field as time.. */
     if(typeof callback == 'number' && typeof time != 'function')
-        time = callback;
+        time = callback
 
     if(typeof callback == 'number' && typeof time == 'function')
     {
         var trueCallback = time,
-            trueTime     = callback;
+            trueTime     = callback
 
         callback = trueCallback,
-        time     = trueTime;
+        time     = trueTime
     }
 
     /** Turn millionsecond to float (ex: 300 -> 0.3), then turn float to string and remove the dot (0.3 -> 03 -> 3)*/
-    var timer = parseInt((time / 1000).toString().replace('.', ''), 10);
-        timer = time < 1000 ? '0' + timer : timer;
+    var timer = parseInt((time / 1000).toString().replace('.', ''), 10)
+        timer = time < 1000 ? '0' + timer : timer
 
     /** Select animation duration by Time */
-    time = isNaN(time) ? '' : ' animated' + timer + 's';
+    time = isNaN(time) ? '' : ' animated' + timer + 's'
 
     return this.each(function()
     {
         /** For passing jA(this) to inside function */
-        var that = this;
+        var that = this
 
         /** Add animation */
         jA(this).addClass(animate + ' animated' + time)
                /** Once the animation end, we remove the animate class and callback **/
                .one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function()
                 {
-                   jA(that).removeClass(animate + ' animated' + time);
+                   jA(that).removeClass(animate + ' animated' + time)
 
                    if((typeof callback !== 'undefined' && callback != null) && typeof callback !== 'number')
-                        callback.call(that);
-                });
-    });
+                        callback.call(that)
+                })
+    })
 }
 
 /**
@@ -113,17 +113,17 @@ jA.fn.hasClass = function(classes)
 
 jA.fn.classList = function()
 {
-    var classes = [];
+    var classes = []
 
     if(0 in this)
         if(this[0].classList)
             for(var i=0; i<this[0].classList.length; i++)
-                classes.push(this[0].classList[i]);
+                classes.push(this[0].classList[i])
         else
             for(var i in this[0].className.split(' '))
-                classes.push(this[0].className.split(' ')[i]);
+                classes.push(this[0].className.split(' ')[i])
 
-    return classes;
+    return classes
 }
 
 /**
@@ -135,23 +135,23 @@ jA.fn.classList = function()
 jA.fn.addClass = function(classes)
 {
     if(classes === null)
-        return;
+        return
 
     return this.each(function()
     {
-        var list = classes.split(' ');
+        var list = classes.split(' ')
 
         for(var i in list)
         {
             if(list[i] === '')
-                continue;
+                continue
 
             if(this.classList)
-                this.classList.add(list[i]);
+                this.classList.add(list[i])
             else
-                this.className += ' ' + list[i];
+                this.className += ' ' + list[i]
         }
-    });
+    })
 }
 
 /**
@@ -166,22 +166,22 @@ jA.fn.removeClass = function(classes)
     {
         if(!classes)
         {
-            this.className = '';
+            this.className = ''
         }
         else
         {
-            var list = classes.split(' ');
+            var list = classes.split(' ')
 
             for(var i in list)
             {
                 if(list[i] == '')
-                    continue;
+                    continue
 
                 /** If there's classList, the just remove it from classList, otherwise we replace the string which is in the (class="")*/
                 if(this.classList)
-                    this.classList.remove(list[i]);
+                    this.classList.remove(list[i])
                 else if(typeof this.className !== 'undefined')
-                    this.className = this.className.replace(new RegExp('(^|\\b)' + classes.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+                    this.className = this.className.replace(new RegExp('(^|\\b)' + classes.split(' ').join('|') + '(\\b|$)', 'gi'), ' ')
             }
         }
     })
@@ -197,9 +197,9 @@ jA.fn.toggleClass = function(classes)
 {
     return this.each(function()
     {
-        var list, index, objClassList;
+        var list, index, objClassList
 
-        list = classes.split(' ');
+        list = classes.split(' ')
 
         for(var i in list)
         {
@@ -210,20 +210,20 @@ jA.fn.toggleClass = function(classes)
             else
             {
                 /** Split the class */
-                objClassList = this.className.split(' ');
+                objClassList = this.className.split(' ')
                 /** Is the class in class list already? */
-                index = list.indexOf(list[i]);
+                index = list.indexOf(list[i])
 
                 /** If already existed, we remove it, otherwise we add it */
                 if(index >= 0)
-                    objClassList.splice(index, 1);
+                    objClassList.splice(index, 1)
                 else
-                    objClassList.push(list[i]);
+                    objClassList.push(list[i])
 
-                this.className = list[i].join(' ');
+                this.className = list[i].join(' ')
             }
         }
-    });
+    })
 }
 
 /**
@@ -237,10 +237,10 @@ jA.fn.getCss = function(property)
     /** Get computed style */
     try
     {
-        return 0 in this ? document.defaultView.getComputedStyle(this[0], null).getPropertyValue(property) : null;
+        return 0 in this ? document.defaultView.getComputedStyle(this[0], null).getPropertyValue(property) : null
     }
     catch(err)
     {
-        return null;
+        return null
     }
 }
