@@ -157,7 +157,7 @@ jA.fn.insertBefore = function(selector)
 /**
  * template
  *
- * 取得 <template> 的內容。
+ * 取得 `<template>` 的內容。
  */
 
 jA.fn.template = function()

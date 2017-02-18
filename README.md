@@ -1,3 +1,13 @@
+# jAsper
+
+* [大意](#大意)
+* [索引](#索引)
+* [版權](#版權)
+
+## 大意
+
+jAsper 是一套類似 jQuery 的 JavaScript 大型函式庫。目前已經停止開發與維護，但仍可使用。建議作為研究用途。
+
 ## 索引
 
 * type Attribute
@@ -145,6 +155,12 @@ jA('div').html('<span>嗨嗨！</span>');
 將物件的內容全部推送進 FormData 中。
 
 ```js
+var fd = new FormData();
+    fd = jA(fd).fdPush
+    ({
+        username: "YamiOdymel",
+        password: "dIk#NcLe"
+    })
 ```
 
 ## .map
@@ -152,6 +168,9 @@ jA('div').html('<span>嗨嗨！</span>');
 和 ES 的陣列 map 用法相同。
 
 ```js
+jA([1, 2, 3, 4, 5]).map(function(){
+    return true
+})
 ```
 
 ## .cssAnimate
@@ -195,6 +214,7 @@ jA('div').hasClass('ts button');
 回傳元素的類別陣列。
 
 ```js
+var list = jA("div").classList()
 ```
 
 ## .addClass
@@ -226,6 +246,7 @@ jA('div').toggleClass('bold smile button large');
 取得元素的已計算樣式。
 
 ```js
+var width = jA("div").getCss("width")
 ```
 
 ## .wrap
@@ -569,12 +590,12 @@ jA('form').formExplode();
 ```js
 jA('form').formValidate(
 {
-    username: 
+    username:
     {
         minlength: usernameTooShort(),
         maxlength: usernameTooLong()
     },
-    password: 
+    password:
     {
         minlength: passwordTooShort(),
         maxlength: passwordTooLong()
@@ -698,3 +719,7 @@ jA.binder(
 
 ```js
 ```
+
+## 授權
+
+MIT © [Yami Odymel](https://github.com/YamiOdymel)
