@@ -1,11 +1,7 @@
 /**
- * Val
+ * val
  *
- * Get the value or set the value of an element.
- *
- * @param string|int value   Leave this undefined if we want to get the value instead of set it.
- *
- * @return mixed
+ * 設置一個元素的值，如果傳入的值是空的則為取得該元素的值。
  */
 
 jA.fn.val = function(value)
@@ -26,15 +22,10 @@ jA.fn.val = function(value)
     }
 }
 
-
-
-
 /**
- * Empty
+ * empty
  *
- * Clean a field or a container.
- *
- * @return object
+ * 清空一個元素的 HTML 或是值。
  */
 
 jA.fn.empty = function()
@@ -46,17 +37,10 @@ jA.fn.empty = function()
     });
 }
 
-
-
-
 /**
- * Text
+ * text
  *
- * Set a text for an element, or get the text when the parameter is underfined.
- *
- * @param string text   The text we want to set.
- *
- * @return mixed
+ * 替一個元素設定裡面的文字，如果沒有文字傳入，則是取得該元素的文字。
  */
 
 jA.fn.text = function(text)
@@ -67,17 +51,10 @@ jA.fn.text = function(text)
         return this.each(function(){ this.textContent = text; });
 }
 
-
-
-
 /**
- * HTML
+ * html
  *
- * Set a html content or get the html content if the parameter is undefined.
- *
- * @param string html   The html content.
- *
- * @return mixed
+ * 替一個元素設定裡面的 HTML，如果沒有 HTML 傳入，則是取得該元素的 HTML。
  */
 
 jA.fn.html = function(html)
@@ -90,7 +67,11 @@ jA.fn.html = function(html)
         return this.each(function(){ this.innerHTML = html });
 }
 
-
+/**
+ * fdPush
+ *
+ * 將物件的內容全部推送進 FormData 中。
+ */
 
 jA.fn.fdPush = function(obj)
 {
@@ -99,6 +80,12 @@ jA.fn.fdPush = function(obj)
 
     return this[0];
 }
+
+/**
+ * map
+ *
+ * 和 ES 的陣列 map 用法相同。
+ */
 
 jA.fn.map = function(callback)
 {

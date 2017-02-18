@@ -1,7 +1,9 @@
 /**
+ * deffered
  *
- * @source http://stackoverflow.com/questions/18096715/implement-deferred-object-without-using-jquery
- * @supported THEtheChad
+ * 類似 Promise 的功能。
+ *
+ * 來源 http://stackoverflow.com/questions/18096715/implement-deferred-object-without-using-jquery
  */
 
 jA.deferred = function()

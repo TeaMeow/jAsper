@@ -162,7 +162,7 @@ var Jasper = (function ()
 
 
     /**
-     * $
+     * jA
      *
      * Call to Init to get everything ready.
      */

@@ -1,8 +1,9 @@
 /**
- * Color Wheel
+ * colorWheel
  *
- * Generate a color wheel on this canvas with autofill.
- * http://ariya.ofilabs.com/2011/02/color-wheel-on-canvas.html
+ * 在目前的 Canvas 元素上產生一個顏色圓盤。
+ *
+ * 來源 http://ariya.ofilabs.com/2011/02/color-wheel-on-canvas.html
  */
 
 jA.fn.colorWheel = function(Sat, Hue)
@@ -53,13 +54,10 @@ jA.fn.colorWheel = function(Sat, Hue)
     })
 }
 
-
-
-
 /**
- * Color Picker
+ * picker
  *
- * Use this canvas as a color picker, then call the function and brings the color info where user click.
+ * 在目前的 Canvas 元素上監聽滑鼠事件，並且將滑鼠點下的像素顏色回傳給 Callback。
  */
 
 jA.fn.picker = function(Callback)
@@ -96,13 +94,10 @@ jA.fn.picker = function(Callback)
         })
 }
 
-
-
-
 /**
- * Grayscale Picker
+ * grayColor
  *
- * Generate a wide stick with grayscale style.
+ * 產生一個寬的灰階顏色盤。
  */
 
 jA.fn.grayColor = function()
@@ -124,13 +119,10 @@ jA.fn.grayColor = function()
     })
 }
 
-
-
-
 /**
- * Drawable
+ * drawable
  *
- * This function makes your canvas can be drawed.
+ * 讓目前的 Canvas 元素可供繪圖。
  */
 
 jA.fn.drawable = function()
@@ -202,14 +194,11 @@ jA.fn.drawable = function()
     })
 }
 
-
-
-
 /**
- * Tool
+ * tool
  *
- * What kind of the tools are allowed to use in this canvas?
- * We'll add that kind of the tools into this canvas for later to use.
+ * 要在目前可供繪圖的 Canvas 元素上新增何種繪圖工具？
+ * 我們稍後可以透過 `changeTool` 來啟用。
  */
 
 jA.fn.tool = function(tools)
@@ -300,13 +289,10 @@ jA.fn.tool = function(tools)
     })
 }
 
-
-
-
 /**
- * Change Drawing Color
+ * changeColor
  *
- * Change the line or the pencil color by HEX.
+ * 透過 Hex 顏色更改目前 Canvas 元素的繪圖顏色。
  */
 
 jA.fn.changeColor = function(HEX)
@@ -319,11 +305,10 @@ jA.fn.changeColor = function(HEX)
     })
 }
 
-
-
-
 /**
- * Change Tool
+ * changeTool
+ *
+ * 更改繪圖工具。
  */
 
 jA.fn.changeTool = function(tool)
@@ -334,10 +319,10 @@ jA.fn.changeTool = function(tool)
     })
 }
 
-
-
 /**
- * Return Canvas 2D
+ * c2d
+ *
+ * 回傳目前 Canvas 元素的 Context2D。
  */
 
 jA.fn.c2d = function()
@@ -346,13 +331,10 @@ jA.fn.c2d = function()
                      : null
 }
 
-
-
-
 /**
- * Line Preview
+ * linePreview
  *
- * Create an canvas with line preview
+ * 建立一個用來預覽直線的 Canvas 畫布。
  */
 
 jA.fn.linePreview = function(width, lineCap)
@@ -380,11 +362,10 @@ jA.fn.linePreview = function(width, lineCap)
     })
 }
 
-
-
-
 /**
- * Set Line Width
+ * setLineWidth
+ *
+ * 設定目前可供繪圖的 Canvas 筆畫粗度。
  */
 
 jA.fn.setLineWidth = function(width)
@@ -397,9 +378,10 @@ jA.fn.setLineWidth = function(width)
     })
 }
 
-
 /**
- * RGB To HEX
+ * ToHEX
+ *
+ * 將 RGB 轉換成 Hex。
  */
 
 function ToHEX(rgb)
@@ -407,13 +389,10 @@ function ToHEX(rgb)
     return '#' + ((rgb[0] << 16) | (rgb[1] << 8) | rgb[2]).toString(16)
 }
 
-
-
-
 /**
- * Temporary Canvas
+ * tempCanvas
  *
- * Sometimes, we'll need this because canvas don't support something which we need.
+ * 建立暫時性的 Canvas 因為 Canvas 沒有圖層效果。
  */
 
 jA.fn.tempCanvas = function()
@@ -438,13 +417,10 @@ jA.fn.tempCanvas = function()
     })
 }
 
-
-
-
 /**
- * Update Canvas
+ * updateCanvas
  *
- *
+ * 將暫時性的 Canvas 畫布上的內容繪製到目前的 Canvas 上。
  */
 
 jA.fn.updateCanvas = function()

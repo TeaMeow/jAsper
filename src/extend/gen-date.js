@@ -1,3 +1,9 @@
+/**
+ * genDate
+ *
+ * 生成年、月、日還有指定方向。
+ */
+
 jA.fn.genDate = function(type, direction)
 {
     type      = type      || 'day';

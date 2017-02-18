@@ -1,3 +1,9 @@
+/**
+ * pjax
+ *
+ * 透過 AJAX 來取得下一頁的頁面內容並且套用到目前的頁面上，
+ * 這可以讓網頁不需重新整理就能達到換頁的效果，亦可更換頁面的局部畫面。
+ */
 
 jA.pjax = function(option)
 {
@@ -152,14 +158,10 @@ jA.pjax = function(option)
     });
 }
 
-
-
-
-
 /**
- * Load
+ * load
  *
- * Load a html by XHR, then push the content to this element.
+ * 透過 XHR 讀取 HTML 內容，然後替換到這個元件內的內容。
  */
 
 jA.fn.load = function(url, data, callback)

@@ -1,42 +1,57 @@
+/**
+ * isJSON
+ *
+ * 確認字串是否為 JSON 格式。
+ *
+ * 來源 http://stackoverflow.com/questions/18096715/implement-deferred-object-without-using-jquery
+ */
 
-
-// http://stackoverflow.com/a/33369954/5203951
 jA.isJSON = function(string)
 {
     string = typeof string !== "string" ? JSON.stringify(string)
-                                        : string;
+                                        : string
     try
     {
-        string = JSON.parse(string);
-    } catch (e)
+        string = JSON.parse(string)
+    }
+    catch (e)
     {
-        return false;
+        return false
     }
 
     if (typeof string === "object" && string !== null)
-    {
-        return true;
-    }
+        return true
 
-    return false;
+    return false
 }
 
+/**
+ * inArray
+ *
+ * 項目是否在陣列中。
+ */
 
 jA.inArray = function(item, targetArray)
 {
     return targetArray.indexOf(item);
 }
 
-
 /**
- * Is Numeric
+ * isNumeric
  *
- *
+ * 是否為數字型態。
  */
+
 jA.isNumeric = function(number)
 {
     return !isNaN(parseFloat(Number)) && isFinite(Number);
 }
+
+/**
+ * escapeHTML
+ *
+ * 脫逸字串中的 HTML 標籤。
+ */
 
 jA.escapeHTML = function(string)
 {
@@ -50,6 +65,12 @@ jA.escapeHTML = function(string)
         return null
 }
 
+/**
+ * unescapeHTML
+ *
+ * 將字串中脫逸的 HTML 標籤反轉回 HTML 標籤。
+ */
+
 jA.unescapeHTML = function(string)
 {
     if(typeof string === 'string')
@@ -62,6 +83,12 @@ jA.unescapeHTML = function(string)
         return null
 }
 
+/**
+ * nl2br
+ *
+ * 將換行符號轉換成 <br> 標籤。
+ */
+
 jA.nl2br = function(string)
 {
     if(typeof string === 'string')
@@ -70,6 +97,12 @@ jA.nl2br = function(string)
         return null
 
 }
+
+/**
+ * br2nl
+ *
+ * 將 <br> 標籤轉換成換行符號。
+ */
 
 jA.br2nl = function(string)
 {
@@ -80,7 +113,11 @@ jA.br2nl = function(string)
 
 }
 
-
+/**
+ * map
+ *
+ * 和 ES 的 map 用法相同。
+ */
 
 jA.map = function(array, callback)
 {
@@ -90,13 +127,10 @@ jA.map = function(array, callback)
     return []
 }
 
-
-
-
 /**
- * Random
+ * rand
  *
- * Generate a random number.
+ * 在指定的範圍內產生亂數。
  */
 
 jA.rand = function(min, max)
@@ -104,6 +138,11 @@ jA.rand = function(min, max)
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+/**
+ * guid
+ *
+ * 產生 GUID 編號。
+ */
 
 var jAsperGuids = [];
 
@@ -129,26 +168,27 @@ jA.guid = function()
     return guid;
 }
 
-
-
+/**
+ * digits
+ *
+ * 將數字加上百進位符號。
+ */
 
 jA.digits = function(number)
 {
     return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "jA1,");
 }
 
+/**
+ * isset
+ *
+ * 確認是否有此變數，類似 PHP 的 isset()
+ *
+ * 來源 http://phpjs.org/functions/isset
+ */
 
 jA.isset = function()
 {
-    // discuss at: http://phpjs.org/functions/isset
-    // +   original by: Kevin van     Zonneveld (http://kevin.vanzonneveld.net)
-    // +   improved by: FremyCompany
-    // +   improved by: Onno Marsman
-    // +   improved by: Rafał Kukawski
-    // *     example 1: isset( undefined, true);
-    // *     returns 1: false
-    // *     example 2: isset( 'Kevin van Zonneveld' );
-    // *     returns 2: true
     var a = arguments,
         l = a.length,
         i = 0,
@@ -167,7 +207,11 @@ jA.isset = function()
     return true;
 }
 
-
+/**
+ * setTimeout
+ *
+ * 與 ES 的 setTimeout 相同。
+ */
 
 jA.setTimeout = function(timer)
 {

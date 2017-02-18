@@ -1,11 +1,7 @@
 /**
- * Wrap
+ * wrap
  *
- * Wrap an element.
- *
- * @param mixed element   The element that we want to wrap it by.
- *
- * @return mixed
+ * 將目前元素用一個指定元素包起來。
  */
 
 jA.fn.wrap = function(element)
@@ -17,8 +13,11 @@ jA.fn.wrap = function(element)
     });
 }
 
-
-
+/**
+ * append
+ *
+ * 在目前元素後面新增一個元素。
+ */
 
 jA.fn.append = function(html)
 {
@@ -28,17 +27,35 @@ jA.fn.append = function(html)
         return this.each(function(){ this.innerHTML += html; });
 }
 
+/**
+ * after
+ *
+ * 在目前元素後面以 HTML 新增一個元素。
+ */
+
 jA.fn.after = function(html)
 {
     if(html != null)
         return this.each(function(){ this.insertAdjacentHTML('afterend', html); });
 }
 
+/**
+ * before
+ *
+ * 在目前元素前面以 HTML 新增一個元素。
+ */
+
 jA.fn.before = function(html)
 {
     if(html != null)
         return this.each(function(){ this.insertAdjacentHTML('beforeBegin', html); });
 }
+
+/**
+ * prepend
+ *
+ * 在目前元素前面以 HTML 新增一個元素。
+ */
 
 jA.fn.prepend = function(html)
 {
@@ -50,17 +67,19 @@ jA.fn.prepend = function(html)
             template.innerHTML = html;
 
             if(typeof this.nodeType !== 'undefined')
-            {
                 if(this.firstChild)
-                {
-                    return this.insertBefore(template.content, this.firstChild);
-                } else {
-                    return this.appendChild(template.content);
-                }
-            }
+                    return this.insertBefore(template.content, this.firstChild)
+                else
+                    return this.appendChild(template.content)
         });
     }
 }
+
+/**
+ * appendTo
+ *
+ * 將目前的元素移動到指定元素的後面。
+ */
 
 jA.fn.appendTo = function(selector)
 {
@@ -75,6 +94,12 @@ jA.fn.appendTo = function(selector)
     })
 }
 
+/**
+ * prependTo
+ *
+ * 將目前的元素移動到指定元素的前面。
+ */
+
 jA.fn.prependTo = function(selector)
 {
     return this.each(function()
@@ -84,14 +109,18 @@ jA.fn.prependTo = function(selector)
         jA(selector).each(function()
         {
             if(this.firstChild)
-            {
-                return this.insertBefore(that, this.firstChild);
-            } else {
-                return this.appendChild(that);
-            }
+                return this.insertBefore(that, this.firstChild)
+            else
+                return this.appendChild(that)
         });
     })
 }
+
+/**
+ * insertAfter
+ *
+ * 將目前的元素插入到指定元素的後面。
+ */
 
 jA.fn.insertAfter = function(selector)
 {
@@ -106,6 +135,12 @@ jA.fn.insertAfter = function(selector)
     })
 }
 
+/**
+ * insertBefore
+ *
+ * 將目前的元素插入到指定元素的前面。
+ */
+
 jA.fn.insertBefore = function(selector)
 {
     return this.each(function()
@@ -119,12 +154,22 @@ jA.fn.insertBefore = function(selector)
     })
 }
 
+/**
+ * template
+ *
+ * 取得 <template> 的內容。
+ */
 
 jA.fn.template = function()
 {
     return jA(this.clone()[0].content).children();
 }
 
+/**
+ * clone
+ *
+ * 複製元素。
+ */
 
 jA.fn.clone = function(deep)
 {
@@ -143,15 +188,22 @@ jA.fn.clone = function(deep)
     return jA(cloneList);
 }
 
-
+/**
+ * remove
+ *
+ * 移除元素。
+ */
 
 jA.fn.remove = function()
 {
     return this.each(function(){ this.parentNode.removeChild(this) });
 }
 
-
-
+/**
+ * children
+ *
+ * 取得元素的子節點。
+ */
 
 jA.fn.children = function()
 {
@@ -167,7 +219,11 @@ jA.fn.children = function()
     return jA(list);
 }
 
-
+/**
+ * find
+ *
+ * 在目前的元素中搜尋指定節點。
+ */
 
 jA.fn.find = function(selector)
 {
@@ -187,11 +243,10 @@ jA.fn.find = function(selector)
     return list.length ? jA(list) : null;
 }
 
-
-
-
 /**
- * Parent
+ * parent
+ *
+ * 取得目前元素的父節點。
  */
 
 jA.fn.parent = function()
@@ -199,8 +254,11 @@ jA.fn.parent = function()
     return 0 in this ? jA(this[0].parentNode) : null;
 }
 
-
-
+/**
+ * parents
+ *
+ * 取得目前元素的所有父節點。
+ */
 
 jA.fn.parents = function(selector)
 {
@@ -229,9 +287,11 @@ jA.fn.parents = function(selector)
     return jA(parents);
 }
 
-
-
-
+/**
+ * closest
+ *
+ * 取得此元素的指定父節點。
+ */
 
 jA.fn.closest = function(selector)
 {
@@ -254,7 +314,11 @@ jA.fn.closest = function(selector)
     }
 }
 
-
+/**
+ * contains
+ *
+ * 此元素是否含有我們指定的子節點。
+ */
 
 jA.fn.contains = function(wants)
 {
@@ -275,20 +339,22 @@ jA.fn.contains = function(wants)
     return isTrue;
 }
 
+/**
+ * next
+ *
+ * 取得此元素的下一個元素。
+ */
+
 jA.fn.next = function()
 {
     if(0 in this)
     {
         var next = this[0].nextElementSibling
-        
+
         if(next)
-        {
-            return jA(next);
-        }
+            return jA(next)
         else
-        {
-            return null;
-        }
+            return null
     }
     else
     {
@@ -296,25 +362,25 @@ jA.fn.next = function()
     }
 }
 
-
+/**
+ * prev
+ *
+ * 取得此元素的上一個元素。
+ */
 
 jA.fn.prev = function()
 {
     if(0 in this)
     {
         var prev = this[0].previousElementSibling
-        
+
         if(prev)
-        {
-            return jA(prev);
-        }
+            return jA(prev)
         else
-        {
-            return null;
-        }
+            return null
     }
     else
     {
-        return null;
+        return null
     }
 }

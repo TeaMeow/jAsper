@@ -1,5 +1,7 @@
 /**
- * Hide
+ * hide
+ *
+ * 隱藏元素。
  */
 
 jA.fn.hide = function()
@@ -10,11 +12,10 @@ jA.fn.hide = function()
     });
 }
 
-
-
-
 /**
- * Show
+ * show
+ *
+ * 顯示元素。
  */
 
 jA.fn.show = function()
@@ -25,13 +26,22 @@ jA.fn.show = function()
     });
 }
 
-    
+/**
+ * isHidden
+ *
+ * 元素是否正處於隱藏狀態。
+ */
+
 jA.fn.isHidden = function()
 {
     return jA(this).hasClass('hidden');
 }
-        
-        
+
+/**
+ * toggle
+ *
+ * 切換元素的顯示狀態，如果是隱藏的則顯示，反之。
+ */
 
 jA.fn.toggle = function()
 {

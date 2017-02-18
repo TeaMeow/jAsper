@@ -1,3 +1,9 @@
+/**
+ * validate
+ *
+ * 以 HTML5 驗證該元素。
+ */
+
 jA.fn.validate = function()
 {
     var jAthis    = jA(this),

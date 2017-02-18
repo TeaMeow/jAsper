@@ -1,13 +1,8 @@
 /**
- * Cookie
- * 
- * Get, edit, remove a cookie.
- * 
- * @param string name      The name of the cookie
- * @param string value     The value of the cookie, keep it blank if you want to remove the cookie.
- * @param object options   The options.
- * 
- * @return mixed
+ * cookie
+ *
+ * 設置、編輯、移除 Cookie。當傳入的值是空白的時候會取得該 Cookie，
+ * 如果傳入的選項是 `-1` 那麼則是移除該 Cookie。選項接受 `expires`、`domain` 和 `path`。
  */
 
 jA.cookie = function(name, value, options)
@@ -18,9 +13,9 @@ jA.cookie = function(name, value, options)
         var expire = (options instanceof Object && typeof options.expires != 'undefined') ? options.expires : 365,
             domain = (options instanceof Object && typeof options.domain  != 'undefined') ? ' domain=' + options.domain + ';' : '',
             path   = ' path=' + (options instanceof Object && typeof options.path != 'undefined' ? options.path : '/') + ';';
-        
+
         var d = new Date();
-        
+
         /** If Options is not object but -1, means user want to delete this cookie, so we given a expired time */
         if(!options instanceof Object && options === -1)
             d.setTime(d.getTime() - (24 * 60 * 60 * 1000));
@@ -37,7 +32,7 @@ jA.cookie = function(name, value, options)
     {
         var cookieName = name + '=',
             list       = document.cookie.split(';');
-            
+
         for(var i in list)
         {
             var cookie = list[i];
@@ -51,6 +46,6 @@ jA.cookie = function(name, value, options)
                 return cookie.substring(cookieName.length, cookie.length);
         }
     }
-    
+
     return 'undefined';
 }

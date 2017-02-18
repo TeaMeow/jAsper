@@ -1,11 +1,15 @@
+/**
+ * formValidate
+ *
+ * 以 HTML5 驗證表單欄位。
+ */
+
 jA.fn.formValidate = function(rules, stopAtFirst)
 {
     var pass    = true,
         isFirst = true;
         rules       = rules       || null,
         stopAtFirst = stopAtFirst || false;
-
-
 
     jA(this).find('[name]').each(function()
     {

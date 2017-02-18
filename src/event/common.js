@@ -1,36 +1,74 @@
+/**
+ * mousedown
+ *
+ * 當滑鼠按下的事件綁定。
+ */
 
 jA.fn.mousedown = function(callback)
 {
     return jA(this).on('mousedown', callback);
 }
 
+/**
+ * mouseup
+ *
+ * 當滑鼠放開的事件綁定。
+ */
+
 jA.fn.mouseup = function(callback)
 {
     return jA(this).on('mouseup', callback);
 }
+
+/**
+ * keyup
+ *
+ * 當按鍵放開的事件綁定。
+ */
 
 jA.fn.keyup = function(callback)
 {
     return jA(this).on('keyup', callback);
 }
 
+/**
+ * mousemove
+ *
+ * 當滑鼠移動的事件綁定。
+ */
+
 jA.fn.mousemove = function(callback)
 {
     return jA(this).on('mousemove', callback);
 }
+
+/**
+ * click
+ *
+ * 按下並放開的事件綁定。
+ */
 
 jA.fn.click = function(callback)
 {
     return jA(this).on('click', callback);
 }
 
+/**
+ * dragstart
+ *
+ * 當拖曳開始的事件綁定。
+ */
+
 jA.fn.dragstart = function(callback)
 {
     return jA(this).on('dragstart', callback);
 }
 
-
-
+/**
+ * longPress
+ *
+ * 長按事件綁定。
+ */
 
 jA.fn.longPress = function(callback, clickCallback, timer)
 {
@@ -78,12 +116,22 @@ jA.fn.longPress = function(callback, clickCallback, timer)
     })
 }
 
+/**
+ * trigger
+ *
+ * 觸發指定事件。
+ */
 
 jA.fn.trigger = function(Event)
 {
     return this.each(function(){ this[Event]() });
 }
 
+/**
+ * scrollBottom
+ *
+ * 捲軸卷到底的事件綁定。
+ */
 
 jA.fn.scrollBottom = function(scroll, reachBottom)
 {
@@ -101,12 +149,23 @@ jA.fn.scrollBottom = function(scroll, reachBottom)
     });
 }
 
+/**
+ * ready
+ *
+ * 當網頁已經準備的事件綁定。
+ */
 
 jA.fn.ready = function(callback)
 {
     if(0 in this)
         this[0].addEventListener('DOMContentLoaded', callback)
 }
+
+/**
+ * focus
+ *
+ * 聚焦目前元素。
+ */
 
 jA.fn.focus = function()
 {
@@ -116,6 +175,11 @@ jA.fn.focus = function()
     });
 }
 
+/**
+ * isBottom
+ *
+ * 是否已經捲到元素的最底部。
+ */
 
 jA.fn.isBottom = function()
 {
@@ -126,6 +190,11 @@ jA.fn.isBottom = function()
         return false;
 }
 
+/**
+ * delayKeyup
+ *
+ * 延遲按鍵放開，在搜尋功能時非常有用。
+ */
 
 jA.fn.delayKeyup = function(callback, ms)
 {

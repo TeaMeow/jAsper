@@ -1,3 +1,9 @@
+/**
+ * ajax
+ *
+ * 在非換頁的情況下傳遞 HTTP 請求取得資訊。
+ */
+
 jA.ajax = function(obj, type)
 {
     if(obj == null)
@@ -135,12 +141,11 @@ jA.ajax = function(obj, type)
     return d;
 }
 
-
-
-
-
-
-
+/**
+ * getJSON
+ *
+ * 簡易型的 `ajax`，用以取得遠端 JSON 資料。
+ */
 
 jA.getJSON = function(url, callback)
 {
@@ -152,7 +157,11 @@ jA.getJSON = function(url, callback)
     });
 }
 
-
+/**
+ * xhrResponse
+ *
+ * 取得 XHR（AJAX）中的回應內容
+ */
 
 jA.xhrResponse = function(XHR, type)
 {

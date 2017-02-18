@@ -1,3 +1,9 @@
+/**
+ * serialize
+ *
+ * 將表單轉換成參數字串。
+ */
+
 jA.fn.serialize = function()
 {
     var array = [];
@@ -5,7 +11,7 @@ jA.fn.serialize = function()
     this.each(function()
     {
         var z, a;
-        
+
         for (var z = 0; z < this.elements.length; z++)
         {
             var elements = this.elements[z],
@@ -58,7 +64,7 @@ jA.fn.serialize = function()
                             for(var a = 0; a < elements.options.length; a++)
                             {
                                 var optionValue = elements.options[a].value;
-                                
+
                                 if (elements.options[a].selected)
                                     array.push(name + '=' + encodeURIComponent(optionValue));
                             }
@@ -73,7 +79,7 @@ jA.fn.serialize = function()
                         case 'button':
                             array.push(name + '=' + encodeURIComponent(value));
                     }
-            }  
+            }
          }
     });
 

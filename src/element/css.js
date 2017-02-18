@@ -1,18 +1,11 @@
 /**
- * Css Animate
+ * cssAnimate
  *
- * Animate a css animation.
- *
- * @param string   animate    The name of the animation
- * @param func|int callback   The callback when the animation ended, or the animation time.
- * @param int      time       The animation time.
+ * 進行 CSS 動畫，很適合用在 Animate.css。
  */
 
 jA.fn.cssAnimate = function(animate, callback, time)
 {
-    /** Animate list */
-    //var animateList = 'slideInDown slideInLeft slideInRight slideInUp slideOutDown slideOutLeft slideOutRight slideOutUp'
-
     /** If someone using callback field as time.. */
     if(typeof callback == 'number' && typeof time != 'function')
         time = callback;
@@ -33,17 +26,10 @@ jA.fn.cssAnimate = function(animate, callback, time)
     /** Select animation duration by Time */
     time = isNaN(time) ? '' : ' animated' + timer + 's';
 
-    //var d        = new jA.deferred();
-
     return this.each(function()
     {
         /** For passing jA(this) to inside function */
         var that = this;
-
-
-        /** If last animation not end .. */
-        //if(jA(this).hasClass(Animate))
-            //jA(this).off('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend').removeClass(animateList).removeClass(animate + ' animated' + time)
 
         /** Add animation */
         jA(this).addClass(animate + ' animated' + time)
@@ -54,98 +40,75 @@ jA.fn.cssAnimate = function(animate, callback, time)
 
                    if((typeof callback !== 'undefined' && callback != null) && typeof callback !== 'number')
                         callback.call(that);
-                   //d.resolve(that);
                 });
     });
-
-    //return d;
 }
 
-
-
-
 /**
- * CSS
+ * css
  *
- * Set CSS to elements or get CSS from elements.
- *
- * @param mixed      property   Can be a object and the key as the css property, and the value as the property value.
- * @param int|string value      The value of the css property.
- *
- * @return mixed
+ * 替元素設置或移除單個、多個 CSS 屬性。
  */
 
 jA.fn.css = function(property, value)
 {
-    var css = '';
+    var css = ''
 
     /** Set single CSS : If CSS and content is not empty, then set the CSS */
     if(property != null && value != null)
     {
-        css = property + ':' + value + ';';
+        css = property + ':' + value + ';'
     }
     /** Set multi CSS : If CSS is a Object */
     else if(typeof property === 'object' && !Array.isArray(property) && value == null)
     {
         for(var i in property)
             if(property.hasOwnProperty(i))
-                css += i + ':' + property[i] + ';';
+                css += i + ':' + property[i] + ';'
     }
     /** Get multi CSS : If style name is a array and have only key */
     else if(Array.isArray(property) && value == null)
     {
-        var cssObject = {};
+        var cssObject = {}
 
-        this.each(function(){ for(var i in property) cssObject[property[i]] = jA(this).getCss(property[i]); })
+        this.each(function(){ for(var i in property) cssObject[property[i]] = jA(this).getCss(property[i]) })
 
-        return cssObject;
+        return cssObject
     }
     /** Get single CSS : If only style name */
     else if(property != null && value == null)
     {
-        return jA(this).getCss(property);
+        return jA(this).getCss(property)
     }
 
     return this.each(function()
     {
         if(typeof this.style == 'undefined')
-            return;
+            return
 
-        this.style.cssText = this.style.cssText + css;
+        this.style.cssText = this.style.cssText + css
     })
 }
 
-
-
-
 /**
- * Has Class
+ * hasClass
  *
- * Returns true when the class(es) does exist.
- *
- * @param string classes   The class name, can be a list split by the space.
- *
- * @return bool
+ * 檢查元素是否有該類別（Class）名稱。
  */
 
 jA.fn.hasClass = function(classes)
 {
     if(0 in this)
         if(this[0].classList)
-            return this[0].classList.contains(classes);
+            return this[0].classList.contains(classes)
         else
-            return new RegExp('(^| )' + classes + '( |$)', 'gi').test(this[0].className);
+            return new RegExp('(^| )' + classes + '( |$)', 'gi').test(this[0].className)
 }
 
-
-
-
 /**
- * Class List
+ * classList
  *
- * Returns a class list of the element.
- *
- * @return array
+ * 回傳元素的類別陣列。
  */
 
 jA.fn.classList = function()
@@ -163,17 +126,10 @@ jA.fn.classList = function()
     return classes;
 }
 
-
-
-
 /**
- * Add Class
+ * addClass
  *
- * Add a single or multiple classes to an element.
- *
- * @param string classes   The name of the class, can be a list split by space.
- *
- * @return object
+ * 替元素加上單個、多個樣式類別。
  */
 
 jA.fn.addClass = function(classes)
@@ -198,17 +154,10 @@ jA.fn.addClass = function(classes)
     });
 }
 
-
-
-
 /**
- * Remove Class
+ * removeClass
  *
- * Remove a single or multiple classes of the element.
- *
- * @param string classes   The name of the class can be a list split by the space.
- *
- * @return object
+ * 替元素移除單個、多個樣式類別。
  */
 
 jA.fn.removeClass = function(classes)
@@ -238,17 +187,10 @@ jA.fn.removeClass = function(classes)
     })
 }
 
-
-
-
 /**
- * Toggle Class
+ * toggleClass
  *
- * Toggle a single or multiple classes, add the class when the class is not existed, and remove the class when it does exist.
- *
- * @param string classes   The name of the class, can be a list split by the space.
- *
- * @return object
+ * 替元素切換單個、多個樣式類別。
  */
 
 jA.fn.toggleClass = function(classes)
@@ -284,9 +226,10 @@ jA.fn.toggleClass = function(classes)
     });
 }
 
-
 /**
- * Get CSS
+ * getCss
+ *
+ * 取得元素的已計算樣式。
  */
 
 jA.fn.getCss = function(property)

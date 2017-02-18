@@ -1,3 +1,9 @@
+/**
+ * binder
+ *
+ * 一次綁定多個事件和元素。
+ */
+
 jA.binder = function(binds, rebind)
 {
     rebind = rebind || false;

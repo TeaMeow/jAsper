@@ -1,3 +1,9 @@
+/**
+ * formExplode
+ *
+ * 將一個表單的內容轉換成 FormData 格式。
+ */
+
 jA.fn.formExplode = function(extraData)
 {
     var formData  = {};
