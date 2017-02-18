@@ -1,0 +1,1 @@
+./lib/mergejs -c merge.txt dist/jasper.js
