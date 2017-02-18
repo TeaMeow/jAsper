@@ -122,9 +122,9 @@ jA.fn.longPress = function(callback, clickCallback, timer)
  * 觸發指定事件。
  */
 
-jA.fn.trigger = function(Event)
+jA.fn.trigger = function(event)
 {
-    return this.each(function(){ this[Event]() })
+    return this.each(function(){ this[event]() })
 }
 
 /**
